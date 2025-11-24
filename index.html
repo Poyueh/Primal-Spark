@@ -1,751 +1,827 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4689cc; -webkit-text-stroke: #4689cc}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #c27e65; -webkit-text-stroke: #c27e65}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #8cd3fe; -webkit-text-stroke: #8cd3fe}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca; min-height: 16.0px}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6d7378; -webkit-text-stroke: #6d7378}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #71c083; -webkit-text-stroke: #71c083}
-    span.s1 {font-kerning: none; background-color: #171818}
-    span.s2 {font-kerning: none; color: #8cd3fe; background-color: #171818; -webkit-text-stroke: 0px #8cd3fe}
-    span.s3 {font-kerning: none; color: #6d6d6d; background-color: #171818; -webkit-text-stroke: 0px #6d6d6d}
-    span.s4 {font-kerning: none; color: #4689cc; background-color: #171818; -webkit-text-stroke: 0px #4689cc}
-    span.s5 {font-kerning: none; color: #cacaca; background-color: #171818; -webkit-text-stroke: 0px #cacaca}
-    span.s6 {font-kerning: none; color: #c27e65; background-color: #171818; -webkit-text-stroke: 0px #c27e65}
-    span.s7 {font-kerning: none; color: #d4d4d4; background-color: #171818; -webkit-text-stroke: 0px #d4d4d4}
-    span.s8 {font-kerning: none; color: #a7c598; background-color: #171818; -webkit-text-stroke: 0px #a7c598}
-    span.s9 {font-kerning: none; color: #b76ff7; background-color: #171818; -webkit-text-stroke: 0px #b76ff7}
-    span.s10 {font-kerning: none}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>原初之火 Primal Spark (Emoji版)</title>
+    
+    <!-- 1. 載入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. 載入 React 與 ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- 3. 載入 Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* 禁止手機上的彈性捲動效果，避免操作遊戲時拉動頁面 */
+        body { margin: 0; overflow: hidden; background-color: #111; touch-action: none; }
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        /* 自定義捲軸 */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #4a4a4a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #666; }
+    </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE</span><span class="s2"> html</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s3">&lt;</span><span class="s4">html</span><span class="s5"> </span><span class="s2">lang</span><span class="s3">=</span><span class="s1">"zh-TW"</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">meta</span><span class="s5"> </span><span class="s1">charset</span><span class="s3">=</span><span class="s6">"UTF-8"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">meta</span><span class="s5"> </span><span class="s2">name</span><span class="s3">=</span><span class="s1">"viewport"</span><span class="s5"> </span><span class="s2">content</span><span class="s3">=</span><span class="s1">"width=device-width, initial-scale=1.0"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">title</span><span class="s3">&gt;</span><span class="s1">原初之火 Primal Spark</span><span class="s3">&lt;/</span><span class="s4">title</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 1. 載入 Tailwind CSS (樣式) --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">script</span><span class="s5"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://cdn.tailwindcss.com"</span><span class="s3">&gt;&lt;/</span><span class="s4">script</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 2. 載入 Babel (讓瀏覽器看得懂 React) --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">script</span><span class="s5"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://unpkg.com/@babel/standalone/babel.min.js"</span><span class="s3">&gt;&lt;/</span><span class="s4">script</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 設定頁面樣式 --&gt;</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s4">body</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> </span><span class="s1">margin:</span><span class="s5"> </span><span class="s8">0</span><span class="s7">;</span><span class="s5"> </span><span class="s1">overflow:</span><span class="s5"> </span><span class="s6">hidden</span><span class="s7">;</span><span class="s5"> </span><span class="s1">background-color:</span><span class="s5"> #111</span><span class="s7">;</span><span class="s5"> </span><span class="s7">}</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">/* 定義像素字體 */</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s9">@import</span><span class="s5"> </span><span class="s6">url</span><span class="s7">(</span><span class="s1">'https://fonts.googleapis.com/css2?family=VT323&amp;display=swap'</span><span class="s7">);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">/* 自定義捲軸樣式 */</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">::-webkit-scrollbar</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> </span><span class="s2">width:</span><span class="s5"> </span><span class="s8">10px</span><span class="s7">;</span><span class="s5"> </span><span class="s2">height:</span><span class="s5"> </span><span class="s8">10px</span><span class="s7">;</span><span class="s5"> </span><span class="s7">}</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">::-webkit-scrollbar-track</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> </span><span class="s2">background:</span><span class="s5"> #1a1a1a</span><span class="s7">;</span><span class="s5"> </span><span class="s7">}</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">::-webkit-scrollbar-thumb</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> </span><span class="s2">background:</span><span class="s5"> #4a4a4a</span><span class="s7">;</span><span class="s5"> </span><span class="s2">border-radius:</span><span class="s5"> </span><span class="s8">5px</span><span class="s7">;</span><span class="s5"> </span><span class="s7">}</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">::-webkit-scrollbar-thumb:hover</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> </span><span class="s2">background:</span><span class="s5"> #666</span><span class="s7">;</span><span class="s5"> </span><span class="s7">}</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">body</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- React 應用程式掛載點 --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"root"</span><span class="s3">&gt;&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 3. 遊戲主程式 --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">script</span><span class="s5"> </span><span class="s2">type</span><span class="s3">=</span><span class="s1">"text/babel"</span><span class="s5"> </span><span class="s2">data-type</span><span class="s3">=</span><span class="s1">"module"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>import React, { useState, useEffect, useRef, useCallback } from 'https://esm.sh/react@18.2.0?dev';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>import { createRoot } from 'https://esm.sh/react-dom@18.2.0/client?dev';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>import { Sparkles, Heart, Utensils, Shield, CloudRain, Snowflake, Sun, Cloud, Flame, Mountain, Skull, RefreshCw, X, Brain, ScrollText, MessageCircle, HelpCircle } from 'https://esm.sh/lucide-react@0.263.1?dev';</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>// --- API Key 設定 ---</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const apiKey = "";<span class="Apple-converted-space"> </span></span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>// --- 遊戲邏輯 ---</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const PIXEL_FONT = "'Courier New', Courier, monospace";</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const TILE_SIZE = 32;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const SCALE = 2.0; // 調整為 2.0，適中的大小</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const PALETTE = {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>OUTLINE: '#1a1c2c',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>SKIN: '#ffccaa',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>SKIN_SHADOW: '#d48e7e',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>GRASS_BG: '#388e3c',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>GRASS_L: '#4caf50',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>GRASS_D: '#1b5e20',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>DIRT: '#5d4037',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WATER: '#4a69bd',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WHEAT_1: '#a5d6a7',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WHEAT_2: '#e6ee9c',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WHEAT_3: '#fbc02d',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>STONE_L: '#b0bec5',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>STONE_M: '#78909c',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>STONE_D: '#546e7a',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WOOD_L: '#8d6e63',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WOOD_D: '#3e2723',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>LEAF_L: '#66bb6a',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>LEAF_D: '#2e7d32',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>LEAF_PINE: '#1b5e20',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>FLOWER_R: '#e57373',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>FLOWER_Y: '#fff176',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>MUSHROOM: '#f44336',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>FUR_WOLF: '#90a4ae',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>FUR_BEAR: '#4e342e',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>FUR_DEER: '#a1887f',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>FUR_RABBIT: '#fafafa',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WHITE: '#ffffff',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>TRANSPARENT: null</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const callGemini = async (prompt) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>if (!apiKey) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>console.warn("API Key 未設定，跳過 AI 請求");</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>return null;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const response = await fetch(</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>method: 'POST',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>headers: { 'Content-Type': 'application/json' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>body: JSON.stringify({</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>contents: [{ parts: [{ text: prompt }] }]</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>})</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const data = await response.json();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>return data.candidates?.[0]?.content?.parts?.[0]?.text || null;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>} catch (error) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>console.error("Gemini API Error:", error);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>return null;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const SPRITE_MATRICES = {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>CHAR_M: ["........................",".......HHHHHH...........","......HSSSSSSH..........",".....HSSKSSKSSH.........",".....HSSSSSSSSH.........","......SSSSSSSS..........","....CCCSCCCCSCCC........","....CCCSCCCCSCCC........","....CCCCCCCCCCCC........","....KKKCCCCCCKKK........","....K.KCCCCCCK.K........","......KSSSSSSK..........","......KSSSSSSK..........","......KKK..KKK.........."],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>CHAR_F: ["........................","......HHHHHHHH..........",".....HSSSSSSSSH.........",".....HSSKSSKSSH.........",".....HSSSSSSSSH.........",".....SSSSSSSSSS.........","....CCCSCCCCSCCC........","...CCCCSCCCCSCCCC.......","...CCCCCCCCCCCCCC.......","...CCCCCCCCCCCCCC.......","....CCCCCCCCCCCC........",".....KSSSSSSssk.........",".....KSSSSSSssk.........",".....KKK....KKK........."],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>TREE_OAK: [".......LLLLLL.......",".....LLLLLLLLLL.....","....LLLLLLLLLLLL....","...LLLLLLLLLLLLLL...","...LLLLLLLLLLLLLL...","....LLLLLLLLLLLL....",".....LLLLLLLLLL.....",".......WWWWWW.......",".......WWWWWW.......",".......WWWWWW.......","......WWWWWWWW......"],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>TREE_PINE: ["..........L.........",".........LLL........","........LLLLL.......",".......LLLLLLL......",".........LLL........","........LLLLL.......",".......LLLLLLL......","......LLLLLLLLL.....",".....LLLLLLLLLLL....","........WWWWW.......",".......WWWWWWW......"],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>BUSH: ["....................","......LLLLLLL.......",".....LLLLLLLLL......","....LLLLLLLLLLL.....","....LLLLLLLLLLL.....",".....LLLLLLLLL......"],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>FLOWER: [".........R..........","........RYR.........",".........R..........",".........G..........",".........G.........."],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>MUSHROOM: ["........RRR.........",".......RRRRR........",".......RWWWR........","........WWW.........","........WWW........."],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>ROCK: [".......KKKKKK.......",".....KKMMMMMMKK.....","....KMMLLLLLLMMK....","...KMLLLLLLLLLLMK...","...KMMMMMMMMMMMMK...","...KDDDDDDDDDDDDK...","....KKDDDDDDDDKK....","......KKKKKKKK......"],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>RABBIT: [".......KK...........","......KWWK..........",".....KWWWWK.........",".....KWWWWK.........","......KKKK.........."],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WOLF: ["....................",".......K............","......KGK...........",".....KGGGK..........","....KGGGGGK...K.....","...KGGGGGGGGKKGK....","...KGGGGGGGGGGGK....","....KGGGGGGGGGK.....","....K.K.....K.K....."],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>BEAR: [".........KK...KK....","......KKKBBKKKBBK...",".....KBBBBBBBBBBBK..","....KBBBBBBBBBBBBBK.","...KBBBBBBBBBBBBBBBK","...KBBBBBBBBBBBBBBBK","...KBBBBBBBBBBBBBBBK","....KB.B.B.....B.B..","....KK.K.K.....K.K.."],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>DEER: ["...........K...K....","............K.K.....","..........KKKBKK....",".........KBBBBBBK...","........KBBBBBBBBK..",".......KBBBBBBBBBK..",".......K.B.....B....",".......K.K.....K...."],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WHEAT_GROW: ["................","....1......1....","...111....111...","....1......1....","................"],</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>WHEAT_READY: ["....3......3....","...333....333...","...333....333...","....3......3....","....3......3...."]</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const MAP_WIDTH = 24;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const MAP_HEIGHT = 24;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const DAY_TICKS = 800;<span class="Apple-converted-space"> </span></span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const WEATHER = {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>SUNNY: { id: 'SUNNY', name: '晴天', color: 'rgba(255,255,0,0.1)' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>RAIN: { id: 'RAIN', name: '雨天', color: 'rgba(0,0,50,0.3)' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>SNOW: { id: 'SNOW', name: '降雪', color: 'rgba(200,240,255,0.2)' }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const ZODIACS = [</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '牡羊', gender: 'M', color: '#c0392b', hair: '#2c3e50', trait: '好鬥' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '金牛', gender: 'F', color: '#27ae60', hair: '#5d4037', trait: '固執' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '雙子', gender: 'M', color: '#f39c12', hair: '#e67e22', trait: '善變' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '巨蟹', gender: 'F', color: '#7f8c8d', hair: '#34495e', trait: '顧家' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '獅子', gender: 'M', color: '#e67e22', hair: '#f1c40f', trait: '霸氣' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '處女', gender: 'F', color: '#16a085', hair: '#2ecc71', trait: '謹慎' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '天秤', gender: 'M', color: '#e84393', hair: '#fd79a8', trait: '猶豫' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '天蠍', gender: 'F', color: '#8e44ad', hair: '#2c3e50', trait: '敏銳' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '射手', gender: 'M', color: '#2980b9', hair: '#3498db', trait: '冒險' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '摩羯', gender: 'F', color: '#576574', hair: '#1e272e', trait: '堅忍' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '水瓶', gender: 'M', color: '#00d2d3', hair: '#00cec9', trait: '古怪' },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>{ sign: '雙魚', gender: 'F', color: '#a29bfe', hair: '#6c5ce7', trait: '浪漫' }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const rand = (min, max) =&gt; Math.floor(Math.random() * (max - min + 1)) + min;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const noise = (x, y) =&gt; Math.sin(x/3.5) + Math.cos(y/4.5);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const renderMatrix = (ctx, matrix, colors, offsetX = 0, offsetY = 0) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>matrix.forEach((row, y) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>for (let x = 0; x &lt; row.length; x++) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const char = row[x];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (char === '.') continue;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>let fill = colors[char] || PALETTE.OUTLINE;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (char === 'K') fill = PALETTE.OUTLINE;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctx.fillStyle = fill;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctx.fillRect(offsetX + x, offsetY + y, 1, 1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const createSprites = () =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const cache = {};</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const createCanvas = (w, h) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const c = document.createElement('canvas');</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>c.width = w; c.height = h;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>return { c, ctx: c.getContext('2d') };</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: grassC, ctx: grassCtx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>grassCtx.fillStyle = PALETTE.GRASS_BG; grassCtx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>grassCtx.fillStyle = PALETTE.GRASS_L; for(let i=0; i&lt;30; i++) grassCtx.fillRect(rand(0,31), rand(0,31), 1, 1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>grassCtx.fillStyle = PALETTE.GRASS_D; for(let i=0; i&lt;20; i++) grassCtx.fillRect(rand(0,31), rand(0,31), 1, 1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.grass = grassC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: dirtC, ctx: dirtCtx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>dirtCtx.fillStyle = PALETTE.DIRT; dirtCtx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>dirtCtx.fillStyle = PALETTE.WOOD_D; for(let i=0; i&lt;40; i++) dirtCtx.fillRect(rand(0,31), rand(0,31), 1, 1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.dirt = dirtC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: oakC, ctx: oakCtx } = createCanvas(TILE_SIZE, TILE_SIZE*2);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(oakCtx, SPRITE_MATRICES.TREE_OAK, {'L': PALETTE.LEAF_D, 'W': PALETTE.WOOD_D}, 6, 10);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>oakCtx.fillStyle = PALETTE.LEAF_L; oakCtx.fillRect(10, 12, 2, 2); oakCtx.fillRect(16, 14, 2, 2);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.tree_oak = oakC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: pineC, ctx: pineCtx } = createCanvas(TILE_SIZE, TILE_SIZE*2);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(pineCtx, SPRITE_MATRICES.TREE_PINE, {'L': PALETTE.LEAF_PINE, 'W': PALETTE.WOOD_D}, 6, 8);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.tree_pine = pineC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: bushC, ctx: bushCtx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(bushCtx, SPRITE_MATRICES.BUSH, {'L': PALETTE.LEAF_L}, 4, 16);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.bush = bushC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: flowerC, ctx: flowerCtx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(flowerCtx, SPRITE_MATRICES.FLOWER, {'R': PALETTE.FLOWER_R, 'Y': PALETTE.FLOWER_Y, 'G': PALETTE.GRASS_L}, 10, 16);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.flower = flowerC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: mushC, ctx: mushCtx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(mushCtx, SPRITE_MATRICES.MUSHROOM, {'R': PALETTE.MUSHROOM, 'W': PALETTE.WHITE}, 10, 16);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.mushroom = mushC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: rockC, ctx: rockCtx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(rockCtx, SPRITE_MATRICES.ROCK, {'K': PALETTE.OUTLINE, 'M': PALETTE.STONE_M, 'L': PALETTE.STONE_L, 'D': PALETTE.STONE_D}, 8, 16);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.rock = rockC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: rabbitC, ctx: rabbitCtx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(rabbitCtx, SPRITE_MATRICES.RABBIT, {'W': PALETTE.FUR_RABBIT}, 8, 16);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.rabbit = rabbitC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: wolfC, ctx: wolfCtx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(wolfCtx, SPRITE_MATRICES.WOLF, {'G': PALETTE.FUR_WOLF}, 4, 12);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.wolf = wolfC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: bearC, ctx: bearCtx } = createCanvas(TILE_SIZE*1.5, TILE_SIZE*1.5);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(bearCtx, SPRITE_MATRICES.BEAR, {'B': PALETTE.FUR_BEAR}, 4, 10);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.bear = bearC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: deerC, ctx: deerCtx } = createCanvas(TILE_SIZE, TILE_SIZE*1.5);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(deerCtx, SPRITE_MATRICES.DEER, {'B': PALETTE.FUR_DEER}, 4, 10);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.deer = deerC;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: w1C, ctx: w1Ctx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(w1Ctx, SPRITE_MATRICES.WHEAT_GROW, { '1': PALETTE.WHEAT_1 }, 8, 16);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.wheat_1 = w1C;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const { c: w2C, ctx: w2Ctx } = createCanvas(TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderMatrix(w2Ctx, SPRITE_MATRICES.WHEAT_READY, { '3': PALETTE.WHEAT_3 }, 8, 16);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>cache.wheat_2 = w2C;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>return cache;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const App = () =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [sprites, setSprites] = useState(null);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [map, setMap] = useState([]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [sims, setSims] = useState([]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [creatures, setCreatures] = useState([]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [farms, setFarms] = useState([]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [particles, setParticles] = useState([]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [tribe, setTribe] = useState({ wood: 0, stone: 0, food: 100, tech: 0 });</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [weather, setWeather] = useState(WEATHER.SUNNY);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [weatherTimer, setWeatherTimer] = useState(1000);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [time, setTime] = useState(0);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [day, setDay] = useState(1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [mana, setMana] = useState(150);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [selectedId, setSelectedId] = useState(null);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [events, setEvents] = useState(['族人仰望星空，故事開始了...']);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [isSoulSearching, setIsSoulSearching] = useState(false);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const [isWritingSaga, setIsWritingSaga] = useState(false);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const canvasRef = useRef(null);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const tickRef = useRef(0);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const requestRef = useRef();</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const handleSoulSearch = async (sim) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (mana &lt; 10) return;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setIsSoulSearching(true);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setMana(prev =&gt; prev - 10);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const prompt = `You are an AI storytelling engine. Roleplay as a primitive tribesman (Sign:${sim.sign}, Trait:${sim.trait}, State:${sim.state}). Generate a short inner monologue (max 15 words) in Traditional Chinese.`;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const thought = await callGemini(prompt);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (thought) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>setSims(prev =&gt; prev.map(s =&gt; s.id === sim.id ? { ...s, thought: thought.trim() } : s));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>setEvents(e =&gt; [`${sim.sign} 的靈魂發出了低語...`, ...e]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setIsSoulSearching(false);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const handleTribeSaga = async () =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (mana &lt; 50) return;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setIsWritingSaga(true);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setMana(prev =&gt; prev - 50);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const prompt = `Write a cryptic, mythic, single-sentence log entry (max 20 words) for a primitive tribe in Traditional Chinese. Context: Tech Lv ${tribe.tech}, Pop ${sims.length}, Food ${Math.floor(tribe.food)}, Weather ${weather.name}.`;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const saga = await callGemini(prompt);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (saga) setEvents(e =&gt; [`📜 史詩: ${saga.trim()}`, ...e]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setIsWritingSaga(false);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setSprites(createSprites());</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const newMap = [];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>for(let y=0; y&lt;MAP_HEIGHT; y++) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const row = [];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>for(let x=0; x&lt;MAP_WIDTH; x++) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const n = noise(x, y);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>let type = 'GRASS';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>let decoration = null;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (Math.abs(n) &gt; 1.2) type = 'MOUNTAIN';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (n &lt; -0.4) type = 'FOREST';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (n &gt; 0.8) type = 'WATER';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const dist = Math.sqrt((x-MAP_WIDTH/2)**2 + (y-MAP_HEIGHT/2)**2);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (dist &lt; 5) type = 'BASE';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (dist &gt; 9 &amp;&amp; n &gt; 0.5) type = 'WATER';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (type === 'FOREST') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>if (Math.random() &gt; 0.6) decoration = 'TREE_OAK';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>else decoration = 'TREE_PINE';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>if (Math.random() &lt; 0.1) decoration = 'MUSHROOM';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>} else if (type === 'GRASS') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>const rnd = Math.random();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>if (rnd &lt; 0.05) decoration = 'ROCK';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>else if (rnd &lt; 0.1) decoration = 'BUSH';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>else if (rnd &lt; 0.15) decoration = 'FLOWER';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>row.push({ x, y, type, decoration });</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>newMap.push(row);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setMap(newMap);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const initSims = ZODIACS.map((z, i) =&gt; ({</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>id: `sim_${i}`, ...z,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>x: MAP_WIDTH/2 + rand(-2,2), y: MAP_HEIGHT/2 + rand(-2,2),</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>hp: 100, hunger: 100, energy: 100,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>state: 'IDLE', targetX: null, targetY: null,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>inventory: { wood:0, food:0 },</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>thought: '這裡好安靜...',</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>animFrame: rand(0,10), dir: 1</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setSims(initSims);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const initCreatures = [];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>for(let i=0; i&lt;8; i++) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const type = Math.random() &lt; 0.4 ? 'RABBIT' : (Math.random() &lt; 0.7 ? 'DEER' : (Math.random() &lt; 0.9 ? 'WOLF' : 'BEAR'));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>initCreatures.push({</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>id: `c_${i}`, type,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>x: rand(1, MAP_WIDTH-2), y: rand(1, MAP_HEIGHT-2),</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>hp: type==='BEAR'?200 : type==='WOLF'?80 : 30,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>targetX: null, targetY: null,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>state: 'WANDER', animFrame: rand(0,10), dir: 1</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setCreatures(initCreatures);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>}, []);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const update = useCallback(() =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const isNight = time &gt; DAY_TICKS * 0.6;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (tickRef.current % 10 === 0) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>setWeatherTimer(prev =&gt; prev - 1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (weatherTimer &lt;= 0) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const r = Math.random();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>let nextW = WEATHER.SUNNY;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (r &lt; 0.3) nextW = WEATHER.RAIN;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (r &lt; 0.4) nextW = WEATHER.SNOW;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>setWeather(nextW);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>setWeatherTimer(rand(500, 1500));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>setEvents(e =&gt; [`天氣: ${nextW.name}`, ...e.slice(0,4)]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (weather.id !== 'SUNNY') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const pCount = weather.id === 'RAIN' ? 10 : 5;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>setParticles(prev =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const newP = [];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>for(let i=0; i&lt;pCount; i++) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>newP.push({ x: rand(0, MAP_WIDTH * TILE_SIZE), y: -10, speed: weather.id === 'RAIN' ? rand(8,12) : rand(1,3), life: 100 });</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>return [...prev.map(p =&gt; ({ ...p, y: p.y + p.speed, x: weather.id === 'SNOW' ? p.x + Math.sin(p.y/10) : p.x, life: p.life-1 })).filter(p =&gt; p.y &lt; MAP_HEIGHT * TILE_SIZE &amp;&amp; p.life &gt; 0), ...newP];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>setParticles([]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setFarms(prev =&gt; prev.map(f =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const growRate = weather.id === 'RAIN' ? 2 : (weather.id === 'SNOW' ? 0 : 1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>return f.stage &lt; 100 ? { ...f, stage: Math.min(100, f.stage + 0.1 * growRate) } : f;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}));</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setCreatures(prev =&gt; prev.map(c =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.hp &lt;= 0) return null;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>let nextC = { ...c };</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (tickRef.current % 20 === 0 &amp;&amp; Math.random() &lt; 0.1) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>nextC.targetX = Math.max(0, Math.min(MAP_WIDTH-1, c.x + rand(-3, 3)));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>nextC.targetY = Math.max(0, Math.min(MAP_HEIGHT-1, c.y + rand(-3, 3)));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (nextC.targetX !== null) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const speed = c.type === 'RABBIT' ? 0.08 : c.type === 'DEER' ? 0.06 : 0.04;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const dx = nextC.targetX - nextC.x;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const dy = nextC.targetY - nextC.y;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (Math.abs(dx) &lt; 0.1 &amp;&amp; Math.abs(dy) &lt; 0.1) nextC.targetX = null;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else { nextC.x += Math.sign(dx) * speed; nextC.y += Math.sign(dy) * speed; nextC.dir = Math.sign(dx); nextC.animFrame++; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>return nextC;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}).filter(Boolean));</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setSims(prev =&gt; prev.map(s =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (s.hp &lt;= 0) return { ...s, state: 'DEAD' };</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>let nextS = { ...s };</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (tickRef.current % 10 === 0) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>let hLoss = 0.2; let eLoss = 0.1;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (weather.id === 'SNOW' &amp;&amp; !isInBase(nextS)) eLoss *= 2;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>nextS.hunger -= hLoss; nextS.energy -= eLoss;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (nextS.hunger &lt;= 0) nextS.hp -= 0.5;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (Math.random() &lt; 0.02) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>if (nextS.hunger &lt; 30) nextS.thought = '好餓...';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>else if (weather.id === 'RAIN') nextS.thought = '下雨了...';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>else if (weather.id === 'SNOW') nextS.thought = '好冷...';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const distToTarget = nextS.targetX ? Math.abs(nextS.x - nextS.targetX) + Math.abs(nextS.y - nextS.targetY) : 0;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (nextS.state === 'IDLE') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (nextS.hunger &lt; 50) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>if (tribe.food &gt; 0 &amp;&amp; isInBase(nextS)) { setTribe(t =&gt; ({...t, food: Math.max(0, t.food-10)})); nextS.hunger = 100; nextS.thought = '好吃！'; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>else {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>const harvestable = farms.find(f =&gt; f.stage &gt;= 100);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>if (harvestable &amp;&amp; tribe.tech &gt;= 1) { nextS.state = 'FARMING'; nextS.targetX = harvestable.x; nextS.targetY = harvestable.y; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>else { nextS.state = 'GATHER'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>} else if (nextS.energy &lt; 20 || (isNight &amp;&amp; !isInBase(nextS))) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>if (isInBase(nextS)) { nextS.state = 'SLEEP'; nextS.thought = '休息...'; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>} else {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>if (tribe.tech &gt;= 1 &amp;&amp; Math.random() &lt; 0.05 &amp;&amp; farms.length &lt; 15) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>const potentialFarm = map.flat().find(t =&gt; t.type === 'BASE' &amp;&amp; !farms.some(f =&gt; f.x===t.x &amp;&amp; f.y===t.y));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>if (potentialFarm) { nextS.state = 'PLANTING'; nextS.targetX = potentialFarm.x; nextS.targetY = potentialFarm.y; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>if (nextS.state === 'IDLE' &amp;&amp; Math.random() &lt; 0.05) { nextS.targetX = nextS.x + rand(-2, 2); nextS.targetY = nextS.y + rand(-2, 2); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>} else if (nextS.state === 'GATHER') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (distToTarget &lt; 0.5) { nextS.inventory.food += 10; nextS.state = 'IDLE'; nextS.thought = '採集到了！'; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>} else if (nextS.state === 'PLANTING') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (distToTarget &lt; 0.5) { setFarms(f =&gt; [...f, { x: Math.round(nextS.x), y: Math.round(nextS.y), stage: 0 }]); nextS.state = 'IDLE'; setEvents(e =&gt; [`${nextS.sign} 開墾農田`, ...e.slice(0,4)]); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>} else if (nextS.state === 'FARMING') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const cropIdx = farms.findIndex(f =&gt; Math.abs(f.x - nextS.x) &lt; 1 &amp;&amp; Math.abs(f.y - nextS.y) &lt; 1 &amp;&amp; f.stage &gt;= 100);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (cropIdx &gt;= 0) { setFarms(pF =&gt; { const nF = [...pF]; nF[cropIdx].stage = 0; return nF; }); setTribe(t =&gt; ({...t, food: t.food + 20})); nextS.state = 'IDLE'; nextS.thought = '豐收！'; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (distToTarget &lt; 0.5) nextS.state = 'IDLE';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>} else if (nextS.state === 'SLEEP') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>nextS.energy += 0.5; if (nextS.energy &gt;= 100) { nextS.state = 'IDLE'; nextS.thought = '睡飽了。'; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (nextS.targetX !== null) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const dx = nextS.targetX - nextS.x; const dy = nextS.targetY - nextS.y;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (Math.abs(dx) &lt; 0.1 &amp;&amp; Math.abs(dy) &lt; 0.1) nextS.targetX = null;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>const speed = (nextS.state==='SLEEP'?0:0.05) * (weather.id==='SNOW'?0.6:1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>nextS.x += Math.sign(dx) * speed; nextS.y += Math.sign(dy) * speed;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>nextS.animFrame++; nextS.dir = Math.sign(dx);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>return nextS;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>}, [time, weather, farms, tribe]);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const isInBase = (sim) =&gt; Math.sqrt((sim.x - MAP_WIDTH/2)**2 + (sim.y - MAP_HEIGHT/2)**2) &lt; 5;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>// 繪圖函數</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const draw = useCallback(() =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const canvas = canvasRef.current;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (!canvas || !sprites) return;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const ctx = canvas.getContext('2d');</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>ctx.imageSmoothingEnabled = false;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>ctx.save(); ctx.scale(SCALE, SCALE);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>map.forEach(row =&gt; row.forEach(tile =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const px = tile.x * TILE_SIZE; const py = tile.y * TILE_SIZE;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctx.drawImage(sprites.grass, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (tile.type === 'WATER') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>ctx.fillStyle = PALETTE.WATER; ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (Math.sin(time/20 + tile.x) &gt; 0.5) { ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.fillRect(px + 4, py + 8, 8, 2); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>} else if (tile.type === 'BASE') ctx.drawImage(sprites.dirt, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}));</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>farms.forEach(f =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const px = f.x * TILE_SIZE; const py = f.y * TILE_SIZE;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctx.drawImage(sprites.dirt, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (f.stage &gt; 80) ctx.drawImage(sprites.wheat_2, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>else if (f.stage &gt; 20) ctx.drawImage(sprites.wheat_1, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>else { ctx.fillStyle = '#8d6e63'; ctx.fillRect(px+10, py+10, 2, 2); ctx.fillRect(px+20, py+16, 2, 2); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const objects = [];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>map.forEach(row =&gt; row.forEach(tile =&gt; { if (tile.decoration) objects.push({ y: tile.y, type: 'DECO', subtype: tile.decoration, x: tile.x }); }));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>sims.forEach(sim =&gt; objects.push({ y: sim.y, type: 'SIM', data: sim }));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>creatures.forEach(c =&gt; objects.push({ y: c.y, type: 'CREATURE', data: c }));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>objects.sort((a, b) =&gt; a.y - b.y);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>objects.forEach(obj =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const px = obj.x * TILE_SIZE; const py = obj.y * TILE_SIZE;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (obj.type === 'DECO') {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (obj.subtype === 'TREE_OAK') ctx.drawImage(sprites.tree_oak, px, py - TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (obj.subtype === 'TREE_PINE') ctx.drawImage(sprites.tree_pine, px, py - TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (obj.subtype === 'ROCK') ctx.drawImage(sprites.rock, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (obj.subtype === 'BUSH') ctx.drawImage(sprites.bush, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (obj.subtype === 'FLOWER') ctx.drawImage(sprites.flower, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (obj.subtype === 'MUSHROOM') ctx.drawImage(sprites.mushroom, px, py);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>} else if (obj.type === 'SIM') drawSim(ctx, obj.data);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>else if (obj.type === 'CREATURE') drawCreature(ctx, obj.data);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>// Selected Ring</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (selectedId) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const target = [...sims, ...creatures].find(i =&gt; i.id === selectedId);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (target) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>const px = target.x * TILE_SIZE; const py = target.y * TILE_SIZE;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 2]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>ctx.strokeRect(px, py, TILE_SIZE, TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>ctx.setLineDash([]);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (tribe.tech &gt;= 1) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const bx = (MAP_WIDTH/2) * TILE_SIZE; const by = (MAP_HEIGHT/2) * TILE_SIZE;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const fireSize = weather.id === 'RAIN' ? 2 : (Math.sin(time/5)*2 + 6);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (weather.id !== 'RAIN' || Math.random() &gt; 0.5) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>ctx.fillStyle = '#ff5722'; ctx.beginPath(); ctx.arc(bx + 16, by + 16, fireSize, 0, Math.PI*2); ctx.fill();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>ctx.fillStyle = '#ffca28'; ctx.beginPath(); ctx.arc(bx + 16, by + 16, fireSize/2, 0, Math.PI*2); ctx.fill();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>particles.forEach(p =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctx.fillStyle = weather.id === 'RAIN' ? '#4fc3f7' : '#ffffff';</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const w = weather.id === 'RAIN' ? 1 : 2; const h = weather.id === 'RAIN' ? 4 : 2;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>ctx.fillRect(p.x / SCALE, p.y / SCALE, w, h);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (time &gt; DAY_TICKS * 0.6) { ctx.fillStyle = 'rgba(10, 10, 30, 0.6)'; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>ctx.fillStyle = weather.color; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>ctx.restore();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>}, [map, sprites, sims, creatures, weather, particles, farms, time, selectedId, tribe]);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const drawSim = (ctx, s) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (s.state === 'DEAD') { ctx.fillStyle = '#555'; ctx.fillRect(s.x*TILE_SIZE+14, s.y*TILE_SIZE+10, 4, 12); ctx.fillRect(s.x*TILE_SIZE+10, s.y*TILE_SIZE+14, 12, 4); return; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const bounce = (s.state !== 'IDLE' &amp;&amp; s.state !== 'SLEEP') ? Math.sin(s.animFrame) * 2 : 0;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const matrix = s.gender === 'M' ? SPRITE_MATRICES.CHAR_M : SPRITE_MATRICES.CHAR_F;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const colorMap = { 'H': s.hair, 'S': PALETTE.SKIN, 's': PALETTE.SKIN_SHADOW, 'C': s.color, 'K': PALETTE.OUTLINE };</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>renderMatrix(ctx, matrix, colorMap, px + 4, py + 4 + bounce);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (s.state === 'SLEEP') { ctx.font = '10px monospace'; ctx.fillStyle = '#fff'; ctx.fillText('zZ', px+20, py); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const drawCreature = (ctx, c) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const px = Math.floor(c.x * TILE_SIZE); const py = Math.floor(c.y * TILE_SIZE);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const bounce = Math.sin(c.animFrame) * 2;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>let matrix, colorMap, ox=0, oy=0;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (c.type === 'RABBIT') { matrix = SPRITE_MATRICES.RABBIT; colorMap = {'W': PALETTE.FUR_RABBIT, 'K': PALETTE.OUTLINE}; ox=4; oy=10; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>else if (c.type === 'WOLF') { matrix = SPRITE_MATRICES.WOLF; colorMap = {'G': PALETTE.FUR_WOLF, 'K': PALETTE.OUTLINE}; ox=2; oy=6; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>else if (c.type === 'BEAR') { matrix = SPRITE_MATRICES.BEAR; colorMap = {'B': PALETTE.FUR_BEAR, 'K': PALETTE.OUTLINE}; ox=-6; oy=-6; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>else if (c.type === 'DEER') { matrix = SPRITE_MATRICES.DEER; colorMap = {'B': PALETTE.FUR_DEER, 'K': PALETTE.OUTLINE}; ox=2; oy=-2; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>ctx.save();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (c.dir &lt; 0) { ctx.translate(px + TILE_SIZE, 0); ctx.scale(-1, 1); ctx.translate(-px, 0); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>renderMatrix(ctx, matrix, colorMap, px + ox, py + oy + bounce);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>ctx.restore();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const loop = () =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>tickRef.current++;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (tickRef.current % 5 === 0) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>setTime(t =&gt; (t + 1) % DAY_TICKS);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (time === 0) setDay(d =&gt; d+1);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>update();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>draw();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>requestRef.current = requestAnimationFrame(loop);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>};</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>requestRef.current = requestAnimationFrame(loop);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>return () =&gt; cancelAnimationFrame(requestRef.current);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>}, [draw, update]);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>// 修正點擊邏輯，確保總是能點到</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const handleCanvasClick = useCallback((e) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const rect = canvasRef.current.getBoundingClientRect();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const x = (e.clientX - rect.left) / SCALE / TILE_SIZE;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const y = (e.clientY - rect.top) / SCALE / TILE_SIZE;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>// 尋找最接近且在範圍內的目標 (優先度：人 &gt; 動物)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>const allObjs = [...sims, ...creatures];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>let closest = null;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>let minDist = 2.5; // 點擊判定範圍加大</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>allObjs.forEach(obj =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>// 使用中心點計算距離 (x+0.5, y+0.5)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>const dist = Math.sqrt((obj.x + 0.5 - x)**2 + (obj.y + 0.5 - y)**2);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>if (dist &lt; minDist) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>closest = obj;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>minDist = dist;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setSelectedId(closest ? closest.id : null);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>}, [sims, creatures]);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const castSpell = (type) =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (mana &lt; 20) return;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (['FOOD', 'HEAL', 'BUFF'].includes(type) &amp;&amp; selectedId) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>setSims(prev =&gt; prev.map(s =&gt; {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (s.id !== selectedId) return s;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>if (type === 'FOOD') { setMana(m =&gt; m - 30); setEvents(e =&gt; [`賜予 ${s.sign} 食物`, ...e]); return { ...s, hunger: 100 }; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (type === 'HEAL') { setMana(m =&gt; m - 30); setEvents(e =&gt; [`${s.sign} 傷口癒合`, ...e]); return { ...s, hp: 100 }; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>else if (type === 'BUFF') { setMana(m =&gt; m - 30); setEvents(e =&gt; [`${s.sign} 獲得神力`, ...e]); return { ...s, energy: 100, thought: '神與我同在！' }; }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>return s;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>}));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>return;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>setMana(m =&gt; m - 20);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>if (type === 'SUN') { setWeather(WEATHER.SUNNY); setEvents(e =&gt; ['神蹟：祈晴', ...e]); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>else if (type === 'RAIN') { setWeather(WEATHER.RAIN); setEvents(e =&gt; ['神蹟：祈雨', ...e]); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>else if (type === 'TECH') { setTribe(t =&gt; ({...t, tech: t.tech + 1})); setEvents(e =&gt; ['神蹟：智慧啟蒙', ...e]); }</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>const selectedObj = [...sims, ...creatures].find(s =&gt; s.id === selectedId);</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>return (</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="flex flex-col h-screen bg-[#1a1c2c] text-[#c2c3c7]" style={{ fontFamily: PIXEL_FONT }}&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="bg-[#292b3c] p-3 border-b-4 border-[#121215] flex justify-between items-center shadow-lg shrink-0 z-20 relative"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex gap-4 items-center"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="text-[#ffcd75] font-bold flex items-center gap-2"&gt;&lt;Sparkles size={16}/&gt; {mana} Mana&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="flex items-center gap-2 bg-[#1a1c2c] px-3 py-1 rounded border border-[#5d4037]"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>{weather.id === 'SUNNY' ? &lt;Sun size={16} className="text-yellow-400"/&gt; : weather.id === 'RAIN' ? &lt;CloudRain size={16} className="text-blue-400"/&gt; : &lt;Snowflake size={16} className="text-white"/&gt;}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;span className="text-sm"&gt;{weather.name}&lt;/span&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="text-xs text-gray-400"&gt;Day {day} ({time &lt; DAY_TICKS/2 ? 'AM' : 'PM'})&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex gap-2 text-xs font-bold text-[#8b9bb4]"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;🍎 {Math.floor(tribe.food)}&lt;/span&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;🪵 {tribe.wood}&lt;/span&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span&gt;🔨 Tech Lv.{tribe.tech}&lt;/span&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="flex-1 flex flex-row overflow-hidden relative"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="relative flex-1 bg-black overflow-auto flex items-center justify-center p-4"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;canvas</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>ref={canvasRef} width={MAP_WIDTH * TILE_SIZE * SCALE} height={MAP_HEIGHT * TILE_SIZE * SCALE}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>onClick={handleCanvasClick} className="border-4 border-[#3e2723] shadow-2xl cursor-crosshair"</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>style={{ imageRendering: 'pixelated' }}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>/&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="absolute top-6 left-6 flex flex-col gap-1 pointer-events-none opacity-80"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>{events.slice(0, 5).map((ev, i) =&gt; (</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div key={i} className="bg-black/50 text-[#fff] px-2 py-1 text-xs rounded border-l-2 border-[#ffcd75]"&gt;{ev}&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>))}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="w-64 bg-[#292b3c] border-l-4 border-[#121215] p-4 flex flex-col gap-4 shrink-0 z-10 relative h-full overflow-y-auto"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="bg-[#1a1c2c] p-3 rounded border border-[#3e2723]"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;h3 className="text-[#ffcd75] text-sm mb-3 font-bold border-b border-[#3e2723] pb-1"&gt;神蹟 (Miracles)&lt;/h3&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="grid grid-cols-2 gap-2"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={() =&gt; castSpell('SUN')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1 transition-colors"&gt;&lt;Sun size={18} className="text-yellow-400"/&gt;&lt;span className="text-[10px]"&gt;祈晴&lt;/span&gt;&lt;/button&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={() =&gt; castSpell('RAIN')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1 transition-colors"&gt;&lt;CloudRain size={18} className="text-blue-400"/&gt;&lt;span className="text-[10px]"&gt;祈雨&lt;/span&gt;&lt;/button&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={() =&gt; castSpell('TECH')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1 transition-colors col-span-2"&gt;&lt;Brain size={18} className="text-purple-400"/&gt;&lt;span className="text-[10px]"&gt;賜予智慧&lt;/span&gt;&lt;/button&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>onClick={handleTribeSaga}<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>disabled={isWritingSaga || mana &lt; 50}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>className={`bg-indigo-900 hover:bg-indigo-800 p-2 rounded flex flex-col items-center gap-1 transition-colors col-span-2 border border-indigo-500 ${isWritingSaga ? 'opacity-50 cursor-not-allowed' : ''}`}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;ScrollText size={18} className={isWritingSaga ? "animate-pulse text-indigo-300" : "text-indigo-300"}/&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;span className="text-[10px] text-indigo-200"&gt;✨ 部落史詩 (50 Mana)&lt;/span&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/button&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 bg-[#1a1c2c] p-3 rounded border border-[#3e2723] relative flex flex-col min-h-[300px]"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="flex justify-between items-center border-b border-[#3e2723] mb-3 pb-1"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;h3 className="text-[#8b9bb4] text-sm font-bold"&gt;觀察 (Inspector)&lt;/h3&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>{selectedObj &amp;&amp; &lt;button onClick={() =&gt; setSelectedId(null)} className="text-gray-500 hover:text-white"&gt;&lt;X size={14}/&gt;&lt;/button&gt;}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>{selectedObj ? (</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="flex flex-col gap-2 flex-1 animate-fade-in"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>{selectedObj.sign ? (<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="flex items-center gap-3"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;div className="w-10 h-10 border border-gray-600 bg-black relative overflow-hidden flex-shrink-0"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;div className="absolute top-2 left-2 w-6 h-6" style={{backgroundColor: selectedObj?.hair, borderRadius: '50% 50% 0 0'}}&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;div className="absolute top-4 left-1 w-8 h-8" style={{backgroundColor: selectedObj?.color, borderRadius: '50% 50% 0 0'}}&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;div className="font-bold text-[#ffccaa]"&gt;{selectedObj?.sign}座 &lt;span className="text-xs text-gray-500"&gt;({selectedObj?.gender})&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;div className="text-[10px] text-gray-500"&gt;{selectedObj?.trait} • {selectedObj?.state}&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="space-y-1 mt-2"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;div className="flex justify-between text-xs"&gt;&lt;span&gt;HP&lt;/span&gt;&lt;span&gt;{Math.floor(selectedObj?.hp || 0)}&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;div className="h-1 bg-gray-700"&gt;&lt;div className="h-full bg-red-500" style={{width: `${selectedObj?.hp || 0}%`}}&gt;&lt;/div&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;div className="flex justify-between text-xs"&gt;&lt;span&gt;飽食&lt;/span&gt;&lt;span&gt;{Math.floor(selectedObj?.hunger || 0)}&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;div className="h-1 bg-gray-700"&gt;&lt;div className="h-full bg-orange-500" style={{width: `${selectedObj?.hunger || 0}%`}}&gt;&lt;/div&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                                                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="mt-2 bg-[#111] p-2 text-xs text-[#a5d6a7] italic border border-gray-800 flex flex-col gap-2"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;span&gt;"{selectedObj?.thought}"&lt;/span&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>onClick={() =&gt; handleSoulSearch(selectedObj)}<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>disabled={isSoulSearching || mana &lt; 10}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>className="self-end flex items-center gap-1 text-[10px] bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded text-purple-300 border border-purple-900 transition-colors"</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;MessageCircle size={10} className={isSoulSearching ? "animate-spin" : ""}/&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                        </span>✨ 傾聽心聲 (10)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;/button&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="mt-auto grid grid-cols-3 gap-2 pt-4 border-t border-[#3e2723]"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;button onClick={() =&gt; castSpell('FOOD')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1"&gt;&lt;Utensils size={16} className="text-orange-400"/&gt;&lt;span className="text-[10px]"&gt;賜食&lt;/span&gt;&lt;/button&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;button onClick={() =&gt; castSpell('HEAL')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1"&gt;&lt;Heart size={16} className="text-red-400"/&gt;&lt;span className="text-[10px]"&gt;治癒&lt;/span&gt;&lt;/button&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;button onClick={() =&gt; castSpell('BUFF')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1"&gt;&lt;Shield size={16} className="text-blue-400"/&gt;&lt;span className="text-[10px]"&gt;賜福&lt;/span&gt;&lt;/button&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>) : (</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="font-bold text-[#ffccaa] text-lg"&gt;{selectedObj?.type}&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="text-xs text-gray-500"&gt;野生動物&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="flex justify-between text-xs mt-2"&gt;&lt;span&gt;HP&lt;/span&gt;&lt;span&gt;{Math.floor(selectedObj?.hp || 0)}&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="h-1 bg-gray-700"&gt;&lt;div className="h-full bg-red-500" style={{width: `${Math.min(100, (selectedObj?.hp || 0)/2)}%`}}&gt;&lt;/div&gt;&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="mt-4 text-xs text-gray-500"&gt;野生動物無法直接溝通，但會受到環境與天氣的影響。&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>)}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>) : (</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="h-full flex flex-col items-center justify-center text-gray-600 text-xs gap-2 opacity-50"&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;HelpCircle size={24} /&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;div className="text-center"&gt;點擊畫面中的角色&lt;br/&gt;進行觀察與互動&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                                </span>)}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p5"><span class="s10"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>const root = createRoot(document.getElementById('root'));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>root.render(&lt;App /&gt;);</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">script</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">body</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">html</span><span class="s3">&gt;</span></p>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback } = React;
+        const { createRoot } = ReactDOM;
+
+        // --- Icon Components ---
+        const Icon = ({ char, className, size }) => (
+            <span className={className} style={{ fontSize: size || 16, lineHeight: 1, display: 'inline-block' }}>{char}</span>
+        );
+
+        const Icons = {
+            Sparkles: (p) => <Icon char="✨" {...p}/>,
+            Heart: (p) => <Icon char="❤️" {...p}/>,
+            Utensils: (p) => <Icon char="🍖" {...p}/>,
+            Shield: (p) => <Icon char="🛡️" {...p}/>,
+            CloudRain: (p) => <Icon char="🌧️" {...p}/>,
+            Snowflake: (p) => <Icon char="❄️" {...p}/>,
+            Sun: (p) => <Icon char="☀️" {...p}/>,
+            Cloud: (p) => <Icon char="☁️" {...p}/>,
+            Flame: (p) => <Icon char="🔥" {...p}/>,
+            Mountain: (p) => <Icon char="⛰️" {...p}/>,
+            Skull: (p) => <Icon char="💀" {...p}/>,
+            RefreshCw: (p) => <Icon char="🔄" {...p}/>,
+            X: (p) => <Icon char="❌" {...p}/>,
+            Brain: (p) => <Icon char="🧠" {...p}/>,
+            ScrollText: (p) => <Icon char="📜" {...p}/>,
+            MessageCircle: (p) => <Icon char="💬" {...p}/>,
+            HelpCircle: (p) => <Icon char="❓" {...p}/>,
+            Users: (p) => <Icon char="👥" {...p}/>
+        };
+
+        const apiKey = ""; 
+
+        // --- Game Constants & Logic ---
+        const PIXEL_FONT = "'Courier New', Courier, monospace";
+        const TILE_SIZE = 32;
+        const SCALE = 2.0; 
+
+        const PALETTE = {
+            OUTLINE: '#1a1c2c', SKIN: '#ffccaa', SKIN_SHADOW: '#d48e7e',
+            GRASS_BG: '#388e3c', GRASS_L: '#4caf50', GRASS_D: '#1b5e20',
+            DIRT: '#5d4037', WATER: '#4a69bd',
+            WHEAT_1: '#a5d6a7', WHEAT_2: '#e6ee9c', WHEAT_3: '#fbc02d',
+            STONE_L: '#b0bec5', STONE_M: '#78909c', STONE_D: '#546e7a',
+            WOOD_L: '#8d6e63', WOOD_D: '#3e2723',
+            LEAF_L: '#66bb6a', LEAF_D: '#2e7d32', LEAF_PINE: '#1b5e20',
+            FLOWER_R: '#e57373', FLOWER_Y: '#fff176', MUSHROOM: '#f44336',
+            FUR_WOLF: '#90a4ae', FUR_BEAR: '#4e342e', FUR_DEER: '#a1887f', FUR_RABBIT: '#fafafa',
+            WHITE: '#ffffff', TRANSPARENT: null,
+            GRAVE_STONE: '#78909c', GRAVE_DIRT: '#3e2723'
+        };
+
+        const callGemini = async (prompt) => {
+            if (!apiKey) { console.warn("API Key 未設定"); return null; }
+            try {
+                const response = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+            } catch (error) { console.error("Gemini API Error:", error); return null; }
+        };
+
+        const SPRITE_MATRICES = {
+            CHAR_M: ["........................",".......HHHHHH...........","......HSSSSSSH..........",".....HSSKSSKSSH.........",".....HSSSSSSSSH.........","......SSSSSSSS..........","....CCCSCCCCSCCC........","....CCCSCCCCSCCC........","....CCCCCCCCCCCC........","....KKKCCCCCCKKK........","....K.KCCCCCCK.K........","......KSSSSSSK..........","......KSSSSSSK..........","......KKK..KKK.........."],
+            CHAR_F: ["........................","......HHHHHHHH..........",".....HSSSSSSSSH.........",".....HSSKSSKSSH.........",".....HSSSSSSSSH.........",".....SSSSSSSSSS.........","....CCCSCCCCSCCC........","...CCCCSCCCCSCCCC.......","...CCCCCCCCCCCCCC.......","...CCCCCCCCCCCCCC.......","....CCCCCCCCCCCC........",".....KSSSSSSssk.........",".....KSSSSSSssk.........",".....KKK....KKK........."],
+            TREE_OAK: [".......LLLLLL.......",".....LLLLLLLLLL.....","....LLLLLLLLLLLL....","...LLLLLLLLLLLLLL...","...LLLLLLLLLLLLLL...","....LLLLLLLLLLLL....",".....LLLLLLLLLL.....",".......WWWWWW.......",".......WWWWWW.......",".......WWWWWW.......","......WWWWWWWW......"],
+            TREE_PINE: ["..........L.........",".........LLL........","........LLLLL.......",".......LLLLLLL......",".........LLL........","........LLLLL.......",".......LLLLLLL......","......LLLLLLLLL.....",".....LLLLLLLLLLL....","........WWWWW.......",".......WWWWWWW......"],
+            BUSH: ["....................","......LLLLLLL.......",".....LLLLLLLLL......","....LLLLLLLLLLL.....","....LLLLLLLLLLL.....",".....LLLLLLLLL......"],
+            FLOWER: [".........R..........","........RYR.........",".........R..........",".........G..........",".........G.........."],
+            MUSHROOM: ["........RRR.........",".......RRRRR........",".......RWWWR........","........WWW.........","........WWW........."],
+            ROCK: [".......KKKKKK.......",".....KKMMMMMMKK.....","....KMMLLLLLLMMK....","...KMLLLLLLLLLLMK...","...KMMMMMMMMMMMMK...","...KDDDDDDDDDDDDK...","....KKDDDDDDDDKK....","......KKKKKKKK......"],
+            RABBIT: [".......KK...........","......KWWK..........",".....KWWWWK.........",".....KWWWWK.........","......KKKK.........."],
+            WOLF: ["....................",".......K............","......KGK...........",".....KGGGK..........","....KGGGGGK...K.....","...KGGGGGGGGKKGK....","...KGGGGGGGGGGGK....","....KGGGGGGGGGK.....","....K.K.....K.K....."],
+            BEAR: [".........KK...KK....","......KKKBBKKKBBK...",".....KBBBBBBBBBBBK..","....KBBBBBBBBBBBBBK.","...KBBBBBBBBBBBBBBBK","...KBBBBBBBBBBBBBBBK","...KBBBBBBBBBBBBBBBK","....KB.B.B.....B.B..","....KK.K.K.....K.K.."],
+            DEER: ["...........K...K....","............K.K.....","..........KKKBKK....",".........KBBBBBBK...","........KBBBBBBBBK..",".......KBBBBBBBBBK..",".......K.B.....B....",".......K.K.....K...."],
+            WHEAT_GROW: ["................","....1......1....","...111....111...","....1......1....","................"],
+            WHEAT_READY: ["....3......3....","...333....333...","...333....333...","....3......3....","....3......3...."],
+            GRAVE: [".......................",".........KKK...........","........KGGGKB.........",".......KGGGGGB.........",".......KGGGGGB.........","......KGGGGGGB.........","......KGGGGGGB.........",".....KGGGGGGGGB........",".....KGGGGGGGGB........","....KGGGGGGGGGGB.......","....KGGGGGGGGGGB.......","...KGGGGGGGGGGGGB......","..KDDDDDDDDDDDDDDK.....","......................."]
+        };
+
+        const MAP_WIDTH = 24;
+        const MAP_HEIGHT = 24;
+        const DAY_TICKS = 800; 
+
+        const WEATHER = {
+            SUNNY: { id: 'SUNNY', name: '晴天', color: 'rgba(255,255,0,0.1)' },
+            RAIN: { id: 'RAIN', name: '雨天', color: 'rgba(0,0,50,0.3)' },
+            SNOW: { id: 'SNOW', name: '降雪', color: 'rgba(200,240,255,0.2)' }
+        };
+
+        const ZODIACS = [
+            { sign: '牡羊', gender: 'M', color: '#c0392b', hair: '#2c3e50', trait: '好鬥' },
+            { sign: '金牛', gender: 'F', color: '#27ae60', hair: '#5d4037', trait: '固執' },
+            { sign: '雙子', gender: 'M', color: '#f39c12', hair: '#e67e22', trait: '善變' },
+            { sign: '巨蟹', gender: 'F', color: '#7f8c8d', hair: '#34495e', trait: '顧家' },
+            { sign: '獅子', gender: 'M', color: '#e67e22', hair: '#f1c40f', trait: '霸氣' },
+            { sign: '處女', gender: 'F', color: '#16a085', hair: '#2ecc71', trait: '謹慎' },
+            { sign: '天秤', gender: 'M', color: '#e84393', hair: '#fd79a8', trait: '猶豫' },
+            { sign: '天蠍', gender: 'F', color: '#8e44ad', hair: '#2c3e50', trait: '敏銳' },
+            { sign: '射手', gender: 'M', color: '#2980b9', hair: '#3498db', trait: '冒險' },
+            { sign: '摩羯', gender: 'F', color: '#576574', hair: '#1e272e', trait: '堅忍' },
+            { sign: '水瓶', gender: 'M', color: '#00d2d3', hair: '#00cec9', trait: '古怪' },
+            { sign: '雙魚', gender: 'F', color: '#a29bfe', hair: '#6c5ce7', trait: '浪漫' }
+        ];
+
+        const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const noise = (x, y) => Math.sin(x/3.5) + Math.cos(y/4.5);
+
+        const renderMatrix = (ctx, matrix, colors, offsetX = 0, offsetY = 0) => {
+            matrix.forEach((row, y) => {
+                for (let x = 0; x < row.length; x++) {
+                    const char = row[x];
+                    if (char === '.') continue;
+                    let fill = colors[char] || PALETTE.OUTLINE;
+                    if (char === 'K') fill = PALETTE.OUTLINE;
+                    ctx.fillStyle = fill;
+                    ctx.fillRect(offsetX + x, offsetY + y, 1, 1);
+                }
+            });
+        };
+
+        const createSprites = () => {
+            const cache = {};
+            const createCanvas = (w, h) => {
+                const c = document.createElement('canvas');
+                c.width = w; c.height = h;
+                return { c, ctx: c.getContext('2d') };
+            };
+
+            const { c: grassC, ctx: grassCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            grassCtx.fillStyle = PALETTE.GRASS_BG; grassCtx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
+            grassCtx.fillStyle = PALETTE.GRASS_L; for(let i=0; i<30; i++) grassCtx.fillRect(rand(0,31), rand(0,31), 1, 1);
+            grassCtx.fillStyle = PALETTE.GRASS_D; for(let i=0; i<20; i++) grassCtx.fillRect(rand(0,31), rand(0,31), 1, 1);
+            cache.grass = grassC;
+
+            const { c: dirtC, ctx: dirtCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            dirtCtx.fillStyle = PALETTE.DIRT; dirtCtx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
+            dirtCtx.fillStyle = PALETTE.WOOD_D; for(let i=0; i<40; i++) dirtCtx.fillRect(rand(0,31), rand(0,31), 1, 1);
+            cache.dirt = dirtC;
+
+            const { c: oakC, ctx: oakCtx } = createCanvas(TILE_SIZE, TILE_SIZE*2);
+            renderMatrix(oakCtx, SPRITE_MATRICES.TREE_OAK, {'L': PALETTE.LEAF_D, 'W': PALETTE.WOOD_D}, 6, 10);
+            oakCtx.fillStyle = PALETTE.LEAF_L; oakCtx.fillRect(10, 12, 2, 2); oakCtx.fillRect(16, 14, 2, 2);
+            cache.tree_oak = oakC;
+
+            const { c: pineC, ctx: pineCtx } = createCanvas(TILE_SIZE, TILE_SIZE*2);
+            renderMatrix(pineCtx, SPRITE_MATRICES.TREE_PINE, {'L': PALETTE.LEAF_PINE, 'W': PALETTE.WOOD_D}, 6, 8);
+            cache.tree_pine = pineC;
+
+            const { c: bushC, ctx: bushCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(bushCtx, SPRITE_MATRICES.BUSH, {'L': PALETTE.LEAF_L}, 4, 16);
+            cache.bush = bushC;
+
+            const { c: flowerC, ctx: flowerCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(flowerCtx, SPRITE_MATRICES.FLOWER, {'R': PALETTE.FLOWER_R, 'Y': PALETTE.FLOWER_Y, 'G': PALETTE.GRASS_L}, 10, 16);
+            cache.flower = flowerC;
+
+            const { c: mushC, ctx: mushCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(mushCtx, SPRITE_MATRICES.MUSHROOM, {'R': PALETTE.MUSHROOM, 'W': PALETTE.WHITE}, 10, 16);
+            cache.mushroom = mushC;
+
+            const { c: rockC, ctx: rockCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(rockCtx, SPRITE_MATRICES.ROCK, {'K': PALETTE.OUTLINE, 'M': PALETTE.STONE_M, 'L': PALETTE.STONE_L, 'D': PALETTE.STONE_D}, 8, 16);
+            cache.rock = rockC;
+
+            const { c: rabbitC, ctx: rabbitCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(rabbitCtx, SPRITE_MATRICES.RABBIT, {'W': PALETTE.FUR_RABBIT}, 8, 16);
+            cache.rabbit = rabbitC;
+
+            const { c: wolfC, ctx: wolfCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(wolfCtx, SPRITE_MATRICES.WOLF, {'G': PALETTE.FUR_WOLF}, 4, 12);
+            cache.wolf = wolfC;
+
+            const { c: bearC, ctx: bearCtx } = createCanvas(TILE_SIZE*1.5, TILE_SIZE*1.5);
+            renderMatrix(bearCtx, SPRITE_MATRICES.BEAR, {'B': PALETTE.FUR_BEAR}, 4, 10);
+            cache.bear = bearC;
+
+            const { c: deerC, ctx: deerCtx } = createCanvas(TILE_SIZE, TILE_SIZE*1.5);
+            renderMatrix(deerCtx, SPRITE_MATRICES.DEER, {'B': PALETTE.FUR_DEER}, 4, 10);
+            cache.deer = deerC;
+
+            const { c: w1C, ctx: w1Ctx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(w1Ctx, SPRITE_MATRICES.WHEAT_GROW, { '1': PALETTE.WHEAT_1 }, 8, 16);
+            cache.wheat_1 = w1C;
+            const { c: w2C, ctx: w2Ctx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(w2Ctx, SPRITE_MATRICES.WHEAT_READY, { '3': PALETTE.WHEAT_3 }, 8, 16);
+            cache.wheat_2 = w2C;
+
+            // Grave
+            const { c: graveC, ctx: graveCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
+            renderMatrix(graveCtx, SPRITE_MATRICES.GRAVE, { 'G': PALETTE.GRAVE_STONE, 'D': PALETTE.GRAVE_DIRT, 'B': '#546e7a', 'K': PALETTE.OUTLINE }, 4, 8);
+            cache.grave = graveC;
+
+            return cache;
+        };
+
+        const generateMapData = () => {
+            const newMap = [];
+            for(let y=0; y<MAP_HEIGHT; y++) {
+                const row = [];
+                for(let x=0; x<MAP_WIDTH; x++) {
+                    const n = noise(x + Math.random()*10, y + Math.random()*10);
+                    let type = 'GRASS';
+                    let decoration = null;
+                    if (Math.abs(n) > 1.2) type = 'MOUNTAIN';
+                    else if (n < -0.4) type = 'FOREST';
+                    else if (n > 0.8) type = 'WATER';
+                    const dist = Math.sqrt((x-MAP_WIDTH/2)**2 + (y-MAP_HEIGHT/2)**2);
+                    if (dist < 5) type = 'BASE';
+                    if (dist > 9 && n > 0.5) type = 'WATER';
+                    if (type === 'FOREST') {
+                        if (Math.random() > 0.6) decoration = 'TREE_OAK';
+                        else decoration = 'TREE_PINE';
+                        if (Math.random() < 0.1) decoration = 'MUSHROOM';
+                    } else if (type === 'GRASS') {
+                        const rnd = Math.random();
+                        if (rnd < 0.05) decoration = 'ROCK';
+                        else if (rnd < 0.1) decoration = 'BUSH';
+                        else if (rnd < 0.15) decoration = 'FLOWER';
+                    }
+                    row.push({ x, y, type, decoration });
+                }
+                newMap.push(row);
+            }
+            return newMap;
+        };
+
+        const generateSimsData = () => ZODIACS.map((z, i) => ({
+            id: `sim_${Date.now()}_${i}`, ...z,
+            x: MAP_WIDTH/2 + rand(-2,2), y: MAP_HEIGHT/2 + rand(-2,2),
+            hp: 100, hunger: 100, energy: 100,
+            state: 'IDLE', targetX: null, targetY: null,
+            inventory: { wood:0, food:0 },
+            thought: '又是新的一天...',
+            animFrame: rand(0,10), dir: 1,
+            blessedTimer: 0 // 新增：賜福計時器
+        }));
+
+        const generateCreaturesData = () => {
+            const initCreatures = [];
+            for(let i=0; i<8; i++) {
+                const type = Math.random() < 0.4 ? 'RABBIT' : (Math.random() < 0.7 ? 'DEER' : (Math.random() < 0.9 ? 'WOLF' : 'BEAR'));
+                initCreatures.push({
+                    id: `c_${Date.now()}_${i}`, type,
+                    x: rand(1, MAP_WIDTH-2), y: rand(1, MAP_HEIGHT-2),
+                    hp: type==='BEAR'?200 : type==='WOLF'?80 : 30,
+                    targetX: null, targetY: null,
+                    state: 'WANDER', animFrame: rand(0,10), dir: 1
+                });
+            }
+            return initCreatures;
+        };
+
+        const App = () => {
+            const [sprites, setSprites] = useState(null);
+            const [map, setMap] = useState([]);
+            const [sims, setSims] = useState([]);
+            const [creatures, setCreatures] = useState([]);
+            const [farms, setFarms] = useState([]);
+            const [particles, setParticles] = useState([]);
+            const [tribe, setTribe] = useState({ wood: 0, stone: 0, food: 100, tech: 0 });
+            const [weather, setWeather] = useState(WEATHER.SUNNY);
+            const [weatherTimer, setWeatherTimer] = useState(1000);
+            const [time, setTime] = useState(0);
+            const [day, setDay] = useState(1);
+            const [era, setEra] = useState(1); 
+            const [mana, setMana] = useState(999999);
+            const [selectedId, setSelectedId] = useState(null);
+            const [events, setEvents] = useState(['族人仰望星空，故事開始了...']);
+            const [isGameOver, setIsGameOver] = useState(false); 
+            const [blessEffects, setBlessEffects] = useState([]); // 新增：賜福特效粒子
+            
+            const [isSoulSearching, setIsSoulSearching] = useState(false);
+            const [isWritingSaga, setIsWritingSaga] = useState(false);
+            const [aiThoughtId, setAiThoughtId] = useState(null); // 標記哪句話是 AI 生成的
+
+            const canvasRef = useRef(null);
+            const tickRef = useRef(0);
+            const requestRef = useRef();
+
+            useEffect(() => {
+                setSprites(createSprites());
+                setMap(generateMapData());
+                setSims(generateSimsData());
+                setCreatures(generateCreaturesData());
+            }, []);
+
+            useEffect(() => {
+                if (sims.length > 0 && sims.every(s => s.state === 'DEAD') && !isGameOver) {
+                    setIsGameOver(true);
+                }
+            }, [sims, isGameOver]);
+
+            const startNextEra = () => {
+                setEra(e => e + 1);
+                setDay(1);
+                setTime(0);
+                setMana(999999);
+                setMap(generateMapData());
+                setSims(generateSimsData());
+                setCreatures(generateCreaturesData());
+                setFarms([]);
+                setTribe(prev => ({ ...prev, food: 100, wood: 0, stone: 0 }));
+                setIsGameOver(false);
+                setEvents(e => [`=== 第 ${era + 1} 紀元開啟 ===`, `文明等級 Lv.${tribe.tech} 繼承完畢`, ...e]);
+            };
+
+            const handleSoulSearch = async (sim) => {
+                if (mana < 10) return;
+                setIsSoulSearching(true);
+                setMana(prev => prev - 10);
+                const prompt = `You are an AI storytelling engine. Roleplay as a primitive tribesman (Sign:${sim.sign}, Trait:${sim.trait}, State:${sim.state}). Generate a short inner monologue (max 15 words) in Traditional Chinese.`;
+                const thought = await callGemini(prompt);
+                if (thought) {
+                    setSims(prev => prev.map(s => s.id === sim.id ? { ...s, thought: thought.trim() } : s));
+                    setAiThoughtId(sim.id); // 標記這個角色的想法是 AI 產生的
+                    setEvents(e => [`${sim.sign} 的靈魂發出了低語...`, ...e]);
+                }
+                setIsSoulSearching(false);
+            };
+
+            const handleTribeSaga = async () => {
+                if (mana < 50) return;
+                setIsWritingSaga(true);
+                setMana(prev => prev - 50);
+                const prompt = `Write a cryptic, mythic, single-sentence log entry (max 20 words) for a primitive tribe in Traditional Chinese. Context: Era ${era}, Tech Lv ${tribe.tech}, Pop ${sims.length}, Food ${Math.floor(tribe.food)}, Weather ${weather.name}.`;
+                const saga = await callGemini(prompt);
+                if (saga) setEvents(e => [`📜 史詩: ${saga.trim()}`, ...e]);
+                setIsWritingSaga(false);
+            };
+
+            const update = useCallback(() => {
+                if (isGameOver) return;
+
+                const isNight = time > DAY_TICKS * 0.6;
+                if (tickRef.current % 10 === 0) {
+                    setWeatherTimer(prev => prev - 1);
+                    if (weatherTimer <= 0) {
+                        const r = Math.random();
+                        let nextW = WEATHER.SUNNY;
+                        if (r < 0.3) nextW = WEATHER.RAIN;
+                        else if (r < 0.4) nextW = WEATHER.SNOW;
+                        setWeather(nextW);
+                        setWeatherTimer(rand(500, 1500));
+                        setEvents(e => [`天氣: ${nextW.name}`, ...e.slice(0,4)]);
+                    }
+                }
+
+                // 賜福特效更新
+                setBlessEffects(prev => prev.map(p => ({...p, y: p.y - 1, life: p.life - 1})).filter(p => p.life > 0));
+
+                if (weather.id !== 'SUNNY') {
+                    const pCount = weather.id === 'RAIN' ? 10 : 5;
+                    setParticles(prev => {
+                        const newP = [];
+                        for(let i=0; i<pCount; i++) {
+                            newP.push({ x: rand(0, MAP_WIDTH * TILE_SIZE), y: -10, speed: weather.id === 'RAIN' ? rand(8,12) : rand(1,3), life: 100 });
+                        }
+                        return [...prev.map(p => ({ ...p, y: p.y + p.speed, x: weather.id === 'SNOW' ? p.x + Math.sin(p.y/10) : p.x, life: p.life-1 })).filter(p => p.y < MAP_HEIGHT * TILE_SIZE && p.life > 0), ...newP];
+                    });
+                } else {
+                    setParticles([]);
+                }
+
+                setFarms(prev => prev.map(f => {
+                    const growRate = weather.id === 'RAIN' ? 2 : (weather.id === 'SNOW' ? 0 : 1);
+                    return f.stage < 100 ? { ...f, stage: Math.min(100, f.stage + 0.1 * growRate) } : f;
+                }));
+
+                setCreatures(prev => prev.map(c => {
+                    if (c.hp <= 0) return null;
+                    let nextC = { ...c };
+                    if (tickRef.current % 20 === 0 && Math.random() < 0.1) {
+                        nextC.targetX = Math.max(0, Math.min(MAP_WIDTH-1, c.x + rand(-3, 3)));
+                        nextC.targetY = Math.max(0, Math.min(MAP_HEIGHT-1, c.y + rand(-3, 3)));
+                    }
+                    if (nextC.targetX !== null) {
+                        const speed = c.type === 'RABBIT' ? 0.08 : c.type === 'DEER' ? 0.06 : 0.04;
+                        const dx = nextC.targetX - nextC.x;
+                        const dy = nextC.targetY - nextC.y;
+                        if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) nextC.targetX = null;
+                        else { nextC.x += Math.sign(dx) * speed; nextC.y += Math.sign(dy) * speed; nextC.dir = Math.sign(dx); nextC.animFrame++; }
+                    }
+                    return nextC;
+                }).filter(Boolean));
+
+                setSims(prev => prev.map(s => {
+                    if (s.hp <= 0) return { ...s, state: 'DEAD' };
+                    let nextS = { ...s };
+                    
+                    if (nextS.blessedTimer > 0) {
+                        nextS.blessedTimer--; // 賜福倒數
+                        // 產生賜福粒子
+                        if (Math.random() < 0.2) {
+                            setBlessEffects(curr => [...curr, {
+                                x: nextS.x * TILE_SIZE + 16 + rand(-8, 8),
+                                y: nextS.y * TILE_SIZE,
+                                life: 30,
+                                color: '#ffd700'
+                            }]);
+                        }
+                    }
+
+                    if (tickRef.current % 10 === 0) {
+                        let hLoss = 0.2; let eLoss = 0.1;
+                        if (weather.id === 'SNOW' && !isInBase(nextS)) eLoss *= 2;
+                        // 賜福效果：減少消耗
+                        if (nextS.blessedTimer > 0) { hLoss *= 0.5; eLoss *= 0.5; }
+
+                        nextS.hunger -= hLoss; nextS.energy -= eLoss;
+                        if (nextS.hunger <= 0) nextS.hp -= 0.5;
+                        if (Math.random() < 0.02) {
+                            if (nextS.blessedTimer > 0) nextS.thought = '神力充滿全身！';
+                            else if (nextS.hunger < 30) nextS.thought = '好餓...';
+                            else if (weather.id === 'RAIN') nextS.thought = '下雨了...';
+                            else if (weather.id === 'SNOW') nextS.thought = '好冷...';
+                            else nextS.thought = '今天做什麼好呢...'; // reset thought
+                            if (nextS.id === aiThoughtId) setAiThoughtId(null); // Reset AI thought flag
+                        }
+                    }
+                    const distToTarget = nextS.targetX ? Math.abs(nextS.x - nextS.targetX) + Math.abs(nextS.y - nextS.targetY) : 0;
+                    if (nextS.state === 'IDLE') {
+                        if (nextS.hunger < 50) {
+                            if (tribe.food > 0 && isInBase(nextS)) { setTribe(t => ({...t, food: Math.max(0, t.food-10)})); nextS.hunger = 100; nextS.thought = '好吃！'; }
+                            else {
+                                const harvestable = farms.find(f => f.stage >= 100);
+                                if (harvestable && tribe.tech >= 1) { nextS.state = 'FARMING'; nextS.targetX = harvestable.x; nextS.targetY = harvestable.y; }
+                                else { nextS.state = 'GATHER'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2); }
+                            }
+                        } else if (nextS.energy < 20 || (isNight && !isInBase(nextS))) {
+                            nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;
+                            if (isInBase(nextS)) { nextS.state = 'SLEEP'; nextS.thought = '休息...'; }
+                        } else {
+                            if (tribe.tech >= 1 && Math.random() < 0.05 && farms.length < 15) {
+                                const potentialFarm = map.flat().find(t => t.type === 'BASE' && !farms.some(f => f.x===t.x && f.y===t.y));
+                                if (potentialFarm) { nextS.state = 'PLANTING'; nextS.targetX = potentialFarm.x; nextS.targetY = potentialFarm.y; }
+                            }
+                            if (nextS.state === 'IDLE' && Math.random() < 0.05) { nextS.targetX = nextS.x + rand(-2, 2); nextS.targetY = nextS.y + rand(-2, 2); }
+                        }
+                    } else if (nextS.state === 'GATHER') {
+                        if (distToTarget < 0.5) { nextS.inventory.food += 10; nextS.state = 'IDLE'; nextS.thought = '採集到了！'; }
+                    } else if (nextS.state === 'PLANTING') {
+                        if (distToTarget < 0.5) { setFarms(f => [...f, { x: Math.round(nextS.x), y: Math.round(nextS.y), stage: 0 }]); nextS.state = 'IDLE'; setEvents(e => [`${nextS.sign} 開墾農田`, ...e.slice(0,4)]); }
+                    } else if (nextS.state === 'FARMING') {
+                        const cropIdx = farms.findIndex(f => Math.abs(f.x - nextS.x) < 1 && Math.abs(f.y - nextS.y) < 1 && f.stage >= 100);
+                        if (cropIdx >= 0) { setFarms(pF => { const nF = [...pF]; nF[cropIdx].stage = 0; return nF; }); setTribe(t => ({...t, food: t.food + 20})); nextS.state = 'IDLE'; nextS.thought = '豐收！'; }
+                        else if (distToTarget < 0.5) nextS.state = 'IDLE';
+                    } else if (nextS.state === 'SLEEP') {
+                        nextS.energy += 0.5; if (nextS.energy >= 100) { nextS.state = 'IDLE'; nextS.thought = '睡飽了。'; }
+                    }
+                    if (nextS.targetX !== null) {
+                        const dx = nextS.targetX - nextS.x; const dy = nextS.targetY - nextS.y;
+                        if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) nextS.targetX = null;
+                        else {
+                            const speed = (nextS.state==='SLEEP'?0:0.05) * (weather.id==='SNOW'?0.6:1);
+                            nextS.x += Math.sign(dx) * speed; nextS.y += Math.sign(dy) * speed;
+                            nextS.animFrame++; nextS.dir = Math.sign(dx);
+                        }
+                    }
+                    return nextS;
+                }));
+            }, [time, weather, farms, tribe, isGameOver, aiThoughtId]);
+
+            const isInBase = (sim) => Math.sqrt((sim.x - MAP_WIDTH/2)**2 + (sim.y - MAP_HEIGHT/2)**2) < 5;
+
+            const draw = useCallback(() => {
+                const canvas = canvasRef.current;
+                if (!canvas || !sprites) return;
+                const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = false;
+
+                ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.save(); ctx.scale(SCALE, SCALE);
+
+                map.forEach(row => row.forEach(tile => {
+                    const px = tile.x * TILE_SIZE; const py = tile.y * TILE_SIZE;
+                    ctx.drawImage(sprites.grass, px, py);
+                    if (tile.type === 'WATER') {
+                        ctx.fillStyle = PALETTE.WATER; ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                        if (Math.sin(time/20 + tile.x) > 0.5) { ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.fillRect(px + 4, py + 8, 8, 2); }
+                    } else if (tile.type === 'BASE') ctx.drawImage(sprites.dirt, px, py);
+                }));
+
+                farms.forEach(f => {
+                    const px = f.x * TILE_SIZE; const py = f.y * TILE_SIZE;
+                    ctx.drawImage(sprites.dirt, px, py);
+                    if (f.stage > 80) ctx.drawImage(sprites.wheat_2, px, py);
+                    else if (f.stage > 20) ctx.drawImage(sprites.wheat_1, px, py);
+                    else { ctx.fillStyle = '#8d6e63'; ctx.fillRect(px+10, py+10, 2, 2); ctx.fillRect(px+20, py+16, 2, 2); }
+                });
+
+                const objects = [];
+                map.forEach(row => row.forEach(tile => { if (tile.decoration) objects.push({ y: tile.y, type: 'DECO', subtype: tile.decoration, x: tile.x }); }));
+                sims.forEach(sim => objects.push({ y: sim.y, type: 'SIM', data: sim }));
+                creatures.forEach(c => objects.push({ y: c.y, type: 'CREATURE', data: c }));
+                objects.sort((a, b) => a.y - b.y);
+
+                objects.forEach(obj => {
+                    const px = obj.x * TILE_SIZE; const py = obj.y * TILE_SIZE;
+                    if (obj.type === 'DECO') {
+                        if (obj.subtype === 'TREE_OAK') ctx.drawImage(sprites.tree_oak, px, py - TILE_SIZE);
+                        else if (obj.subtype === 'TREE_PINE') ctx.drawImage(sprites.tree_pine, px, py - TILE_SIZE);
+                        else if (obj.subtype === 'ROCK') ctx.drawImage(sprites.rock, px, py);
+                        else if (obj.subtype === 'BUSH') ctx.drawImage(sprites.bush, px, py);
+                        else if (obj.subtype === 'FLOWER') ctx.drawImage(sprites.flower, px, py);
+                        else if (obj.subtype === 'MUSHROOM') ctx.drawImage(sprites.mushroom, px, py);
+                    } else if (obj.type === 'SIM') drawSim(ctx, obj.data);
+                    else if (obj.type === 'CREATURE') drawCreature(ctx, obj.data);
+                });
+
+                if (selectedId) {
+                    const target = [...sims, ...creatures].find(i => i.id === selectedId);
+                    if (target) {
+                        const px = target.x * TILE_SIZE; const py = target.y * TILE_SIZE;
+                        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 2]);
+                        ctx.strokeRect(px, py, TILE_SIZE, TILE_SIZE);
+                        ctx.setLineDash([]);
+                    }
+                }
+
+                if (tribe.tech >= 1) {
+                    const bx = (MAP_WIDTH/2) * TILE_SIZE; const by = (MAP_HEIGHT/2) * TILE_SIZE;
+                    const fireSize = weather.id === 'RAIN' ? 2 : (Math.sin(time/5)*2 + 6);
+                    if (weather.id !== 'RAIN' || Math.random() > 0.5) {
+                        ctx.fillStyle = '#ff5722'; ctx.beginPath(); ctx.arc(bx + 16, by + 16, fireSize, 0, Math.PI*2); ctx.fill();
+                        ctx.fillStyle = '#ffca28'; ctx.beginPath(); ctx.arc(bx + 16, by + 16, fireSize/2, 0, Math.PI*2); ctx.fill();
+                    }
+                }
+
+                // 天氣粒子
+                particles.forEach(p => {
+                    ctx.fillStyle = weather.id === 'RAIN' ? '#4fc3f7' : '#ffffff';
+                    const w = weather.id === 'RAIN' ? 1 : 2; const h = weather.id === 'RAIN' ? 4 : 2;
+                    ctx.fillRect(p.x / SCALE, p.y / SCALE, w, h);
+                });
+
+                // 賜福特效粒子
+                blessEffects.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x / SCALE, p.y / SCALE, 2, 2);
+                });
+
+                if (time > DAY_TICKS * 0.6) { ctx.fillStyle = 'rgba(10, 10, 30, 0.6)'; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
+                ctx.fillStyle = weather.color; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE);
+
+                ctx.restore();
+            }, [map, sprites, sims, creatures, weather, particles, blessEffects, farms, time, selectedId, tribe]);
+
+            const drawSim = (ctx, s) => {
+                const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE);
+                
+                if (s.state === 'DEAD') { 
+                    // 繪製墓碑
+                    ctx.drawImage(sprites.grave, px, py);
+                    return; 
+                }
+                
+                // 賜福光環
+                if (s.blessedTimer > 0) {
+                    ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.ellipse(px + 16, py + 28, 10, 4, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                const bounce = (s.state !== 'IDLE' && s.state !== 'SLEEP') ? Math.sin(s.animFrame) * 2 : 0;
+                const matrix = s.gender === 'M' ? SPRITE_MATRICES.CHAR_M : SPRITE_MATRICES.CHAR_F;
+                const colorMap = { 'H': s.hair, 'S': PALETTE.SKIN, 's': PALETTE.SKIN_SHADOW, 'C': s.color, 'K': PALETTE.OUTLINE };
+                renderMatrix(ctx, matrix, colorMap, px + 4, py + 4 + bounce);
+                if (s.state === 'SLEEP') { ctx.font = '10px monospace'; ctx.fillStyle = '#fff'; ctx.fillText('zZ', px+20, py); }
+            };
+
+            const drawCreature = (ctx, c) => {
+                const px = Math.floor(c.x * TILE_SIZE); const py = Math.floor(c.y * TILE_SIZE);
+                const bounce = Math.sin(c.animFrame) * 2;
+                let matrix, colorMap, ox=0, oy=0;
+                if (c.type === 'RABBIT') { matrix = SPRITE_MATRICES.RABBIT; colorMap = {'W': PALETTE.FUR_RABBIT, 'K': PALETTE.OUTLINE}; ox=4; oy=10; }
+                else if (c.type === 'WOLF') { matrix = SPRITE_MATRICES.WOLF; colorMap = {'G': PALETTE.FUR_WOLF, 'K': PALETTE.OUTLINE}; ox=2; oy=6; }
+                else if (c.type === 'BEAR') { matrix = SPRITE_MATRICES.BEAR; colorMap = {'B': PALETTE.FUR_BEAR, 'K': PALETTE.OUTLINE}; ox=-6; oy=-6; }
+                else if (c.type === 'DEER') { matrix = SPRITE_MATRICES.DEER; colorMap = {'B': PALETTE.FUR_DEER, 'K': PALETTE.OUTLINE}; ox=2; oy=-2; }
+                ctx.save();
+                if (c.dir < 0) { ctx.translate(px + TILE_SIZE, 0); ctx.scale(-1, 1); ctx.translate(-px, 0); }
+                renderMatrix(ctx, matrix, colorMap, px + ox, py + oy + bounce);
+                ctx.restore();
+            };
+
+            useEffect(() => {
+                const loop = () => {
+                    tickRef.current++;
+                    if (tickRef.current % 5 === 0) {
+                        setTime(t => (t + 1) % DAY_TICKS);
+                        if (time === 0) setDay(d => d+1);
+                        update();
+                    }
+                    draw();
+                    requestRef.current = requestAnimationFrame(loop);
+                };
+                requestRef.current = requestAnimationFrame(loop);
+                return () => cancelAnimationFrame(requestRef.current);
+            }, [draw, update]);
+
+            const handleCanvasClick = useCallback((e) => {
+                const rect = canvasRef.current.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / SCALE / TILE_SIZE;
+                const y = (e.clientY - rect.top) / SCALE / TILE_SIZE;
+                
+                const allObjs = [...sims, ...creatures];
+                let closest = null;
+                let minDist = 2.5; 
+
+                allObjs.forEach(obj => {
+                    const dist = Math.sqrt((obj.x + 0.5 - x)**2 + (obj.y + 0.5 - y)**2);
+                    if (dist < minDist) {
+                        closest = obj;
+                        minDist = dist;
+                    }
+                });
+
+                setSelectedId(closest ? closest.id : null);
+            }, [sims, creatures]);
+
+            const castSpell = (type) => {
+                if (mana < 20) return;
+                if (['FOOD', 'HEAL', 'BUFF'].includes(type) && selectedId) {
+                    setSims(prev => prev.map(s => {
+                        if (s.id !== selectedId) return s;
+                        if (type === 'FOOD') { setMana(m => m - 30); setEvents(e => [`賜予 ${s.sign} 食物`, ...e]); return { ...s, hunger: 100 }; }
+                        else if (type === 'HEAL') { setMana(m => m - 30); setEvents(e => [`${s.sign} 傷口癒合`, ...e]); return { ...s, hp: 100 }; }
+                        else if (type === 'BUFF') { 
+                            setMana(m => m - 30); 
+                            setEvents(e => [`${s.sign} 獲得神力`, ...e]); 
+                            return { ...s, energy: 100, thought: '神與我同在！', blessedTimer: 500 }; // 賜福持續 500 ticks
+                        }
+                        return s;
+                    }));
+                    return;
+                }
+                setMana(m => m - 20);
+                if (type === 'SUN') { setWeather(WEATHER.SUNNY); setEvents(e => ['神蹟：祈晴', ...e]); }
+                else if (type === 'RAIN') { setWeather(WEATHER.RAIN); setEvents(e => ['神蹟：祈雨', ...e]); }
+                else if (type === 'TECH') { setTribe(t => ({...t, tech: t.tech + 1})); setEvents(e => ['神蹟：智慧啟蒙', ...e]); }
+            };
+
+            const selectedObj = [...sims, ...creatures].find(s => s.id === selectedId);
+            const aliveCount = sims.filter(s => s.state !== 'DEAD').length;
+
+            return (
+                <div className="flex flex-col h-screen bg-[#1a1c2c] text-[#c2c3c7] font-mono select-none" style={{ fontFamily: PIXEL_FONT }}>
+                    {/* HUD */}
+                    <div className="bg-[#292b3c] p-2 border-b-4 border-[#121215] flex flex-wrap justify-between items-center shadow-lg shrink-0 z-20 relative gap-2">
+                        <div className="flex gap-3 items-center">
+                            <div className="text-[#ffcd75] font-bold flex items-center gap-1 text-sm"><Icons.Sparkles size={14}/> {mana}</div>
+                            <div className="flex items-center gap-1 bg-[#1a1c2c] px-2 py-1 rounded border border-[#5d4037]">
+                                {weather.id === 'SUNNY' ? <Icons.Sun size={14} className="text-yellow-400"/> : weather.id === 'RAIN' ? <Icons.CloudRain size={14} className="text-blue-400"/> : <Icons.Snowflake size={14} className="text-white"/>}
+                                <span className="text-xs">{weather.name}</span>
+                            </div>
+                            <div className="text-[10px] text-gray-400">Era {era} Day {day} ({time < DAY_TICKS/2 ? 'AM' : 'PM'})</div>
+                        </div>
+                        <div className="flex gap-2 text-xs font-bold text-[#8b9bb4] items-center">
+                            <span className="flex items-center gap-1"><Icons.Users size={12}/> {aliveCount}</span>
+                            <span className="hidden sm:inline">🍎 {Math.floor(tribe.food)}</span>
+                            <span className="hidden sm:inline">🪵 {tribe.wood}</span>
+                            <span>🔨 Lv.{tribe.tech}</span>
+                        </div>
+                    </div>
+
+                    {/* 主容器 */}
+                    <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+                        {isGameOver && (
+                            <div className="absolute inset-0 z-50 bg-black/90 flex flex-col items-center justify-center animate-in fade-in zoom-in duration-500 p-4 text-center">
+                                <Icons.Skull size={64} className="text-red-600 mb-4 animate-bounce"/>
+                                <h1 className="text-4xl text-red-500 font-bold mb-2">文明滅亡</h1>
+                                <p className="text-gray-400 mb-8 text-lg">第 {era} 紀元結束於 Day {day}...</p>
+                                <button 
+                                    onClick={startNextEra} 
+                                    className="bg-red-900 hover:bg-red-800 text-white px-8 py-4 rounded border-2 border-red-500 flex items-center gap-3 text-xl transition-transform hover:scale-105 shadow-lg shadow-red-900/50"
+                                >
+                                    <Icons.RefreshCw size={24}/> 開啟第 {era+1} 紀元
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Canvas */}
+                        <div className="relative flex-1 bg-black overflow-auto flex items-center justify-center p-4 min-h-[50vh] shadow-inner">
+                            <canvas
+                                ref={canvasRef} width={MAP_WIDTH * TILE_SIZE * SCALE} height={MAP_HEIGHT * TILE_SIZE * SCALE}
+                                onClick={handleCanvasClick} className="border-4 border-[#3e2723] shadow-2xl cursor-crosshair max-w-none"
+                                style={{ imageRendering: 'pixelated' }}
+                            />
+                            <div className="absolute top-4 left-4 flex flex-col gap-1 pointer-events-none opacity-80">
+                                {events.slice(0, 3).map((ev, i) => (
+                                    <div key={i} className="bg-black/60 backdrop-blur-sm text-[#fff] px-2 py-1 text-[10px] rounded border-l-2 border-[#ffcd75] shadow-sm">{ev}</div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* 控制面板 */}
+                        <div className="w-full md:w-72 h-64 md:h-auto bg-[#292b3c] border-t-4 md:border-t-0 md:border-l-4 border-[#121215] p-2 flex flex-row md:flex-col gap-2 shrink-0 z-10 shadow-2xl overflow-x-auto md:overflow-x-hidden md:overflow-y-auto">
+                            
+                            {/* 神蹟面板 */}
+                            <div className="min-w-[180px] w-1/2 md:w-full bg-[#1a1c2c] p-2 rounded border border-[#3e2723] flex flex-col overflow-y-auto">
+                                <h3 className="text-[#ffcd75] text-xs mb-2 font-bold border-b border-[#3e2723] pb-1 sticky top-0 bg-[#1a1c2c] z-10">神蹟 (Miracles)</h3>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button onClick={() => castSpell('SUN')} className="bg-[#3e2723] active:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1"><Icons.Sun size={16} className="text-yellow-400"/><span className="text-[10px]">祈晴 (-20)</span></button>
+                                    <button onClick={() => castSpell('RAIN')} className="bg-[#3e2723] active:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1"><Icons.CloudRain size={16} className="text-blue-400"/><span className="text-[10px]">祈雨 (-20)</span></button>
+                                    <button onClick={() => castSpell('TECH')} className="bg-[#3e2723] active:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1 col-span-2"><Icons.Brain size={16} className="text-purple-400"/><span className="text-[10px]">賜予智慧 (-20)</span></button>
+                                    <button 
+                                        onClick={handleTribeSaga} 
+                                        disabled={isWritingSaga || mana < 50}
+                                        className={`bg-indigo-900 active:bg-indigo-800 p-2 rounded flex flex-col items-center gap-1 col-span-2 border border-indigo-500 ${isWritingSaga ? 'opacity-50' : ''}`}
+                                    >
+                                        <Icons.ScrollText size={16} className={isWritingSaga ? "animate-pulse text-indigo-300" : "text-indigo-300"}/>
+                                        <span className="text-[10px] text-indigo-200">✨ 部落史詩 (-50)</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* 觀察面板 */}
+                            <div className="min-w-[180px] w-1/2 md:w-full bg-[#1a1c2c] p-2 rounded border border-[#3e2723] relative flex flex-col overflow-y-auto">
+                                <div className="flex justify-between items-center border-b border-[#3e2723] mb-2 pb-1 sticky top-0 bg-[#1a1c2c] z-10">
+                                    <h3 className="text-[#8b9bb4] text-xs font-bold">觀察 (Inspector)</h3>
+                                    {selectedObj && <button onClick={() => setSelectedId(null)} className="text-gray-500 active:text-white"><Icons.X size={12}/></button>}
+                                </div>
+
+                                {selectedObj ? (
+                                    <div className="flex flex-col gap-2 flex-1">
+                                        {selectedObj.sign ? ( 
+                                            <>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-8 h-8 border border-gray-600 bg-black relative overflow-hidden flex-shrink-0 rounded">
+                                                        <div className="absolute top-1 left-1 w-6 h-6" style={{backgroundColor: selectedObj?.hair, borderRadius: '50% 50% 0 0'}}></div>
+                                                        <div className="absolute top-3 left-0 w-8 h-5" style={{backgroundColor: selectedObj?.color, borderRadius: '50% 50% 0 0'}}></div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold text-[#ffccaa] text-xs">{selectedObj?.sign}座 <span className="text-[10px] text-gray-500">({selectedObj?.gender})</span></div>
+                                                        <div className="text-[10px] text-gray-500">{selectedObj?.trait} • {selectedObj?.state}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <div className="flex justify-between text-[10px]"><span>HP</span><span>{Math.floor(selectedObj?.hp || 0)}</span></div>
+                                                    <div className="h-1 bg-gray-700 rounded"><div className="h-full bg-red-500 rounded" style={{width: `${selectedObj?.hp || 0}%`}}></div></div>
+                                                    <div className="flex justify-between text-[10px]"><span>飽食</span><span>{Math.floor(selectedObj?.hunger || 0)}</span></div>
+                                                    <div className="h-1 bg-gray-700 rounded"><div className="h-full bg-orange-500 rounded" style={{width: `${selectedObj?.hunger || 0}%`}}></div></div>
+                                                </div>
+                                                
+                                                <div className={`mt-1 p-1.5 text-[10px] italic border border-gray-800 flex flex-col gap-1 rounded ${aiThoughtId === selectedObj.id ? 'bg-indigo-900/50 border-indigo-500 text-indigo-200' : 'bg-[#111] text-[#a5d6a7]'}`}>
+                                                    <span>"{selectedObj?.thought}"</span>
+                                                    <button 
+                                                        onClick={() => handleSoulSearch(selectedObj)} 
+                                                        disabled={isSoulSearching || mana < 10}
+                                                        className="self-end flex items-center gap-1 text-[10px] bg-gray-800 active:bg-gray-700 px-1.5 py-0.5 rounded text-purple-300 border border-purple-900"
+                                                    >
+                                                        <Icons.MessageCircle size={10} className={isSoulSearching ? "animate-spin" : ""}/>
+                                                        ✨ 傾聽 (-10)
+                                                    </button>
+                                                </div>
+
+                                                <div className="mt-auto grid grid-cols-3 gap-1 pt-2 border-t border-[#3e2723]">
+                                                    <button onClick={() => castSpell('FOOD')} className="bg-[#3e2723] active:bg-[#5d4037] p-1 rounded flex flex-col items-center"><Icons.Utensils size={14} className="text-orange-400"/><span className="text-[10px] text-center">賜食<br/>(-30)</span></button>
+                                                    <button onClick={() => castSpell('HEAL')} className="bg-[#3e2723] active:bg-[#5d4037] p-1 rounded flex flex-col items-center"><Icons.Heart size={14} className="text-red-400"/><span className="text-[10px] text-center">治癒<br/>(-30)</span></button>
+                                                    <button onClick={() => castSpell('BUFF')} className="bg-[#3e2723] active:bg-[#5d4037] p-1 rounded flex flex-col items-center"><Icons.Shield size={14} className="text-blue-400"/><span className="text-[10px] text-center">賜福<br/>(-30)</span></button>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="font-bold text-[#ffccaa] text-sm">{selectedObj?.type}</div>
+                                                <div className="text-[10px] text-gray-500">野生動物</div>
+                                                <div className="flex justify-between text-[10px] mt-2"><span>HP</span><span>{Math.floor(selectedObj?.hp || 0)}</span></div>
+                                                <div className="h-1 bg-gray-700 rounded"><div className="h-full bg-red-500 rounded" style={{width: `${Math.min(100, (selectedObj?.hp || 0)/2)}%`}}></div></div>
+                                            </>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="h-full flex flex-col items-center justify-center text-gray-600 text-xs gap-2 opacity-50">
+                                        <Icons.HelpCircle size={24} />
+                                        <div className="text-center">點擊畫面角色<br/>進行觀察互動</div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
