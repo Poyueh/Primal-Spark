@@ -676,7 +676,7 @@
             const aliveCount = sims.filter(s => s.state !== 'DEAD').length;
 
             return (
-                <div className="flex flex-col h-screen bg-[#1a1c2c] text-[#c2c3c7]" style={{ fontFamily: PIXEL_FONT }}>
+                <div className="flex flex-col h-[100dvh] bg-[#1a1c2c] text-[#c2c3c7]" style={{ fontFamily: PIXEL_FONT }}>
                     {/* Header: 手機版精簡資訊，電腦版完整顯示 */}
                     <div className="bg-[#292b3c] p-2 md:p-3 border-b-4 border-[#121215] flex justify-between items-center shadow-lg shrink-0 z-20 relative gap-2">
                         <div className="flex gap-2 md:gap-4 items-center">
@@ -721,7 +721,7 @@
                         </div>
 
                         {/* Control Panel: Bottom Sheet (Mobile) / Sidebar (Desktop) */}
-                        <div className="w-full h-[35vh] md:w-72 md:h-full bg-[#292b3c] border-t-4 md:border-t-0 md:border-l-4 border-[#121215] p-2 md:p-4 flex flex-col gap-2 md:gap-4 shrink-0 z-10 relative overflow-y-auto shadow-2xl">
+                        <div className="w-full h-[35vh] md:w-72 md:h-full bg-[#292b3c] border-t-4 md:border-t-0 md:border-l-4 border-[#121215] p-2 md:p-4 pb-8 md:pb-4 flex flex-col gap-2 md:gap-4 shrink-0 z-10 relative overflow-y-auto shadow-2xl">
                             
                             {/* Miracles Section */}
                             <div className="bg-[#1a1c2c] p-2 md:p-3 rounded border border-[#3e2723]">
