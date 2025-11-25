@@ -2,7 +2,8 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 增加 maximum-scale=1.0, user-scalable=no 防止手機誤觸縮放 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>原初之火 Primal Spark (Emoji版)</title>
     
     <!-- 1. 載入 Tailwind CSS -->
@@ -16,12 +17,18 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <style>
+        /* 保持 body 無捲動，內容區域自己捲動 */
         body { margin: 0; overflow: hidden; background-color: #111; }
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        
+        /* 自定義捲軸樣式 */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #4a4a4a; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: #4a4a4a; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #666; }
+
+        /* 讓觸控點擊更靈敏 */
+        button { touch-action: manipulation; }
     </style>
 </head>
 <body>
@@ -670,25 +677,27 @@
 
             return (
                 <div className="flex flex-col h-screen bg-[#1a1c2c] text-[#c2c3c7]" style={{ fontFamily: PIXEL_FONT }}>
-                    <div className="bg-[#292b3c] p-3 border-b-4 border-[#121215] flex justify-between items-center shadow-lg shrink-0 z-20 relative">
-                        <div className="flex gap-4 items-center">
-                            <div className="text-[#ffcd75] font-bold flex items-center gap-2"><Icons.Sparkles size={16}/> {mana} Mana</div>
-                            <div className="flex items-center gap-2 bg-[#1a1c2c] px-3 py-1 rounded border border-[#5d4037]">
-                                {weather.id === 'SUNNY' ? <Icons.Sun size={16} className="text-yellow-400"/> : weather.id === 'RAIN' ? <Icons.CloudRain size={16} className="text-blue-400"/> : <Icons.Snowflake size={16} className="text-white"/>}
-                                <span className="text-sm">{weather.name}</span>
+                    {/* Header: 手機版精簡資訊，電腦版完整顯示 */}
+                    <div className="bg-[#292b3c] p-2 md:p-3 border-b-4 border-[#121215] flex justify-between items-center shadow-lg shrink-0 z-20 relative gap-2">
+                        <div className="flex gap-2 md:gap-4 items-center">
+                            <div className="text-[#ffcd75] font-bold flex items-center gap-1 md:gap-2 text-sm md:text-base"><Icons.Sparkles size={14} className="md:w-4 md:h-4"/> {mana}</div>
+                            <div className="flex items-center gap-1 md:gap-2 bg-[#1a1c2c] px-2 py-1 rounded border border-[#5d4037] text-xs md:text-sm">
+                                {weather.id === 'SUNNY' ? <Icons.Sun size={14} className="text-yellow-400"/> : weather.id === 'RAIN' ? <Icons.CloudRain size={14} className="text-blue-400"/> : <Icons.Snowflake size={14} className="text-white"/>}
+                                <span>{weather.name}</span>
                             </div>
-                            <div className="text-xs text-gray-400">第 {era} 紀元 Day {day} ({time < DAY_TICKS/2 ? 'AM' : 'PM'})</div>
+                            <div className="hidden md:block text-xs text-gray-400">第 {era} 紀元 Day {day}</div>
                         </div>
-                        <div className="flex gap-2 text-xs font-bold text-[#8b9bb4]">
-                            <span className="flex items-center gap-1 mr-2"><Icons.Users size={14}/> {aliveCount}</span>
+                        <div className="flex gap-2 md:gap-3 text-xs font-bold text-[#8b9bb4] items-center">
+                            <span className="flex items-center gap-1"><Icons.Users size={12}/> {aliveCount}</span>
                             <span>🍎 {Math.floor(tribe.food)}</span>
-                            <span>🪵 {tribe.wood}</span>
-                            <span>🧱 {tribe.stone}</span>
-                            <span>🔨 Tech Lv.{tribe.tech}</span>
+                            <span className="hidden sm:inline">🪵 {tribe.wood}</span>
+                            <span className="hidden sm:inline">🧱 {tribe.stone}</span>
+                            <span>🔨 Lv.{tribe.tech}</span>
                         </div>
                     </div>
 
-                    <div className="flex-1 flex flex-row overflow-hidden relative">
+                    {/* Main Layout: Flex-col on Mobile, Flex-row on Desktop */}
+                    <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
                         {isGameOver && (
                             <div className="absolute inset-0 z-50 bg-black/90 flex flex-col items-center justify-center animate-in fade-in zoom-in duration-500">
                                 <Icons.Skull size={64} className="text-red-600 mb-4 animate-bounce"/>
@@ -699,60 +708,66 @@
                             </div>
                         )}
 
-                        <div className="relative flex-1 bg-black overflow-auto flex items-center justify-center p-4">
+                        {/* Canvas Area: Scrollable for Panning */}
+                        <div className="relative flex-1 bg-black overflow-auto flex items-center justify-center p-4 touch-pan-x touch-pan-y">
                             <canvas ref={canvasRef} width={MAP_WIDTH * TILE_SIZE * SCALE} height={MAP_HEIGHT * TILE_SIZE * SCALE} onClick={handleCanvasClick} className="border-4 border-[#3e2723] shadow-2xl cursor-crosshair" style={{ imageRendering: 'pixelated' }} />
-                            <div className="absolute bottom-6 left-6 flex flex-col-reverse gap-1 pointer-events-none opacity-90 items-start">
+                            <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 flex flex-col-reverse gap-1 pointer-events-none opacity-90 items-start max-w-[70%] md:max-w-none">
                                 {events.slice(0, 5).map((ev, i) => (
-                                    <div key={i} className="bg-black/60 text-[#fff] px-3 py-1.5 text-xs rounded border-l-2 border-[#ffcd75] shadow-sm backdrop-blur-sm animate-in fade-in slide-in-from-left-2 duration-300">
+                                    <div key={i} className="bg-black/60 text-[#fff] px-2 py-1 md:px-3 md:py-1.5 text-[10px] md:text-xs rounded border-l-2 border-[#ffcd75] shadow-sm backdrop-blur-sm animate-in fade-in slide-in-from-left-2 duration-300">
                                         {ev}
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        <div className="w-64 bg-[#292b3c] border-l-4 border-[#121215] p-4 flex flex-col gap-4 shrink-0 z-10 relative h-full overflow-y-auto">
-                            <div className="bg-[#1a1c2c] p-3 rounded border border-[#3e2723]">
-                                <h3 className="text-[#ffcd75] text-sm mb-3 font-bold border-b border-[#3e2723] pb-1">神蹟</h3>
-                                <div className="grid grid-cols-2 gap-2">
-                                    <button onClick={() => castSpell('SUN')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1 transition-colors"><Icons.Sun size={18} className="text-yellow-400"/><span className="text-[10px]">祈晴</span></button>
-                                    <button onClick={() => castSpell('RAIN')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1 transition-colors"><Icons.CloudRain size={18} className="text-blue-400"/><span className="text-[10px]">祈雨</span></button>
-                                    <button onClick={() => castSpell('TECH')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1 transition-colors col-span-2"><Icons.Brain size={18} className="text-purple-400"/><span className="text-[10px]">賜予智慧</span></button>
-                                    <button onClick={handleTribeSaga} disabled={isWritingSaga || mana < 50} className={`bg-indigo-900 hover:bg-indigo-800 p-2 rounded flex flex-col items-center gap-1 transition-colors col-span-2 border border-indigo-500 ${isWritingSaga ? 'opacity-50' : ''}`}><Icons.ScrollText size={18} className="text-indigo-300"/><span className="text-[10px] text-indigo-200">✨ 部落史詩 (50)</span></button>
+                        {/* Control Panel: Bottom Sheet (Mobile) / Sidebar (Desktop) */}
+                        <div className="w-full h-[35vh] md:w-72 md:h-full bg-[#292b3c] border-t-4 md:border-t-0 md:border-l-4 border-[#121215] p-2 md:p-4 flex flex-col gap-2 md:gap-4 shrink-0 z-10 relative overflow-y-auto shadow-2xl">
+                            
+                            {/* Miracles Section */}
+                            <div className="bg-[#1a1c2c] p-2 md:p-3 rounded border border-[#3e2723]">
+                                <h3 className="text-[#ffcd75] text-xs md:text-sm mb-2 font-bold border-b border-[#3e2723] pb-1">神蹟</h3>
+                                <div className="grid grid-cols-4 md:grid-cols-2 gap-2">
+                                    <button onClick={() => castSpell('SUN')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors aspect-square md:aspect-auto"><Icons.Sun size={18} className="text-yellow-400"/><span className="text-[10px]">祈晴</span></button>
+                                    <button onClick={() => castSpell('RAIN')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors aspect-square md:aspect-auto"><Icons.CloudRain size={18} className="text-blue-400"/><span className="text-[10px]">祈雨</span></button>
+                                    <button onClick={() => castSpell('TECH')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors aspect-square md:aspect-auto"><Icons.Brain size={18} className="text-purple-400"/><span className="text-[10px]">智慧</span></button>
+                                    <button onClick={handleTribeSaga} disabled={isWritingSaga || mana < 50} className={`bg-indigo-900 hover:bg-indigo-800 p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors border border-indigo-500 aspect-square md:aspect-auto md:col-span-2 ${isWritingSaga ? 'opacity-50' : ''}`}><Icons.ScrollText size={18} className="text-indigo-300"/><span className="text-[10px] text-indigo-200">史詩</span></button>
                                 </div>
                             </div>
-                            <div className="flex-1 bg-[#1a1c2c] p-3 rounded border border-[#3e2723] relative flex flex-col min-h-[300px]">
-                                <div className="flex justify-between items-center border-b border-[#3e2723] mb-3 pb-1"><h3 className="text-[#8b9bb4] text-sm font-bold">觀察</h3>{selectedObj && <button onClick={() => setSelectedId(null)} className="text-gray-500 hover:text-white"><Icons.X size={14}/></button>}</div>
+
+                            {/* Inspector Section */}
+                            <div className="flex-1 bg-[#1a1c2c] p-2 md:p-3 rounded border border-[#3e2723] relative flex flex-col min-h-[140px] md:min-h-[300px]">
+                                <div className="flex justify-between items-center border-b border-[#3e2723] mb-2 pb-1"><h3 className="text-[#8b9bb4] text-xs md:text-sm font-bold">觀察</h3>{selectedObj && <button onClick={() => setSelectedId(null)} className="text-gray-500 hover:text-white"><Icons.X size={14}/></button>}</div>
                                 {selectedObj ? (
-                                    <div className="flex flex-col gap-2 flex-1 animate-fade-in">
+                                    <div className="flex flex-col gap-1 md:gap-2 flex-1 animate-fade-in overflow-y-auto">
                                         {selectedObj.sign ? ( 
                                             <>
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 border border-gray-600 bg-black relative overflow-hidden shrink-0"><div className="absolute top-2 left-2 w-6 h-6" style={{backgroundColor: selectedObj.hair, borderRadius: '50% 50% 0 0'}}></div><div className="absolute top-4 left-1 w-8 h-8" style={{backgroundColor: selectedObj.color, borderRadius: '50% 50% 0 0'}}></div></div>
-                                                    <div><div className="font-bold text-[#ffccaa]">{selectedObj.sign}座</div><div className="text-[10px] text-gray-500">{selectedObj.state}</div></div>
+                                                <div className="flex items-center gap-2 md:gap-3">
+                                                    <div className="w-8 h-8 md:w-10 md:h-10 border border-gray-600 bg-black relative overflow-hidden shrink-0"><div className="absolute top-2 left-2 w-6 h-6" style={{backgroundColor: selectedObj.hair, borderRadius: '50% 50% 0 0'}}></div><div className="absolute top-4 left-1 w-8 h-8" style={{backgroundColor: selectedObj.color, borderRadius: '50% 50% 0 0'}}></div></div>
+                                                    <div><div className="font-bold text-[#ffccaa] text-sm md:text-base">{selectedObj.sign}座</div><div className="text-[10px] text-gray-500">{selectedObj.state}</div></div>
                                                 </div>
                                                 
-                                                {/* 修正：恢復 HP 與 飽食度顯示，並保留工具顯示 */}
-                                                <div className="space-y-1 mt-2">
-                                                    <div className="flex justify-between text-xs"><span>HP</span><span>{Math.floor(selectedObj.hp)}</span></div>
+                                                <div className="space-y-1 mt-1 text-xs">
+                                                    <div className="flex justify-between"><span>HP</span><span>{Math.floor(selectedObj.hp)}</span></div>
                                                     <div className="h-1 bg-gray-700"><div className="h-full bg-red-500" style={{width: `${Math.max(0, selectedObj.hp)}%`}}></div></div>
                                                     
-                                                    <div className="flex justify-between text-xs"><span>飽食</span><span>{Math.floor(selectedObj.hunger)}</span></div>
+                                                    <div className="flex justify-between"><span>飽食</span><span>{Math.floor(selectedObj.hunger)}</span></div>
                                                     <div className="h-1 bg-gray-700"><div className="h-full bg-orange-500" style={{width: `${Math.max(0, selectedObj.hunger)}%`}}></div></div>
 
-                                                    <div className="flex justify-between text-xs text-gray-400 mt-2 border-t border-gray-800 pt-1">
+                                                    <div className="flex justify-between text-gray-400 mt-1 border-t border-gray-800 pt-1">
                                                         <span>工具</span>
                                                         <span>{[selectedObj.tools.axe?'斧':'', selectedObj.tools.pick?'鎬':''].filter(Boolean).join(',') || '無'}</span>
                                                     </div>
                                                 </div>
 
-                                                <div className="mt-2 bg-[#111] p-2 text-xs text-[#a5d6a7] italic border border-gray-800 flex flex-col gap-2"><span>"{selectedObj.thought}"</span><button onClick={() => handleSoulSearch(selectedObj)} disabled={isSoulSearching || mana < 10} className="self-end flex items-center gap-1 text-[10px] bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded text-purple-300 border border-purple-900"><Icons.MessageCircle size={10}/> 傾聽 (10)</button></div>
-                                                <div className="mt-auto grid grid-cols-3 gap-2 pt-4 border-t border-[#3e2723]">
-                                                    <button onClick={() => castSpell('FOOD')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1"><Icons.Utensils size={16} className="text-orange-400"/><span className="text-[10px]">賜食</span></button>
-                                                    <button onClick={() => castSpell('HEAL')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1"><Icons.Heart size={16} className="text-red-400"/><span className="text-[10px]">治癒</span></button>
-                                                    <button onClick={() => castSpell('BUFF')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center gap-1"><Icons.Shield size={16} className="text-blue-400"/><span className="text-[10px]">賜福</span></button>
+                                                <div className="mt-1 bg-[#111] p-1.5 text-[10px] md:text-xs text-[#a5d6a7] italic border border-gray-800 flex flex-col gap-1"><span>"{selectedObj.thought}"</span><button onClick={() => handleSoulSearch(selectedObj)} disabled={isSoulSearching || mana < 10} className="self-end flex items-center gap-1 bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded text-purple-300 border border-purple-900"><Icons.MessageCircle size={10}/> 傾聽 (10)</button></div>
+                                                
+                                                <div className="mt-auto grid grid-cols-3 gap-1 pt-2 border-t border-[#3e2723]">
+                                                    <button onClick={() => castSpell('FOOD')} className="bg-[#3e2723] hover:bg-[#5d4037] p-1.5 rounded flex flex-col items-center gap-0.5"><Icons.Utensils size={14} className="text-orange-400"/><span className="text-[10px]">賜食</span></button>
+                                                    <button onClick={() => castSpell('HEAL')} className="bg-[#3e2723] hover:bg-[#5d4037] p-1.5 rounded flex flex-col items-center gap-0.5"><Icons.Heart size={14} className="text-red-400"/><span className="text-[10px]">治癒</span></button>
+                                                    <button onClick={() => castSpell('BUFF')} className="bg-[#3e2723] hover:bg-[#5d4037] p-1.5 rounded flex flex-col items-center gap-0.5"><Icons.Shield size={14} className="text-blue-400"/><span className="text-[10px]">賜福</span></button>
                                                 </div>
                                             </>
-                                        ) : (<><div className="font-bold text-[#ffccaa] text-lg">{selectedObj.type}</div><div className="text-xs text-gray-500">野生生物</div></>)}
+                                        ) : (<><div className="font-bold text-[#ffccaa] text-sm md:text-lg">{selectedObj.type}</div><div className="text-[10px] md:text-xs text-gray-500">野生生物</div></>)}
                                     </div>
                                 ) : (<div className="h-full flex flex-col items-center justify-center text-gray-600 text-xs gap-2 opacity-50"><Icons.HelpCircle size={24}/><div className="text-center">選擇目標</div></div>)}
                             </div>
