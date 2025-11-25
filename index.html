@@ -708,10 +708,15 @@
                             </div>
                         )}
 
-                        {/* Canvas Area: Scrollable for Panning */}
-                        <div className="relative flex-1 bg-black overflow-auto flex items-center justify-center p-4 touch-pan-x touch-pan-y">
-                            <canvas ref={canvasRef} width={MAP_WIDTH * TILE_SIZE * SCALE} height={MAP_HEIGHT * TILE_SIZE * SCALE} onClick={handleCanvasClick} className="border-4 border-[#3e2723] shadow-2xl cursor-crosshair" style={{ imageRendering: 'pixelated' }} />
-                            <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 flex flex-col-reverse gap-1 pointer-events-none opacity-90 items-start max-w-[70%] md:max-w-none">
+                        {/* 修正：增加一個 relative 的容器包裹 地圖 與 日誌 */}
+                        <div className="relative flex-1 bg-black overflow-hidden flex">
+                            {/* Canvas Area: Scrollable for Panning - 日誌已移出此區塊 */}
+                            <div className="w-full h-full overflow-auto flex items-center justify-center p-4 touch-pan-x touch-pan-y">
+                                <canvas ref={canvasRef} width={MAP_WIDTH * TILE_SIZE * SCALE} height={MAP_HEIGHT * TILE_SIZE * SCALE} onClick={handleCanvasClick} className="border-4 border-[#3e2723] shadow-2xl cursor-crosshair" style={{ imageRendering: 'pixelated' }} />
+                            </div>
+
+                            {/* Fixed Logs UI: 移到這裡，作為 Scrollable Area 的兄弟元素，絕對定位 */}
+                            <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 flex flex-col-reverse gap-1 pointer-events-none opacity-90 items-start max-w-[70%] md:max-w-none z-10">
                                 {events.slice(0, 5).map((ev, i) => (
                                     <div key={i} className="bg-black/60 text-[#fff] px-2 py-1 md:px-3 md:py-1.5 text-[10px] md:text-xs rounded border-l-2 border-[#ffcd75] shadow-sm backdrop-blur-sm animate-in fade-in slide-in-from-left-2 duration-300">
                                         {ev}
