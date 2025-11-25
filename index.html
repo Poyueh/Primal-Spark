@@ -68,8 +68,8 @@
         const apiKey = ""; 
 
         // --- Mock Data ---
-        const MOCK_THOUGHTS = ["這棵樹可以用來蓋房子...", "石頭雖然硬，但能做成工具。", "我們需要更多防禦。", "創造是生存的關鍵。", "好累，但值得。"];
-        const MOCK_SAGAS = ["族人學會了利用大地的恩賜，工具的敲擊聲響徹森林。", "第一把石斧的誕生，標誌著我們不再是自然的奴隸。", "智慧之火在部落中傳遞，創造力引領我們前行。"];
+        const MOCK_THOUGHTS = ["這棵樹可以用來蓋房子...", "石頭雖然硬，但能做成工具。", "我們需要更多防禦。", "創造是生存的關鍵。", "好累，但值得。", "今晚有肉吃了！", "狩獵需要耐心。", "不想死在這裡..."];
+        const MOCK_SAGAS = ["族人學會了利用大地的恩賜，工具的敲擊聲響徹森林。", "第一把石斧的誕生，標誌著我們不再是自然的奴隸。", "智慧之火在部落中傳遞，創造力引領我們前行。", "英勇的獵人帶著獵物歸來，部落充滿了歡呼聲。"];
 
         // --- Constants ---
         const PIXEL_FONT = "'Courier New', Courier, monospace";
@@ -237,7 +237,7 @@
             id: `sim_${Date.now()}_${i}`, ...z,
             x: MAP_WIDTH/2 + rand(-2,2), y: MAP_HEIGHT/2 + rand(-2,2),
             hp: 100, hunger: 100, energy: 100,
-            state: 'IDLE', targetX: null, targetY: null, actionTimer: 0,
+            state: 'IDLE', targetX: null, targetY: null, actionTimer: 0, targetId: null, // Added targetId
             inventory: { wood:0, food:0, stone:0 },
             tools: { axe: false, pick: false, spear: false },
             thought: '又是新的一天...',
@@ -357,20 +357,68 @@
                 // Farms
                 setFarms(prev => prev.map(f => f.stage < 100 ? { ...f, stage: Math.min(100, f.stage + 0.1 * (weather.id === 'RAIN' ? 2 : (weather.id === 'SNOW' ? 0 : 1))) } : f));
 
-                // Creatures
+                // Creatures Logic (Movement & Aggression)
                 setCreatures(prev => prev.map(c => {
                     if (c.hp <= 0) return null;
                     let nextC = { ...c };
-                    if (tickRef.current % 20 === 0 && Math.random() < 0.1) {
-                        nextC.targetX = Math.max(0, Math.min(MAP_WIDTH-1, c.x + rand(-3, 3)));
-                        nextC.targetY = Math.max(0, Math.min(MAP_HEIGHT-1, c.y + rand(-3, 3)));
+                    let moveX = 0;
+                    let moveY = 0;
+
+                    // Hostile Creature Logic (Wolf, Bear)
+                    if (['WOLF', 'BEAR'].includes(nextC.type)) {
+                        // Find detected Sim
+                        let targetSim = null;
+                        let minDist = 6; // Detection radius
+                        
+                        sims.forEach(s => {
+                            if (s.state !== 'DEAD') {
+                                const d = Math.sqrt((s.x - nextC.x)**2 + (s.y - nextC.y)**2);
+                                if (d < minDist) { minDist = d; targetSim = s; }
+                            }
+                        });
+
+                        if (targetSim) {
+                            if (minDist > 0.8) { // Chase
+                                const dx = targetSim.x - nextC.x;
+                                const dy = targetSim.y - nextC.y;
+                                moveX = Math.sign(dx) * 0.04; 
+                                moveY = Math.sign(dy) * 0.04;
+                            }
+                            // Attack logic handled in setSims (Sim takes damage) to avoid state sync issues
+                        } else {
+                            // Wander if no target
+                            if (tickRef.current % 20 === 0 && Math.random() < 0.1) {
+                                nextC.targetX = Math.max(0, Math.min(MAP_WIDTH-1, c.x + rand(-3, 3)));
+                                nextC.targetY = Math.max(0, Math.min(MAP_HEIGHT-1, c.y + rand(-3, 3)));
+                            }
+                        }
+                    } else {
+                        // Passive creatures wander
+                        if (tickRef.current % 20 === 0 && Math.random() < 0.1) {
+                            nextC.targetX = Math.max(0, Math.min(MAP_WIDTH-1, c.x + rand(-3, 3)));
+                            nextC.targetY = Math.max(0, Math.min(MAP_HEIGHT-1, c.y + rand(-3, 3)));
+                        }
                     }
-                    if (nextC.targetX !== null) {
-                        const speed = c.type === 'RABBIT' ? 0.08 : c.type === 'DEER' ? 0.06 : 0.04;
-                        const dx = nextC.targetX - nextC.x; const dy = nextC.targetY - nextC.y;
+
+                    // Execute Move (Chase or Wander)
+                    if (nextC.targetX !== null && !moveX && !moveY) {
+                        const dx = nextC.targetX - nextC.x;
+                        const dy = nextC.targetY - nextC.y;
                         if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) nextC.targetX = null;
-                        else { nextC.x += Math.sign(dx) * speed; nextC.y += Math.sign(dy) * speed; nextC.dir = Math.sign(dx); nextC.animFrame++; }
+                        else {
+                            const speed = c.type === 'RABBIT' ? 0.08 : 0.04;
+                            moveX = Math.sign(dx) * speed;
+                            moveY = Math.sign(dy) * speed;
+                        }
                     }
+
+                    if (moveX || moveY) {
+                        nextC.x += moveX;
+                        nextC.y += moveY;
+                        nextC.dir = Math.sign(moveX);
+                        nextC.animFrame++;
+                    }
+
                     return nextC;
                 }).filter(Boolean));
 
@@ -386,6 +434,34 @@
                         nextS.hunger -= hLoss; nextS.energy -= eLoss;
                         if (nextS.hunger <= 0) nextS.hp -= 0.5;
                         if (nextS.hp <= 0) { nextS.state = 'DEAD'; setEvents(e => [`${nextS.sign} 回歸了大地...`, ...e]); return nextS; }
+                    }
+
+                    // 1. Check for nearby Hostiles & Self Defense
+                    let nearestHostile = null;
+                    let hostileDist = Infinity;
+                    creatures.forEach(c => {
+                        if (['WOLF', 'BEAR'].includes(c.type) && c.hp > 0) {
+                            const d = Math.sqrt((c.x - nextS.x)**2 + (c.y - nextS.y)**2);
+                            if (d < hostileDist) { hostileDist = d; nearestHostile = c; }
+                        }
+                    });
+
+                    // Trigger Defense
+                    if (nearestHostile && hostileDist < 4) {
+                        // Take Damage if close
+                        if (hostileDist < 1 && tickRef.current % 40 === 0) {
+                            const dmg = nearestHostile.type === 'BEAR' ? 15 : 8;
+                            nextS.hp -= dmg;
+                            setParticles(p => [...p, {x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, color: '#ff0000', speed:1, life:10}]);
+                            if (nextS.hp <= 0) { nextS.state = 'DEAD'; return nextS; }
+                        }
+
+                        // Switch to Combat Mode
+                        if (nextS.state !== 'HUNT' && nextS.state !== 'DEFEND') {
+                            nextS.state = 'DEFEND';
+                            nextS.targetId = nearestHostile.id;
+                            nextS.thought = '被攻擊了！反擊！';
+                        }
                     }
 
                     // FSM
@@ -410,18 +486,26 @@
                             // Work / Creativity Logic
                             const needsWood = tribe.wood < 50;
                             const needsStone = tribe.stone < 20;
+                            const needsFood = tribe.food < 50;
                             const roll = Math.random();
 
-                            if (needsWood && roll < 0.6) {
+                            // Hunting Priority
+                            if (needsFood && roll < 0.7) {
+                                if (nextS.tools.spear) {
+                                    nextS.state = 'HUNT'; nextS.thought = '去打獵！';
+                                } else if (tribe.wood >= 10 && tribe.stone >= 5) {
+                                    nextS.state = 'CRAFT_SPEAR'; nextS.thought = '做把長矛...'; nextS.actionTimer = 50;
+                                } else {
+                                    nextS.state = 'GATHER'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2);
+                                }
+                            }
+                            else if (needsWood && roll < 0.6) {
                                 if (nextS.tools.axe) {
-                                    // Find Tree
                                     const tree = map.flat().find(t => (t.decoration === 'TREE_OAK' || t.decoration === 'TREE_PINE') && Math.random() < 0.2);
                                     if (tree) { nextS.state = 'CHOP'; nextS.targetX = tree.x; nextS.targetY = tree.y; nextS.thought = '去伐木。'; nextS.actionTimer = 60; }
                                 } else if (tribe.wood >= 10 && tribe.stone >= 5) {
-                                    // Craft Axe
                                     nextS.state = 'CRAFT_AXE'; nextS.thought = '我需要工具...'; nextS.actionTimer = 50;
                                 } else {
-                                    // Gather normally
                                     nextS.state = 'GATHER'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2);
                                 }
                             } else if (needsStone && roll > 0.6) {
@@ -431,7 +515,6 @@
                                 } else if (tribe.wood >= 10 && tribe.stone >= 5) {
                                     nextS.state = 'CRAFT_PICK'; nextS.thought = '我想做把鎬子。'; nextS.actionTimer = 50;
                                 } else {
-                                    // 新增：如果缺石頭且沒工具沒資源，就先去採集
                                     nextS.state = 'GATHER'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2);
                                 }
                             } else {
@@ -439,41 +522,76 @@
                             }
                         }
                     } 
-                    else if (nextS.state === 'CRAFT_AXE' || nextS.state === 'CRAFT_PICK') {
+                    else if (nextS.state === 'CRAFT_AXE' || nextS.state === 'CRAFT_PICK' || nextS.state === 'CRAFT_SPEAR') {
                         nextS.actionTimer--;
                         if (nextS.actionTimer <= 0) {
                             if (nextS.state === 'CRAFT_AXE') { nextS.tools.axe = true; setTribe(t => ({...t, wood: t.wood-10, stone: t.stone-5})); setEvents(e => [`💡 ${nextS.sign} 製作了石斧`, ...e]); }
-                            else { nextS.tools.pick = true; setTribe(t => ({...t, wood: t.wood-10, stone: t.stone-5})); setEvents(e => [`💡 ${nextS.sign} 製作了石鎬`, ...e]); }
+                            else if (nextS.state === 'CRAFT_PICK') { nextS.tools.pick = true; setTribe(t => ({...t, wood: t.wood-10, stone: t.stone-5})); setEvents(e => [`💡 ${nextS.sign} 製作了石鎬`, ...e]); }
+                            else { nextS.tools.spear = true; setTribe(t => ({...t, wood: t.wood-10, stone: t.stone-5})); setEvents(e => [`💡 ${nextS.sign} 製作了長矛`, ...e]); }
                             nextS.state = 'IDLE'; nextS.thought = '完成工具了！';
-                            // Add particle effect
                             setParticles(prev => [...prev, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, speed: -1, life: 20, color: '#fff' }]);
+                        }
+                    }
+                    else if (nextS.state === 'HUNT' || nextS.state === 'DEFEND') {
+                        // Combat Logic
+                        let target = null;
+                        // If Defending, target is specific; if Hunting, find closest prey
+                        if (nextS.state === 'DEFEND') {
+                            target = creatures.find(c => c.id === nextS.targetId);
+                        } else {
+                            target = creatures.reduce((prev, curr) => {
+                                if (curr.hp <= 0) return prev;
+                                const d = Math.sqrt((curr.x - nextS.x)**2 + (curr.y - nextS.y)**2);
+                                return (d < prev.d) ? {c: curr, d: d} : prev;
+                            }, {c: null, d: Infinity}).c;
+                        }
+
+                        if (target && target.hp > 0) {
+                            nextS.targetX = target.x;
+                            nextS.targetY = target.y;
+                            const dist = Math.sqrt((nextS.x - target.x)**2 + (nextS.y - target.y)**2);
+                            
+                            if (dist < 1.5) {
+                                nextS.actionTimer--;
+                                if (nextS.actionTimer <= 0) {
+                                    nextS.actionTimer = 40; // Attack Rate
+                                    
+                                    // Deal Damage
+                                    setCreatures(prevC => prevC.map(c => {
+                                        if (c.id === target.id) {
+                                            let dmg = 5; // Bare hands
+                                            if (nextS.tools.axe || nextS.tools.pick) dmg = 10;
+                                            if (nextS.tools.spear) dmg = 25;
+                                            
+                                            const newHp = c.hp - dmg;
+                                            if (newHp <= 0) {
+                                                setTribe(t => ({...t, food: t.food + (c.type==='BEAR'?50:20)}));
+                                                setEvents(e => [`⚔️ ${nextS.sign} 擊敗了 ${c.type}`, ...e]);
+                                            }
+                                            return { ...c, hp: newHp };
+                                        }
+                                        return c;
+                                    }));
+                                    nextS.thought = '喝！';
+                                    setParticles(prev => [...prev, { x: target.x*TILE_SIZE, y: target.y*TILE_SIZE, speed: 0, life: 10, color: '#ff0000' }]);
+                                }
+                            }
+                        } else {
+                            nextS.state = 'IDLE';
+                            if (nextS.state === 'HUNT') nextS.thought = '找不到獵物...';
+                            else nextS.thought = '安全了。';
                         }
                     }
                     else if (nextS.state === 'CHOP' || nextS.state === 'MINE') {
                         if (distToTarget < 0.5) {
                             nextS.actionTimer--;
                             if (nextS.actionTimer <= 0) {
-                                // Resource collected
                                 if (nextS.state === 'CHOP') { 
-                                    setTribe(t => ({...t, wood: t.wood + 20})); 
-                                    nextS.thought = '木頭到手。';
-                                    setMap(prevMap => {
-                                        const newMap = [...prevMap];
-                                        const row = [...newMap[Math.round(nextS.targetY)]];
-                                        row[Math.round(nextS.targetX)] = { ...row[Math.round(nextS.targetX)], decoration: null };
-                                        newMap[Math.round(nextS.targetY)] = row;
-                                        return newMap;
-                                    });
+                                    setTribe(t => ({...t, wood: t.wood + 20})); nextS.thought = '木頭到手。';
+                                    setMap(prevMap => { const nm = [...prevMap]; nm[Math.round(nextS.targetY)][Math.round(nextS.targetX)].decoration = null; return nm; });
                                 } else { 
-                                    setTribe(t => ({...t, stone: t.stone + 10})); 
-                                    nextS.thought = '採到石頭了。'; 
-                                    setMap(prevMap => {
-                                        const newMap = [...prevMap];
-                                        const row = [...newMap[Math.round(nextS.targetY)]];
-                                        row[Math.round(nextS.targetX)] = { ...row[Math.round(nextS.targetX)], decoration: null };
-                                        newMap[Math.round(nextS.targetY)] = row;
-                                        return newMap;
-                                    });
+                                    setTribe(t => ({...t, stone: t.stone + 10})); nextS.thought = '採到石頭了。'; 
+                                    setMap(prevMap => { const nm = [...prevMap]; nm[Math.round(nextS.targetY)][Math.round(nextS.targetX)].decoration = null; return nm; });
                                 }
                                 nextS.state = 'IDLE';
                             }
@@ -481,7 +599,6 @@
                     }
                     else if (nextS.state === 'GATHER') {
                         if (distToTarget < 0.5) { 
-                            // 增加石頭產出，解決卡資源問題
                             nextS.inventory.food += 10; 
                             setTribe(t => ({...t, food: t.food + 5, wood: t.wood + 2, stone: t.stone + 1})); 
                             nextS.state = 'IDLE'; nextS.thought = '撿到一些東西。'; 
@@ -503,7 +620,7 @@
                     }
                     return nextS;
                 }));
-            }, [time, weather, farms, tribe, isGameOver, map]); // Added map dependency
+            }, [time, weather, farms, tribe, isGameOver, map, creatures]); // Added creatures dependency
 
             const isInBase = (sim) => Math.sqrt((sim.x - MAP_WIDTH/2)**2 + (sim.y - MAP_HEIGHT/2)**2) < 5;
 
@@ -604,6 +721,9 @@
                 } else if (s.tools.pick || s.state === 'MINE' || s.state === 'CRAFT_PICK') {
                     ctx.fillStyle = PALETTE.TOOL_AXE; ctx.fillRect(px+20, py+10+bounce, 2, 8);
                     ctx.fillStyle = PALETTE.TOOL_HEAD; ctx.fillRect(px+17, py+10+bounce, 8, 2);
+                } else if (s.tools.spear || s.state === 'HUNT' || s.state === 'DEFEND' || s.state === 'CRAFT_SPEAR') {
+                    ctx.fillStyle = PALETTE.TOOL_AXE; ctx.fillRect(px+22, py+6+bounce, 2, 14); // Shaft
+                    ctx.fillStyle = PALETTE.TOOL_SPEAR; ctx.fillRect(px+21, py+4+bounce, 4, 3); // Tip
                 }
 
                 if (s.state === 'SLEEP') { ctx.font = '10px monospace'; ctx.fillStyle = '#fff'; ctx.fillText('zZ', px+20, py); }
@@ -761,6 +881,7 @@
                                                     <div className="flex justify-between text-gray-400 mt-1 border-t border-gray-800 pt-1">
                                                         <span>工具</span>
                                                         <span>{[selectedObj.tools.axe?'斧':'', selectedObj.tools.pick?'鎬':''].filter(Boolean).join(',') || '無'}</span>
+                                                        {selectedObj.tools.spear && <span>, 長矛</span>}
                                                     </div>
                                                 </div>
 
