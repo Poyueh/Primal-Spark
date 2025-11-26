@@ -118,7 +118,7 @@
             LEAF_L: '#66bb6a', LEAF_D: '#2e7d32', LEAF_PINE: '#1b5e20',
             FLOWER_R: '#e57373', FLOWER_Y: '#fff176', MUSHROOM: '#f44336',
             FUR_WOLF: '#90a4ae', FUR_BEAR: '#4e342e', FUR_DEER: '#a1887f', FUR_RABBIT: '#fafafa',
-            DINO_GREEN: '#558b2f', DINO_EYE: '#ffeb3b', // New Dino colors
+            DINO_GREEN: '#558b2f', DINO_EYE: '#ffeb3b', 
             WHITE: '#ffffff', GOLD: '#ffd700', RED: '#ff0000',
             TOOL_AXE: '#8d6e63', TOOL_HEAD: '#90a4ae', TOOL_SPEAR: '#d7ccc8',
             SICK_SKIN: '#88aa88',
@@ -128,16 +128,16 @@
 
         const DISASTERS = {
             NONE: { name: '無', color: null },
-            METEOR: { name: '🔥 星殞', color: 'rgba(80, 20, 10, 0.4)' },
-            PLAGUE: { name: '🦠 瘟疫', color: 'rgba(20, 50, 20, 0.3)' },
-            DROUGHT: { name: '☀ 乾旱', color: 'rgba(100, 80, 0, 0.3)' },
-            FLOOD: { name: '🌊 洪水', color: 'rgba(0, 50, 100, 0.4)' },
-            LOCUSTS: { name: '🦗 蝗災', color: 'rgba(60, 50, 20, 0.3)' },
-            BLIZZARD: { name: '❄ 凜冬', color: 'rgba(200, 240, 255, 0.5)' },
-            QUAKE: { name: '🌋 地震', color: 'rgba(50, 30, 30, 0.5)' },
-            BEASTS: { name: '🐺 獸潮', color: 'rgba(50, 0, 0, 0.2)' },
-            DARKNESS: { name: '🌑 永夜', color: 'rgba(0, 0, 0, 0.8)' },
-            THUNDER: { name: '⚡ 雷罰', color: 'rgba(50, 50, 80, 0.4)' }
+            METEOR: { name: '🔥 星殞', color: 'rgba(255, 50, 0, 0.3)' },
+            PLAGUE: { name: '🦠 瘟疫', color: 'rgba(20, 100, 20, 0.4)' },
+            DROUGHT: { name: '☀ 乾旱', color: 'rgba(255, 140, 0, 0.4)' },
+            FLOOD: { name: '🌊 洪水', color: 'rgba(0, 60, 200, 0.5)' },
+            LOCUSTS: { name: '🦗 蝗災', color: 'rgba(100, 80, 20, 0.4)' },
+            BLIZZARD: { name: '❄ 凜冬', color: 'rgba(200, 240, 255, 0.6)' },
+            QUAKE: { name: '🌋 地震', color: 'rgba(80, 40, 40, 0.4)' },
+            BEASTS: { name: '🐺 獸潮', color: 'rgba(100, 0, 0, 0.3)' },
+            DARKNESS: { name: '🌑 永夜', color: 'rgba(0, 0, 0, 0.9)' },
+            THUNDER: { name: '⚡ 雷罰', color: 'rgba(80, 80, 120, 0.4)' }
         };
 
         const WEATHER = {
@@ -198,55 +198,32 @@
             WOLF: ["....................",".......K............","......KGK...........",".....KGGGK..........","....KGGGGGK...K.....","...KGGGGGGGGKKGK....","...KGGGGGGGGGGGK....","....KGGGGGGGGGK.....","....K.K.....K.K....."],
             BEAR: [".........KK...KK....","......KKKBBKKKBBK...",".....KBBBBBBBBBBBK..","....KBBBBBBBBBBBBBK.","...KBBBBBBBBBBBBBBBK","...KBBBBBBBBBBBBBBBK","...KBBBBBBBBBBBBBBBK","....KB.B.B.....B.B..","....KK.K.K.....K.K.."],
             DEER: ["...........K...K....","............K.K.....","..........KKKBKK....",".........KBBBBBBK...","........KBBBBBBBBK..",".......KBBBBBBBBBK..",".......K.B.....B....",".......K.K.....K...."],
-            
-            // New Giant Beast: Dinosaur (T-Rex Style)
-            DINOSAUR: [
-                "........................",
-                "................KKKKK...",
-                "...............KGGGGGK..",
-                "...............KGGYGGK..", // Y for eye
-                "...............KGGGGGK..",
-                ".......KKKK...KGGGGGK...",
-                ".....KKGGGGKKKGGGGGK....",
-                "....KGGGGGGGGGGGGGK.....",
-                "...KGGGGGGGGGGGGGK......",
-                "...KGGGGGGGGGGGGK.......",
-                "....KGGGGGGGGGGK........",
-                ".....KGGK..KGGK.........",
-                "......KK....KK.........."
-            ],
-            
             WHEAT_GROW: ["................","....1......1....","...111....111...","....1......1....","................"],
             WHEAT_READY: ["....3......3....","...333....333...","...333....333...","....3......3....","....3......3...."],
-            
-            SKULL: [
-                "........................",
-                "........................",
-                ".........KKKK...........",
-                "........KWWWWK..........",
-                ".......KWBWWBWK.........",
-                ".......KWWWWWWK.........",
-                "........KKBKKBK.........",
-                ".........KKKKK..........",
-                ".......KK.....KK........",
-                "......K.........K.......",
-                "........................",
-                "........................"
+            // RE-DESIGNED GIANT T-REX (Centered & Bigger)
+            DINOSAUR: [
+                "...........KKKKKKKK.....",
+                "..........KGGGGGGGGK....",
+                ".........KGGGGGGGGGGK...",
+                ".........KGGGYGGGGGGK...", // Head
+                ".........KGGGGGGGGGGK...",
+                ".........KGGGGGGGGGK....",
+                "........KGGGGGGGGGK.....",
+                ".......KGGGGGGGGGGK.....",
+                ".....KKGGGGGGGGGGGKK....", // Body
+                "...KKGGGGGGGGGGGGGGGKK..",
+                "..KGGGGGGGGGGGGGGGGGGGK.",
+                ".KGGGGGGGGGGGGGGGGGGGGGK",
+                ".KGGGGKGGGGGGGGG KGGGGGK",
+                ".KKKK..KGGGGGGK...KGGGGK", // Legs
+                ".......KGGGGGGK...KGGGGK",
+                "........KK..KK.....KK.KK"
             ],
-
-            // Building Stages
-            CAVE: [ 
-                ".....KKKKKKKKK.....","...KKXXXXXXXXXKK...","..KXXXXXXXXXXXXXK..",".KXXXXXXXXXXXXXXXK.",".KXXXXXXXXXXXXXXXK.","KXXXXXXXXXXXXXXXXXK","KXXXXXXXXXXXXXXXXXK","KXXXXXX.....XXXXXXK","KXXXXXX.....XXXXXXK","KXXXXXX.....XXXXXXK"
-            ],
-            HUT: [
-                ".........K.........",".......KRRK........","......KRRRRK.......",".....KRRRRRRK......","....KRRRRRRRRK.....","...KRRRRRRRRRRK....","..KWWWWWWWWWWWWK...","..KW..W....W..WK...","..KW..W....W..WK...","..KWWWW....WWWWK..."
-            ],
-            HOUSE: [
-                "...................","...KKKKKKKKKKKKK...","...KRRRRRRRRRRRK...","...KRRRRRRRRRRRK...","...KRRRRRRRRRRRK...","...KKKKKKKKKKKKK...","...KWWWWWWWWWWWK...","...KWWWWWWWWWWWK...","...KWW.WWWW.WWWK...","...KWW.WWWW.WWWK..."
-            ],
-            CASTLE: [
-                ".KK...KK...KK...KK.",".KWK.KWK...KWK.KWK.",".KWWKWWK...KWWKWWK.",".KWWWWWKKKKKWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWW.WWWWWWWWK.",".KWWWWWW.WWWWWWWWK.",".KWWWWWW.WWWWWWWWK."
-            ]
+            SKULL: ["........................","........................",".........KKKK...........","........KWWWWK..........",".......KWBWWBWK.........",".......KWWWWWWK.........","........KKBKKBK.........",".........KKKKK..........",".......KK.....KK........","......K.........K.......","........................","........................"],
+            CAVE: [".....KKKKKKKKK.....","...KKXXXXXXXXXKK...","..KXXXXXXXXXXXXXK..",".KXXXXXXXXXXXXXXXK.",".KXXXXXXXXXXXXXXXK.","KXXXXXXXXXXXXXXXXXK","KXXXXXXXXXXXXXXXXXK","KXXXXXX.....XXXXXXK","KXXXXXX.....XXXXXXK","KXXXXXX.....XXXXXXK"],
+            HUT: [".........K.........",".......KRRK........","......KRRRRK.......",".....KRRRRRRK......","....KRRRRRRRRK.....","...KRRRRRRRRRRK....","..KWWWWWWWWWWWWK...","..KW..W....W..WK...","..KW..W....W..WK...","..KWWWW....WWWWK..."],
+            HOUSE: ["...................","...KKKKKKKKKKKKK...","...KRRRRRRRRRRRK...","...KRRRRRRRRRRRK...","...KRRRRRRRRRRRK...","...KKKKKKKKKKKKK...","...KWWWWWWWWWWWK...","...KWWWWWWWWWWWK...","...KWW.WWWW.WWWK...","...KWW.WWWW.WWWK..."],
+            CASTLE: [".KK...KK...KK...KK.",".KWK.KWK...KWK.KWK.",".KWWKWWK...KWWKWWK.",".KWWWWWKKKKKWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWW.WWWWWWWWK.",".KWWWWWW.WWWWWWWWK.",".KWWWWWW.WWWWWWWWK."]
         };
 
         const renderMatrix = (ctx, matrix, colors, offsetX = 0, offsetY = 0) => {
@@ -303,15 +280,10 @@
             makeSprite('wolf', SPRITE_MATRICES.WOLF, {'G': PALETTE.FUR_WOLF}, 1, 1, 4, 12);
             makeSprite('bear', SPRITE_MATRICES.BEAR, {'B': PALETTE.FUR_BEAR}, 1.5, 1.5, 4, 10);
             makeSprite('deer', SPRITE_MATRICES.DEER, {'B': PALETTE.FUR_DEER}, 1, 1.5, 4, 10);
-            makeSprite('dinosaur', SPRITE_MATRICES.DINOSAUR, {'G': PALETTE.DINO_GREEN, 'Y': PALETTE.DINO_EYE}, 2, 2, 16, 16); // Big Sprite
-            
+            makeSprite('dinosaur', SPRITE_MATRICES.DINOSAUR, {'G': PALETTE.DINO_GREEN, 'Y': PALETTE.DINO_EYE}, 2, 2, 16, 16); 
             makeSprite('wheat_1', SPRITE_MATRICES.WHEAT_GROW, { '1': PALETTE.WHEAT_1 }, 1, 1, 8, 16);
             makeSprite('wheat_2', SPRITE_MATRICES.WHEAT_READY, { '3': PALETTE.WHEAT_3 }, 1, 1, 8, 16);
-            
-            // Skull Sprite
             makeSprite('skull', SPRITE_MATRICES.SKULL, { 'W': PALETTE.BONE_WHITE, 'B': PALETTE.OUTLINE }, 1, 1, 8, 10);
-
-            // Bases
             makeSprite('cave', SPRITE_MATRICES.CAVE, { 'X': PALETTE.CAVE_DARK, 'K': PALETTE.MOUNTAIN_FG }, 2, 2, 16, 24);
             makeSprite('hut', SPRITE_MATRICES.HUT, { 'R': PALETTE.HUT_ROOF, 'W': PALETTE.WOOD_L }, 2, 2, 16, 24);
             makeSprite('house', SPRITE_MATRICES.HOUSE, { 'R': PALETTE.HOUSE_ROOF, 'W': PALETTE.STONE_L }, 2, 2, 16, 24);
@@ -425,13 +397,17 @@
             const [disaster, setDisaster] = useState(DISASTERS.NONE);
             const [disasterTimer, setDisasterTimer] = useState(0);
             const [shake, setShake] = useState(0);
+            // New State for Log Toggle
             const [isLogOpen, setIsLogOpen] = useState(true);
+            const [flash, setFlash] = useState(0);
 
             const canvasRef = useRef(null);
             const tickRef = useRef(0);
             const requestRef = useRef();
             const logEndRef = useRef(null);
+            const actionQueue = useRef([]); // Queue for Map modifications
 
+            // Scroll to bottom when events change 
             useEffect(() => {
                 if (isLogOpen) {
                     logEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -445,6 +421,7 @@
                 setCreatures(generateCreaturesData());
             }, []);
 
+            // Check for Game Over (Restored)
             useEffect(() => {
                 if (sims.length > 0 && sims.every(s => s.state === 'DEAD') && !isGameOver) {
                     setIsGameOver(true);
@@ -541,6 +518,8 @@
                         return prev - 1;
                     });
                 }
+                
+                if (flash > 0) setFlash(f => Math.max(0, f - 0.1));
 
                 if (tickRef.current % 10 === 0 && disaster === DISASTERS.NONE && Math.random() < 0.005) {
                     const r = Math.random();
@@ -548,10 +527,39 @@
                     setWeather(nextW); 
                 }
 
-                if (disaster === DISASTERS.QUAKE) setShake(prev => (tickRef.current % 4 === 0 ? rand(-3, 3) : 0)); else setShake(0);
+                if (disaster === DISASTERS.QUAKE) setShake(prev => (tickRef.current % 4 === 0 ? rand(-5, 5) : 0)); else setShake(0);
                 
+                if (tickRef.current % 50 === 0 && disaster === DISASTERS.NONE && weather !== WEATHER.SNOW) {
+                    const gx = rand(1, MAP_WIDTH-2);
+                    const gy = rand(1, MAP_HEIGHT-2);
+                    actionQueue.current.push({type: 'GROW', x: gx, y: gy});
+                }
+
+                if (disaster === DISASTERS.METEOR && tickRef.current % 5 === 0) {
+                     setParticles(prev => [...prev, { x: rand(0, MAP_WIDTH * TILE_SIZE), y: -50, speed: rand(12,20), life: 50, color: '#ff4500', type: 'METEOR', vx: -2, vy: rand(12,20) }]);
+                }
+                if (disaster === DISASTERS.THUNDER && Math.random() < 0.03) {
+                    setFlash(1.0); 
+                    const lx = rand(1, MAP_WIDTH-2);
+                    const ly = rand(1, MAP_HEIGHT-2);
+                    actionQueue.current.push({type: 'DESTROY', x: lx, y: ly}); 
+                    setParticles(prev => [...prev, { x: lx*TILE_SIZE, y: ly*TILE_SIZE, life: 10, color: '#fff', type: 'FLASH', vx:0, vy:0 }]);
+                }
+                if (disaster === DISASTERS.PLAGUE && tickRef.current % 10 === 0) {
+                    setParticles(prev => [...prev, { x: rand(0, MAP_WIDTH * TILE_SIZE), y: rand(0, MAP_HEIGHT * TILE_SIZE), life: 100, color: '#4caf50', type: 'SPORE', vx: rand(-0.5, 0.5), vy: rand(-0.5, 0.5) }]);
+                }
+
                 setParticles(prev => prev.map(p => {
-                    return { ...p, x: p.x + (p.vx||0), y: p.y + (p.vy||0), life: p.life - 1 };
+                    let np = { ...p, x: p.x + (p.vx||0), y: p.y + (p.vy||0), life: p.life - 1 };
+                    if (p.type === 'METEOR' && (np.life <= 0 || np.y > MAP_HEIGHT * TILE_SIZE)) {
+                         const mx = Math.floor(p.x / TILE_SIZE);
+                         const my = Math.floor(p.y / TILE_SIZE);
+                         if (mx > 0 && mx < MAP_WIDTH && my > 0 && my < MAP_HEIGHT) {
+                             actionQueue.current.push({type: 'DESTROY', x: mx, y: my});
+                         }
+                    }
+                    if (disaster === DISASTERS.BLIZZARD && p.type === 'SNOW') { np.x -= 2; }
+                    return np;
                 }).filter(p => p.life > 0));
 
                 setFarms(prev => prev.map(f => {
@@ -559,7 +567,6 @@
                     return { ...f, stage: Math.min(100, f.stage + 0.1) };
                 }));
 
-                // Co-op Logic: Find if any Sim is fighting a giant beast
                 let bossTargetId = null;
                 sims.forEach(s => {
                     if (s.state === 'DEFEND' || s.state === 'HUNT') {
@@ -572,7 +579,6 @@
                     if (c.hp <= 0) return null;
                     let nextC = { ...c };
                     
-                    // Creature Damage Logic
                     sims.forEach(s => {
                         if ((s.state === 'DEFEND' || s.state === 'HUNT' || s.state === 'FIGHTING') && s.targetId === nextC.id && Math.sqrt((s.x-nextC.x)**2 + (s.y-nextC.y)**2) < 2) {
                              if (tickRef.current % 20 === 0) {
@@ -590,25 +596,20 @@
 
                     if (nextC.hp <= 0) return null;
 
-                    // Beast Aggression
                     if (['WOLF', 'BEAR', 'DINOSAUR'].includes(nextC.type)) {
                         let targetSim = null;
-                        let minDist = nextC.type === 'DINOSAUR' ? 12 : 6; // Dino has huge range
+                        let minDist = nextC.type === 'DINOSAUR' ? 12 : 6; 
                         sims.forEach(s => { if (s.state !== 'DEAD' && !s.hidden) { const d = Math.sqrt((s.x - nextC.x)**2 + (s.y - nextC.y)**2); if (d < minDist) { minDist = d; targetSim = s; } } });
                         
                         if (targetSim) {
                              const dx = targetSim.x - nextC.x; const dy = targetSim.y - nextC.y;
-                             const speed = nextC.type === 'DINOSAUR' ? 0.03 : 0.04; // Dino is slow but deadly
+                             const speed = nextC.type === 'DINOSAUR' ? 0.03 : 0.04; 
                              nextC.x += Math.sign(dx) * speed; nextC.y += Math.sign(dy) * speed;
                              nextC.dir = Math.sign(dx);
-                             
-                             // Attack Sim
                              if (minDist < 1 && tickRef.current % 30 === 0) {
-                                 // Damage is handled in Sim loop, but visuals here
                                  setParticles(p => [...p, { x: targetSim.x*TILE_SIZE, y: targetSim.y*TILE_SIZE, life: 20, color: '#ff0000', vy: -2, text: '💥' }]);
                              }
                         } else {
-                             // Wander
                              if (Math.random() < 0.02) { nextC.targetX = rand(1, MAP_WIDTH-2); nextC.targetY = rand(1, MAP_HEIGHT-2); }
                              if (nextC.targetX) {
                                 const dx = nextC.targetX - nextC.x; const dy = nextC.targetY - nextC.y;
@@ -617,7 +618,6 @@
                              }
                         }
                     } else {
-                         // Passive movement
                          if (Math.random() < 0.05) { nextC.targetX = rand(1, MAP_WIDTH-2); nextC.targetY = rand(1, MAP_HEIGHT-2); }
                          if (nextC.targetX) {
                             const dx = nextC.targetX - nextC.x; const dy = nextC.targetY - nextC.y;
@@ -625,7 +625,6 @@
                             else { nextC.x += Math.sign(dx)*0.04; nextC.y += Math.sign(dy)*0.04; nextC.dir=Math.sign(dx); nextC.animFrame++; }
                         }
                     }
-                    
                     nextC.x = clamp(nextC.x, 0, MAP_WIDTH-1); nextC.y = clamp(nextC.y, 0, MAP_HEIGHT-1);
                     return nextC;
                 }).filter(Boolean));
@@ -639,7 +638,6 @@
                         if (nextS.buffTimer > 0) nextS.buffTimer--;
                         if (nextS.mateCooldown > 0) nextS.mateCooldown--;
 
-                        // Taking Damage from Beasts
                         creatures.forEach(c => {
                             if (['WOLF', 'BEAR', 'DINOSAUR'].includes(c.type) && c.hp > 0) {
                                 const dist = Math.sqrt((c.x - nextS.x)**2 + (c.y - nextS.y)**2);
@@ -647,7 +645,7 @@
                                     if (tickRef.current % 30 === 0) {
                                         const dmg = c.type === 'DINOSAUR' ? 40 : (c.type === 'BEAR' ? 15 : 8);
                                         nextS.hp -= dmg;
-                                        if (nextS.hp <= 0) { nextS.state = 'DEAD'; addEvent(`☠️ ${nextS.sign} 被 ${c.type} 吞噬了！`); }
+                                        if (nextS.hp <= 0) { nextS.state = 'DEAD'; nextS.hidden = false; addEvent(`☠️ ${nextS.sign} 被 ${c.type} 吞噬了！`); }
                                     }
                                 }
                             }
@@ -659,11 +657,9 @@
                             nextS.hunger -= 0.2; nextS.energy -= 0.1;
                             if (nextS.hunger > 80 && nextS.energy > 80) nextS.mood = Math.min(100, nextS.mood + 1);
                             if (nextS.hunger < 30 || nextS.energy < 30 || nextS.sick) nextS.mood = Math.max(0, nextS.mood - 1);
-                            
-                            if (nextS.hunger <= 0 || nextS.hp <= 0) { nextS.state = 'DEAD'; addEvent(`${nextS.sign} 逝去了...`); return nextS; }
+                            if (nextS.hunger <= 0 || nextS.hp <= 0) { nextS.state = 'DEAD'; nextS.hidden = false; addEvent(`${nextS.sign} 逝去了...`); return nextS; }
                         }
                         
-                        // PvP Check
                         prev.forEach(attacker => {
                             if (attacker.id !== nextS.id && attacker.state === 'FIGHTING' && attacker.targetId === nextS.id && attacker.state !== 'DEAD') {
                                 const dist = Math.sqrt((attacker.x - nextS.x)**2 + (attacker.y - nextS.y)**2);
@@ -679,14 +675,13 @@
                                             else { nextS.state = 'FLEE'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2); }
                                         }
                                         setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 20, color: '#ff0000', vy: -2, text: `-${dmg}` }]);
-                                        if (nextS.hp <= 0) { addEvent(`☠️ ${attacker.sign} 殺害了 ${nextS.sign}！`); nextS.state = 'DEAD'; }
+                                        if (nextS.hp <= 0) { addEvent(`☠️ ${attacker.sign} 殺害了 ${nextS.sign}！`); nextS.state = 'DEAD'; nextS.hidden = false; }
                                     }
                                 }
                             }
                         });
                         if (nextS.state === 'DEAD') return nextS;
 
-                        // Conflict Trigger
                         if (nextS.mood < 20 && !nextS.hidden && nextS.state !== 'FIGHTING' && nextS.state !== 'FLEE') {
                             const victim = prev.find(v => v.id !== nextS.id && !v.hidden && v.state !== 'DEAD' && Math.sqrt((v.x-nextS.x)**2+(v.y-nextS.y)**2) < 3);
                             if (victim) {
@@ -695,7 +690,6 @@
                             }
                         }
 
-                        // Reproduction
                         if (nextS.mood > 80 && tribe.food > 50 && prev.length + newBabies.length < MAX_POPULATION && nextS.age > 16 && nextS.mateCooldown <= 0 && !nextS.hidden) {
                             const partner = prev.find(p => p.id !== nextS.id && !p.hidden && p.age > 16 && p.gender !== nextS.gender && Math.sqrt((p.x-nextS.x)**2+(p.y-nextS.y)**2) < 1.5);
                             if (partner && Math.random() < 0.005) {
@@ -719,36 +713,26 @@
                         const inBase = isInBase(nextS);
 
                         if (nextS.state === 'IDLE') {
-                            // Combat / Defense Check
                             if (!nextS.hidden) {
-                                // Co-op: Join fight against boss
                                 if (bossTargetId && (nextS.tools.spear || nextS.tools.axe) && nextS.hp > 40) {
-                                    nextS.state = 'DEFEND';
-                                    nextS.targetId = bossTargetId;
-                                    nextS.thought = '合力討伐！';
+                                    nextS.state = 'DEFEND'; nextS.targetId = bossTargetId; nextS.thought = '合力討伐！';
                                 } else {
                                     const nearestEnemy = creatures.find(c => ['WOLF','BEAR','DINOSAUR'].includes(c.type) && c.hp > 0 && Math.sqrt((c.x-nextS.x)**2 + (c.y-nextS.y)**2) < 6);
                                     if (nearestEnemy) {
                                         const brave = nextS.trait === '好鬥' || nextS.mood < 40;
                                         const hasWeapon = nextS.tools.spear || nextS.tools.axe || nextS.tools.pick;
-                                        // Dino scares away unless armed and brave
                                         const isScary = nearestEnemy.type === 'DINOSAUR' && (!hasWeapon || nextS.hp < 60);
 
                                         if (!isScary && nextS.hp > 30 && (hasWeapon || brave)) {
-                                            nextS.state = 'DEFEND';
-                                            nextS.targetId = nearestEnemy.id;
-                                            nextS.thought = hasWeapon ? '受死吧！' : '跟你拼了！';
+                                            nextS.state = 'DEFEND'; nextS.targetId = nearestEnemy.id; nextS.thought = hasWeapon ? '受死吧！' : '跟你拼了！';
                                         } else {
-                                            nextS.state = 'FLEE';
-                                            nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;
-                                            nextS.thought = '快跑啊！';
+                                            nextS.state = 'FLEE'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.thought = '快跑啊！';
                                         }
                                     }
                                 }
                             }
 
-                            if (nextS.state === 'IDLE') { // Still Idle?
-                                // Auto-Crafting Logic
+                            if (nextS.state === 'IDLE') {
                                 if (!nextS.tools.spear && tribe.wood >= 10 && tribe.stone >= 5) {
                                     nextS.state = 'CRAFT_SPEAR'; nextS.actionTimer = 100; nextS.thought = '製作長矛...';
                                 } else if (!nextS.tools.axe && tribe.wood >= 10 && tribe.stone >= 5) {
@@ -767,9 +751,7 @@
                                         }
 
                                         if (potentialPrey) {
-                                            nextS.state = 'HUNT';
-                                            nextS.targetId = potentialPrey.id;
-                                            nextS.thought = '發現獵物！';
+                                            nextS.state = 'HUNT'; nextS.targetId = potentialPrey.id; nextS.thought = '發現獵物！';
                                         } else {
                                             const harvestable = farms.find(f => f.stage >= 100);
                                             if (harvestable && tribe.tech >= 1) {
@@ -812,8 +794,16 @@
                         else if (['CHOP','MINE','GATHER'].includes(nextS.state)) {
                             if(nextS.actionTimer > 0) nextS.actionTimer--;
                             else if (distToTarget < 1.0) {
-                                if (nextS.state === 'CHOP') { setTribe(t=>({...t, wood:t.wood+20})); nextS.state='IDLE'; nextS.thought='木頭入手'; }
-                                else if (nextS.state === 'MINE') { setTribe(t=>({...t, stone:t.stone+10})); nextS.state='IDLE'; nextS.thought='石頭入手'; }
+                                if (nextS.state === 'CHOP') { 
+                                    setTribe(t=>({...t, wood:t.wood+20})); nextS.state='IDLE'; nextS.thought='木頭入手'; 
+                                    // 2. Map Interaction: Remove Tree
+                                    actionQueue.current.push({type: 'REMOVE_DECO', x: Math.round(nextS.targetX), y: Math.round(nextS.targetY)});
+                                }
+                                else if (nextS.state === 'MINE') { 
+                                    setTribe(t=>({...t, stone:t.stone+10})); nextS.state='IDLE'; nextS.thought='石頭入手'; 
+                                    // 2. Map Interaction: Remove Rock
+                                    actionQueue.current.push({type: 'REMOVE_DECO', x: Math.round(nextS.targetX), y: Math.round(nextS.targetY)});
+                                }
                                 else if (nextS.state === 'GATHER') { 
                                     const r = Math.random();
                                     if (r < 0.6) { setTribe(t=>({...t, food:t.food+10})); nextS.thought='找到食物'; }
@@ -855,8 +845,47 @@
                     });
                     return [...updatedSims, ...newBabies];
                 });
+                
+                // Process Map Actions
+                if (actionQueue.current.length > 0) {
+                    setMap(prevMap => {
+                        const newMap = prevMap.map(row => [...row]);
+                        let changed = false;
+                        actionQueue.current.forEach(action => {
+                            if (action.y >= 0 && action.y < MAP_HEIGHT && action.x >= 0 && action.x < MAP_WIDTH) {
+                                if (action.type === 'REMOVE_DECO') {
+                                    if (newMap[action.y][action.x].decoration) {
+                                        newMap[action.y][action.x].decoration = null;
+                                        changed = true;
+                                    }
+                                } else if (action.type === 'DESTROY') {
+                                    if (newMap[action.y][action.x].decoration) {
+                                        newMap[action.y][action.x].decoration = null;
+                                        changed = true;
+                                    }
+                                    if (newMap[action.y][action.x].type === 'FOREST') {
+                                        newMap[action.y][action.x].type = 'DIRT'; // Burn ground
+                                        changed = true;
+                                    }
+                                } else if (action.type === 'GROW') {
+                                    const tile = newMap[action.y][action.x];
+                                    if (!tile.decoration && (tile.type === 'GRASS' || tile.type === 'FOREST')) {
+                                        const r = Math.random();
+                                        if (r < 0.1) tile.decoration = 'TREE_OAK';
+                                        else if (r < 0.2) tile.decoration = 'TREE_PINE';
+                                        else if (r < 0.3) tile.decoration = 'BUSH';
+                                        else if (r < 0.4) tile.decoration = 'FLOWER';
+                                        changed = true;
+                                    }
+                                }
+                            }
+                        });
+                        actionQueue.current = []; // Clear queue
+                        return changed ? newMap : prevMap;
+                    });
+                }
 
-            }, [time, weather, farms, tribe, isGameOver, map, creatures, disaster, sims]);
+            }, [time, weather, farms, tribe, isGameOver, map, creatures, disaster, sims, flash]);
 
             const isInBase = (sim) => Math.sqrt((sim.x - MAP_WIDTH/2)**2 + (sim.y - MAP_HEIGHT/2)**2) < 6;
 
@@ -874,6 +903,7 @@
                     if (tile.type === 'SAND') ctx.drawImage(sprites.sand, px, py);
                     else if (tile.type === 'MOUNTAIN_GROUND') ctx.drawImage(sprites.mountain, px, py);
                     else if (tile.type === 'WATER') { ctx.fillStyle = PALETTE.WATER; ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE); }
+                    else if (tile.type === 'DIRT') ctx.drawImage(sprites.dirt, px, py);
                     else ctx.drawImage(sprites.grass, px, py);
                 }));
 
@@ -908,7 +938,24 @@
                         if (target && !target.hidden) {
                             const px = target.x * TILE_SIZE; const py = target.y * TILE_SIZE;
                             ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 2]);
-                            ctx.strokeRect(px, py, TILE_SIZE, TILE_SIZE); ctx.setLineDash([]);
+                            
+                            // DYNAMIC SELECTION BOX
+                            let w = TILE_SIZE;
+                            let h = TILE_SIZE;
+                            let ox = 0;
+                            let oy = 0;
+
+                            if (target.type === 'DINOSAUR') {
+                                w = 48; // Wider
+                                h = 48; // Taller
+                                ox = 10; // Shift right to cover body
+                                oy = -10; // Shift up if needed
+                            } else if (target.type === 'BEAR') {
+                                w = 40;
+                            }
+
+                            ctx.strokeRect(px + ox, py + oy, w, h); 
+                            ctx.setLineDash([]);
                         }
                     }
                 }
@@ -926,16 +973,40 @@
                             ctx.fillRect(p.x + 2, p.y - 4, 2, 4); 
                             ctx.fillStyle = '#ff4500'; 
                         }
-                        ctx.fillRect(p.x, p.y, w, h);
+                        else if (p.type === 'SPORE') {
+                             ctx.fillStyle = '#4caf50';
+                             ctx.fillRect(p.x, p.y, 2, 2);
+                        }
+                        else ctx.fillRect(p.x, p.y, w, h);
                     }
                 });
 
-                if (disaster === DISASTERS.DARKNESS) { ctx.fillStyle = 'rgba(0, 0, 0, 0.85)'; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
-                else if (time > DAY_TICKS * 0.6) { ctx.fillStyle = 'rgba(10, 10, 30, 0.5)'; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
-                if (disaster !== DISASTERS.NONE && disaster.color) { ctx.fillStyle = disaster.color; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
+                if (disaster !== DISASTERS.NONE && disaster.color) {
+                     const pulse = 0.8 + Math.sin(tickRef.current / 20) * 0.2;
+                     let baseColor = disaster.color;
+                     if (disaster === DISASTERS.DARKNESS) {
+                         ctx.fillStyle = baseColor;
+                     } else {
+                         let parts = baseColor.match(/[\d.]+/g);
+                         if (parts && parts.length === 4) {
+                             ctx.fillStyle = `rgba(${parts[0]}, ${parts[1]}, ${parts[2]}, ${parseFloat(parts[3]) * pulse})`;
+                         } else {
+                             ctx.fillStyle = baseColor; 
+                         }
+                     }
+                     ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); 
+                }
+                else if (time > DAY_TICKS * 0.6) { 
+                    ctx.fillStyle = 'rgba(10, 10, 30, 0.5)'; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); 
+                }
+                
+                if (flash > 0) {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${flash})`;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height); // Full screen
+                }
 
                 ctx.restore();
-            }, [map, sprites, sims, creatures, weather, particles, farms, time, selectedId, tribe, disaster, shake, currentStage]);
+            }, [map, sprites, sims, creatures, weather, particles, farms, time, selectedId, tribe, disaster, shake, currentStage, flash]);
 
             const drawSim = (ctx, s) => {
                 if (s.state === 'DEAD') { 
@@ -959,6 +1030,7 @@
                 const skinColor = s.sick ? PALETTE.SICK_SKIN : PALETTE.SKIN;
                 renderMatrix(ctx, matrix, { 'H': s.hair, 'S': skinColor, 's': PALETTE.SKIN_SHADOW, 'C': s.color, 'K': PALETTE.OUTLINE }, px + 4, py + 4 + bounce);
                 
+                // Draw Tools
                 let showTool = null;
                 
                 if (s.state === 'CHOP' && s.tools.axe) showTool = 'AXE';
@@ -979,7 +1051,7 @@
                     ctx.fillStyle = '#95a5a6'; ctx.fillRect(px+18, py+10+bounce, 10, 2); 
                 }
 
-                if (s.state === 'FIGHTING' || s.state === 'DEFEND' || s.state === 'HUNT') { ctx.font='10px serif'; ctx.fillText('⚔️', px+8, py); }
+                if (s.state === 'FIGHTING' || s.state === 'DEFEND') { ctx.font='10px serif'; ctx.fillText('⚔️', px+8, py); }
                 if (s.state.includes('CRAFT')) { ctx.font = '10px monospace'; ctx.fillStyle = '#ffff00'; ctx.fillText('🔨', px+8, py); }
                 if (s.age < 16) { ctx.font='10px serif'; ctx.fillText('👶', px, py); } 
             };
@@ -1023,7 +1095,13 @@
                 const x = (e.clientX - rect.left) / SCALE / TILE_SIZE;
                 const y = (e.clientY - rect.top) / SCALE / TILE_SIZE;
                 let closest = null; let minDist = 2.5;
-                [...sims.filter(s => !s.hidden), ...creatures].forEach(obj => { const d = Math.sqrt((obj.x+0.5-x)**2 + (obj.y+0.5-y)**2); if(d<minDist){ closest=obj; minDist=d; } });
+                // Priority to LIVING sims/creatures first for selection
+                [...sims.filter(s => !s.hidden), ...creatures].forEach(obj => { 
+                    const d = Math.sqrt((obj.x+0.5-x)**2 + (obj.y+0.5-y)**2); 
+                    // Skip dead bodies for primary selection unless very close and nothing else
+                    if (obj.state === 'DEAD' && d > 0.5) return; 
+                    if(d<minDist){ closest=obj; minDist=d; } 
+                });
                 
                 if (closest) {
                     setSelectedId(closest.id);
@@ -1143,7 +1221,7 @@
                                                 </div>
                                             </div>
 
-                                            <div className="text-xs text-gray-400 font-bold mt-2 mb-1">避難中 ({sims.filter(s=>s.hidden).length}):</div>
+                                            <div className="text-xs text-gray-400 font-bold mt-2 mb-1">避難中 ({sims.filter(s=>s.hidden && s.state !== 'DEAD').length}):</div>
                                             <div className="max-h-32 overflow-y-auto space-y-1">
                                                 {sims.filter(s => s.hidden).map(s => <div key={s.id} className="text-[10px] bg-black p-1 rounded flex justify-between items-center"><span>{s.sign}</span><span className="text-gray-500 italic">zZz...</span></div>)}
                                                 {sims.filter(s => s.hidden).length === 0 && <div className="text-center text-gray-600 text-[10px] py-2">無人避難</div>}
@@ -1184,6 +1262,9 @@
                                                                 <div className="flex justify-between text-[10px] text-gray-400 mb-0.5"><span>🧠 精神</span><span>{Math.floor(selectedObj.mood)}</span></div>
                                                                 <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
                                                                     <div className="h-full bg-blue-400 transition-all duration-500" style={{width: `${selectedObj.mood}%`}}></div>
+                                                                </div>
+                                                                <div className="text-right text-[10px] text-gray-400 mt-0.5">
+                                                                    {selectedObj.mood > 80 ? '💖 渴望繁衍' : (selectedObj.mood < 20 ? '💢 易怒暴躁' : (selectedObj.mood < 10 ? '😵 崩潰' : '平靜'))}
                                                                 </div>
                                                             </div>
                                                         )}
