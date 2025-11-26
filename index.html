@@ -539,6 +539,18 @@
                 setCreatures(prev => prev.map(c => {
                     if (c.hp <= 0) return null;
                     let nextC = { ...c };
+                    
+                    // Creature taking damage logic (Simple check for nearby armed defenders)
+                    sims.forEach(s => {
+                        if (s.state === 'DEFEND' && s.targetId === nextC.id && Math.sqrt((s.x-nextC.x)**2 + (s.y-nextC.y)**2) < 1.5) {
+                             if (tickRef.current % 20 === 0) {
+                                 const dmg = s.tools.spear ? 25 : (s.tools.axe ? 15 : 5);
+                                 nextC.hp -= dmg;
+                                 setParticles(p => [...p, { x: nextC.x*TILE_SIZE, y: nextC.y*TILE_SIZE, life: 20, color: '#f00', vy: -2, text: `-${dmg}` }]);
+                             }
+                        }
+                    });
+
                     if (Math.random() < 0.05) { nextC.targetX = rand(1, MAP_WIDTH-2); nextC.targetY = rand(1, MAP_HEIGHT-2); }
                     if (nextC.targetX) {
                         const dx = nextC.targetX - nextC.x; const dy = nextC.targetY - nextC.y;
@@ -602,34 +614,70 @@
                         const inBase = isInBase(nextS);
 
                         if (nextS.state === 'IDLE') {
-                            if (nextS.hunger < 50) {
-                                if (tribe.food > 0 && inBase) {
-                                    setTribe(t => ({...t, food: Math.max(0, t.food-10)}));
-                                    nextS.hunger = 100; nextS.thought = '吃飽了！';
-                                } else {
-                                    const harvestable = farms.find(f => f.stage >= 100);
-                                    if (harvestable && tribe.tech >= 1) {
-                                        nextS.state = 'FARMING'; nextS.targetX = harvestable.x; nextS.targetY = harvestable.y;
+                            // Combat / Defense Check (New)
+                            if (!nextS.hidden) {
+                                const nearestEnemy = creatures.find(c => ['WOLF','BEAR'].includes(c.type) && c.hp > 0 && Math.sqrt((c.x-nextS.x)**2 + (c.y-nextS.y)**2) < 5);
+                                if (nearestEnemy) {
+                                    if ((nextS.tools.spear || nextS.tools.axe) && nextS.hp > 30) {
+                                        nextS.state = 'DEFEND';
+                                        nextS.targetId = nearestEnemy.id;
+                                        nextS.thought = '保護部落！';
                                     } else {
-                                        nextS.state = 'GATHER'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2);
-                                        nextS.thought = '找點吃的...';
+                                        nextS.state = 'FLEE';
+                                        nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;
+                                        nextS.thought = '快跑啊！';
                                     }
                                 }
-                            } else if (nextS.energy < 20 || (isNight && !inBase)) {
-                                nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;
-                                if (inBase) {
-                                    nextS.state = 'SLEEP'; nextS.hidden = true; nextS.thought = '進洞休息...';
-                                }
-                            } else {
-                                if (nextS.hidden) { nextS.hidden = false; nextS.y += 1; }
-                                if (Math.random() < 0.02) {
-                                     const task = Math.random();
-                                     if (task < 0.3) { nextS.state = 'CHOP'; nextS.targetX = rand(1,MAP_WIDTH-2); nextS.targetY=rand(1,MAP_HEIGHT-2); nextS.thought='去伐木'; }
-                                     else if (task < 0.6) { nextS.state = 'MINE'; nextS.targetX = rand(1,MAP_WIDTH-2); nextS.targetY=rand(1,MAP_HEIGHT-2); nextS.thought='去採礦'; }
-                                     else { nextS.targetX = nextS.x + rand(-2,2); nextS.targetY = nextS.y + rand(-2,2); }
+                            }
+
+                            if (nextS.state === 'IDLE') { // Still Idle?
+                                // Auto-Crafting Logic (New)
+                                if (!nextS.tools.spear && tribe.wood >= 10 && tribe.stone >= 5) {
+                                    nextS.state = 'CRAFT_SPEAR'; nextS.actionTimer = 100; nextS.thought = '製作長矛...';
+                                } else if (!nextS.tools.axe && tribe.wood >= 10 && tribe.stone >= 5) {
+                                    nextS.state = 'CRAFT_AXE'; nextS.actionTimer = 100; nextS.thought = '製作斧頭...';
+                                } else if (!nextS.tools.pick && tribe.wood >= 10 && tribe.stone >= 5) {
+                                    nextS.state = 'CRAFT_PICK'; nextS.actionTimer = 100; nextS.thought = '製作鎬子...';
+                                } else if (nextS.hunger < 50) {
+                                    if (tribe.food > 0 && inBase) {
+                                        setTribe(t => ({...t, food: Math.max(0, t.food-10)}));
+                                        nextS.hunger = 100; nextS.thought = '吃飽了！';
+                                    } else {
+                                        const harvestable = farms.find(f => f.stage >= 100);
+                                        if (harvestable && tribe.tech >= 1) {
+                                            nextS.state = 'FARMING'; nextS.targetX = harvestable.x; nextS.targetY = harvestable.y;
+                                        } else {
+                                            nextS.state = 'GATHER'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2);
+                                            nextS.thought = '找點吃的...';
+                                        }
+                                    }
+                                } else if (nextS.energy < 20 || (isNight && !inBase)) {
+                                    nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;
+                                    if (inBase) {
+                                        nextS.state = 'SLEEP'; nextS.hidden = true; nextS.thought = '進洞休息...';
+                                    }
+                                } else {
+                                    if (nextS.hidden) { nextS.hidden = false; nextS.y += 1; }
+                                    if (Math.random() < 0.02) {
+                                         const task = Math.random();
+                                         if (task < 0.3) { nextS.state = 'CHOP'; nextS.targetX = rand(1,MAP_WIDTH-2); nextS.targetY=rand(1,MAP_HEIGHT-2); nextS.thought='去伐木'; }
+                                         else if (task < 0.6) { nextS.state = 'MINE'; nextS.targetX = rand(1,MAP_WIDTH-2); nextS.targetY=rand(1,MAP_HEIGHT-2); nextS.thought='去採礦'; }
+                                         else { nextS.targetX = nextS.x + rand(-2,2); nextS.targetY = nextS.y + rand(-2,2); }
+                                    }
                                 }
                             }
-                        } else if (['CHOP','MINE','GATHER'].includes(nextS.state)) {
+                        } 
+                        // Crafting Logic Execution
+                        else if (['CRAFT_AXE','CRAFT_PICK','CRAFT_SPEAR'].includes(nextS.state)) {
+                            nextS.actionTimer--;
+                            if (nextS.actionTimer <= 0) {
+                                if (nextS.state === 'CRAFT_AXE') { nextS.tools.axe = true; setTribe(t => ({...t, wood: Math.max(0, t.wood-10), stone: Math.max(0, t.stone-5)})); }
+                                else if (nextS.state === 'CRAFT_PICK') { nextS.tools.pick = true; setTribe(t => ({...t, wood: Math.max(0, t.wood-10), stone: Math.max(0, t.stone-5)})); }
+                                else if (nextS.state === 'CRAFT_SPEAR') { nextS.tools.spear = true; setTribe(t => ({...t, wood: Math.max(0, t.wood-10), stone: Math.max(0, t.stone-5)})); }
+                                nextS.state = 'IDLE'; nextS.thought = '工具完成了';
+                            }
+                        }
+                        else if (['CHOP','MINE','GATHER'].includes(nextS.state)) {
                             if(nextS.actionTimer > 0) nextS.actionTimer--;
                             else if (distToTarget < 1.0) {
                                 if (nextS.state === 'CHOP') { setTribe(t=>({...t, wood:t.wood+20})); nextS.state='IDLE'; nextS.thought='木頭入手'; }
@@ -638,6 +686,21 @@
                             }
                         } else if (nextS.state === 'SLEEP') {
                             if(nextS.energy>=100){ nextS.state='IDLE'; nextS.hidden=false; nextS.y+=1; }
+                        } else if (nextS.state === 'DEFEND') {
+                            const enemy = creatures.find(c => c.id === nextS.targetId && c.hp > 0);
+                            if (enemy) {
+                                nextS.targetX = enemy.x; nextS.targetY = enemy.y;
+                                if (Math.sqrt((nextS.x-enemy.x)**2 + (nextS.y-enemy.y)**2) < 1.5) {
+                                    // Attack logic is handled in setCreatures to avoid double state update issues, 
+                                    // but we can play animation here
+                                    if (tickRef.current % 20 === 0) nextS.animFrame += 5; // Poke animation
+                                }
+                            } else {
+                                nextS.state = 'IDLE'; nextS.thought = '威脅已清除';
+                            }
+                        } else if (nextS.state === 'FLEE') {
+                             const distToCave = Math.sqrt((nextS.x - MAP_WIDTH/2)**2 + (nextS.y - MAP_HEIGHT/2)**2);
+                             if (distToCave < 1.5) { nextS.hidden = true; nextS.state = 'HIDING'; nextS.thought = '呼...躲起來。'; nextS.targetX = null; }
                         }
 
                         if (nextS.targetX !== null) {
@@ -647,6 +710,7 @@
                              if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) { nextS.targetX = null; }
                              else {
                                  let spd = nextS.buffTimer > 0 ? 0.08 : 0.05;
+                                 if (nextS.state === 'FLEE') spd = 0.08;
                                  nextS.x += Math.sign(dx) * spd; nextS.y += Math.sign(dy) * spd;
                                  nextS.dir = Math.sign(dx); nextS.animFrame++;
                              }
@@ -763,7 +827,8 @@
                 const skinColor = s.sick ? PALETTE.SICK_SKIN : PALETTE.SKIN;
                 renderMatrix(ctx, matrix, { 'H': s.hair, 'S': skinColor, 's': PALETTE.SKIN_SHADOW, 'C': s.color, 'K': PALETTE.OUTLINE }, px + 4, py + 4 + bounce);
                 
-                if (s.state === 'FIGHTING') { ctx.font='10px serif'; ctx.fillText('⚔️', px+8, py); }
+                if (s.state === 'FIGHTING' || s.state === 'DEFEND') { ctx.font='10px serif'; ctx.fillText('⚔️', px+8, py); }
+                if (s.state.includes('CRAFT')) { ctx.font = '10px monospace'; ctx.fillStyle = '#ffff00'; ctx.fillText('🔨', px+8, py); }
                 if (s.age < 16) { ctx.font='10px serif'; ctx.fillText('👶', px, py); } 
             };
 
