@@ -85,6 +85,8 @@
         const MAP_HEIGHT = 40;
         const DAY_TICKS = 800; 
         const MAX_POPULATION = 50;
+        
+        const CRAZY_THOUGHTS = ["它們在看我...", "一切都沒意義...", "天塌下來了...", "我是誰？", "哈哈哈...", "別過來！", "黑暗...好黑..."];
 
         // Requirement 1: 10+ Wisdoms (Tech Tree)
         const TECH_TREE = [
@@ -200,25 +202,7 @@
             DEER: ["...........K...K....","............K.K.....","..........KKKBKK....",".........KBBBBBBK...","........KBBBBBBBBK..",".......KBBBBBBBBBK..",".......K.B.....B....",".......K.K.....K...."],
             WHEAT_GROW: ["................","....1......1....","...111....111...","....1......1....","................"],
             WHEAT_READY: ["....3......3....","...333....333...","...333....333...","....3......3....","....3......3...."],
-            // RE-DESIGNED GIANT T-REX (Centered & Bigger)
-            DINOSAUR: [
-                "...........KKKKKKKK.....",
-                "..........KGGGGGGGGK....",
-                ".........KGGGGGGGGGGK...",
-                ".........KGGGYGGGGGGK...", // Head
-                ".........KGGGGGGGGGGK...",
-                ".........KGGGGGGGGGK....",
-                "........KGGGGGGGGGK.....",
-                ".......KGGGGGGGGGGK.....",
-                ".....KKGGGGGGGGGGGKK....", // Body
-                "...KKGGGGGGGGGGGGGGGKK..",
-                "..KGGGGGGGGGGGGGGGGGGGK.",
-                ".KGGGGGGGGGGGGGGGGGGGGGK",
-                ".KGGGGKGGGGGGGGG KGGGGGK",
-                ".KKKK..KGGGGGGK...KGGGGK", // Legs
-                ".......KGGGGGGK...KGGGGK",
-                "........KK..KK.....KK.KK"
-            ],
+            DINOSAUR: ["........................","................KKKKK...","...............KGGGGGK..","...............KGGYGGK..","...............KGGGGGK..",".......KKKK...KGGGGGK...",".....KKGGGGKKKGGGGGK....","....KGGGGGGGGGGGGGK.....","...KGGGGGGGGGGGGGK......","...KGGGGGGGGGGGGK.......","....KGGGGGGGGGGK........",".....KGGK..KGGK.........","......KK....KK.........."],
             SKULL: ["........................","........................",".........KKKK...........","........KWWWWK..........",".......KWBWWBWK.........",".......KWWWWWWK.........","........KKBKKBK.........",".........KKKKK..........",".......KK.....KK........","......K.........K.......","........................","........................"],
             CAVE: [".....KKKKKKKKK.....","...KKXXXXXXXXXKK...","..KXXXXXXXXXXXXXK..",".KXXXXXXXXXXXXXXXK.",".KXXXXXXXXXXXXXXXK.","KXXXXXXXXXXXXXXXXXK","KXXXXXXXXXXXXXXXXXK","KXXXXXX.....XXXXXXK","KXXXXXX.....XXXXXXK","KXXXXXX.....XXXXXXK"],
             HUT: [".........K.........",".......KRRK........","......KRRRRK.......",".....KRRRRRRK......","....KRRRRRRRRK.....","...KRRRRRRRRRRK....","..KWWWWWWWWWWWWK...","..KW..W....W..WK...","..KW..W....W..WK...","..KWWWW....WWWWK..."],
@@ -367,7 +351,7 @@
                 
                 initCreatures.push({
                     id: `c_${Date.now()}_${i}`, type,
-                    x: rand(1, MAP_WIDTH-2), y: rand(1, MAP_HEIGHT-2),
+                    x: rand(2, MAP_WIDTH-3), y: rand(2, MAP_HEIGHT-3), // Ensure creatures spawn within safe bounds
                     hp: type==='DINOSAUR'?800 : (type==='BEAR'?200 : (type==='WOLF'?80 : 30)),
                     targetX: null, targetY: null,
                     state: 'WANDER', animFrame: rand(0,10), dir: 1
@@ -477,7 +461,7 @@
                     if (pickKey === 'BEASTS') setCreatures(prev => [...prev, ...generateCreaturesData().slice(0,5)]);
                     return;
                 }
-
+                // ... (rest of castSpell)
                 if (mana < 20) return;
                 if (['FOOD', 'HEAL', 'BUFF'].includes(type) && selectedId && selectedId !== 'BASE_CENTER') {
                     setSims(prev => prev.map(s => {
@@ -487,6 +471,10 @@
                         else if (type === 'BUFF') { 
                             setMana(m => m - 30); 
                             addEvent(`${s.sign} 獲得神力`); 
+                            // Curing Breakdown
+                            if (s.state === 'BREAKDOWN') {
+                                return { ...s, energy: 100, mood: 80, state: 'IDLE', buffTimer: 500, thought: '神拯救了我！' };
+                            }
                             return { ...s, energy: 100, mood: 100, buffTimer: 500, thought: '力量湧現！' }; 
                         }
                         return s;
@@ -512,13 +500,13 @@
                 if (isGameOver) return;
                 const isNight = time > DAY_TICKS * 0.6 || disaster === DISASTERS.DARKNESS;
                 
+                // Disaster Timer & Flash
                 if (disaster !== DISASTERS.NONE) {
                     setDisasterTimer(prev => {
                         if (prev <= 1) { setDisaster(DISASTERS.NONE); addEvent('天災已退去。'); return 0; }
                         return prev - 1;
                     });
                 }
-                
                 if (flash > 0) setFlash(f => Math.max(0, f - 0.1));
 
                 if (tickRef.current % 10 === 0 && disaster === DISASTERS.NONE && Math.random() < 0.005) {
@@ -529,20 +517,23 @@
 
                 if (disaster === DISASTERS.QUAKE) setShake(prev => (tickRef.current % 4 === 0 ? rand(-5, 5) : 0)); else setShake(0);
                 
+                // 1. Dynamic Environment: Growth
                 if (tickRef.current % 50 === 0 && disaster === DISASTERS.NONE && weather !== WEATHER.SNOW) {
-                    const gx = rand(1, MAP_WIDTH-2);
-                    const gy = rand(1, MAP_HEIGHT-2);
+                    const gx = rand(2, MAP_WIDTH-3);
+                    const gy = rand(2, MAP_HEIGHT-3);
                     actionQueue.current.push({type: 'GROW', x: gx, y: gy});
                 }
 
+                // Disaster Logic
                 if (disaster === DISASTERS.METEOR && tickRef.current % 5 === 0) {
                      setParticles(prev => [...prev, { x: rand(0, MAP_WIDTH * TILE_SIZE), y: -50, speed: rand(12,20), life: 50, color: '#ff4500', type: 'METEOR', vx: -2, vy: rand(12,20) }]);
                 }
                 if (disaster === DISASTERS.THUNDER && Math.random() < 0.03) {
                     setFlash(1.0); 
-                    const lx = rand(1, MAP_WIDTH-2);
-                    const ly = rand(1, MAP_HEIGHT-2);
-                    actionQueue.current.push({type: 'DESTROY', x: lx, y: ly}); 
+                    // Lightning strikes logic
+                    const lx = rand(2, MAP_WIDTH-3);
+                    const ly = rand(2, MAP_HEIGHT-3);
+                    actionQueue.current.push({type: 'DESTROY', x: lx, y: ly}); // Destroy tree
                     setParticles(prev => [...prev, { x: lx*TILE_SIZE, y: ly*TILE_SIZE, life: 10, color: '#fff', type: 'FLASH', vx:0, vy:0 }]);
                 }
                 if (disaster === DISASTERS.PLAGUE && tickRef.current % 10 === 0) {
@@ -551,7 +542,9 @@
 
                 setParticles(prev => prev.map(p => {
                     let np = { ...p, x: p.x + (p.vx||0), y: p.y + (p.vy||0), life: p.life - 1 };
+                    // Meteor Impact
                     if (p.type === 'METEOR' && (np.life <= 0 || np.y > MAP_HEIGHT * TILE_SIZE)) {
+                         // Destroy terrain at impact
                          const mx = Math.floor(p.x / TILE_SIZE);
                          const my = Math.floor(p.y / TILE_SIZE);
                          if (mx > 0 && mx < MAP_WIDTH && my > 0 && my < MAP_HEIGHT) {
@@ -567,6 +560,7 @@
                     return { ...f, stage: Math.min(100, f.stage + 0.1) };
                 }));
 
+                // Boss Logic
                 let bossTargetId = null;
                 sims.forEach(s => {
                     if (s.state === 'DEFEND' || s.state === 'HUNT') {
@@ -610,7 +604,7 @@
                                  setParticles(p => [...p, { x: targetSim.x*TILE_SIZE, y: targetSim.y*TILE_SIZE, life: 20, color: '#ff0000', vy: -2, text: '💥' }]);
                              }
                         } else {
-                             if (Math.random() < 0.02) { nextC.targetX = rand(1, MAP_WIDTH-2); nextC.targetY = rand(1, MAP_HEIGHT-2); }
+                             if (Math.random() < 0.02) { nextC.targetX = rand(2, MAP_WIDTH-3); nextC.targetY = rand(2, MAP_HEIGHT-3); }
                              if (nextC.targetX) {
                                 const dx = nextC.targetX - nextC.x; const dy = nextC.targetY - nextC.y;
                                 if(Math.abs(dx)<0.1 && Math.abs(dy)<0.1) nextC.targetX=null;
@@ -618,14 +612,14 @@
                              }
                         }
                     } else {
-                         if (Math.random() < 0.05) { nextC.targetX = rand(1, MAP_WIDTH-2); nextC.targetY = rand(1, MAP_HEIGHT-2); }
+                         if (Math.random() < 0.05) { nextC.targetX = rand(2, MAP_WIDTH-3); nextC.targetY = rand(2, MAP_HEIGHT-3); }
                          if (nextC.targetX) {
                             const dx = nextC.targetX - nextC.x; const dy = nextC.targetY - nextC.y;
                             if (Math.abs(dx)<0.1 && Math.abs(dy)<0.1) nextC.targetX=null;
                             else { nextC.x += Math.sign(dx)*0.04; nextC.y += Math.sign(dy)*0.04; nextC.dir=Math.sign(dx); nextC.animFrame++; }
                         }
                     }
-                    nextC.x = clamp(nextC.x, 0, MAP_WIDTH-1); nextC.y = clamp(nextC.y, 0, MAP_HEIGHT-1);
+                    nextC.x = clamp(nextC.x, 2, MAP_WIDTH-3); nextC.y = clamp(nextC.y, 2, MAP_HEIGHT-3);
                     return nextC;
                 }).filter(Boolean));
 
@@ -658,6 +652,38 @@
                             if (nextS.hunger > 80 && nextS.energy > 80) nextS.mood = Math.min(100, nextS.mood + 1);
                             if (nextS.hunger < 30 || nextS.energy < 30 || nextS.sick) nextS.mood = Math.max(0, nextS.mood - 1);
                             if (nextS.hunger <= 0 || nextS.hp <= 0) { nextS.state = 'DEAD'; nextS.hidden = false; addEvent(`${nextS.sign} 逝去了...`); return nextS; }
+                            
+                            // BREAKDOWN CHECK
+                            if (nextS.mood < 10 && nextS.state !== 'BREAKDOWN' && Math.random() < 0.05) {
+                                nextS.state = 'BREAKDOWN';
+                                addEvent(`${nextS.sign} 精神崩潰了！`);
+                                nextS.thought = CRAZY_THOUGHTS[Math.floor(Math.random() * CRAZY_THOUGHTS.length)];
+                            }
+                        }
+                        
+                        // BREAKDOWN LOGIC
+                        if (nextS.state === 'BREAKDOWN') {
+                            if (tickRef.current % 20 === 0) nextS.hp -= 0.5; // Self-harm/Stress
+                            if (Math.random() < 0.1) nextS.targetX = nextS.x + rand(-2, 2);
+                            if (Math.random() < 0.1) nextS.targetY = nextS.y + rand(-2, 2);
+                            if (nextS.mood > 40) {
+                                nextS.state = 'IDLE';
+                                nextS.thought = '我清醒了...';
+                            }
+                            // Skip normal behavior
+                            if (nextS.targetX !== null) {
+                                 nextS.targetX = clamp(nextS.targetX, 2, MAP_WIDTH-3);
+                                 nextS.targetY = clamp(nextS.targetY, 2, MAP_HEIGHT-3);
+                                 const dx = nextS.targetX - nextS.x; const dy = nextS.targetY - nextS.y;
+                                 if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) { nextS.targetX = null; }
+                                 else {
+                                     nextS.x += Math.sign(dx) * 0.02; nextS.y += Math.sign(dy) * 0.02;
+                                 }
+                            }
+                            // Strict clamp for breakdown movement
+                            nextS.x = clamp(nextS.x, 2, MAP_WIDTH-3);
+                            nextS.y = clamp(nextS.y, 2, MAP_HEIGHT-3);
+                            return nextS;
                         }
                         
                         prev.forEach(attacker => {
@@ -672,7 +698,7 @@
                                         nextS.mood -= 10; 
                                         if (nextS.state !== 'FIGHTING' && nextS.state !== 'FLEE') {
                                             if (nextS.hp > 30) { nextS.state = 'FIGHTING'; nextS.targetId = attacker.id; } 
-                                            else { nextS.state = 'FLEE'; nextS.targetX = rand(1, MAP_WIDTH-2); nextS.targetY = rand(1, MAP_HEIGHT-2); }
+                                            else { nextS.state = 'FLEE'; nextS.targetX = rand(2, MAP_WIDTH-3); nextS.targetY = rand(2, MAP_HEIGHT-3); }
                                         }
                                         setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 20, color: '#ff0000', vy: -2, text: `-${dmg}` }]);
                                         if (nextS.hp <= 0) { addEvent(`☠️ ${attacker.sign} 殺害了 ${nextS.sign}！`); nextS.state = 'DEAD'; nextS.hidden = false; }
@@ -726,7 +752,9 @@
                                         if (!isScary && nextS.hp > 30 && (hasWeapon || brave)) {
                                             nextS.state = 'DEFEND'; nextS.targetId = nearestEnemy.id; nextS.thought = hasWeapon ? '受死吧！' : '跟你拼了！';
                                         } else {
-                                            nextS.state = 'FLEE'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.thought = '快跑啊！';
+                                            nextS.state = 'FLEE';
+                                            nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;
+                                            nextS.thought = '快跑啊！';
                                         }
                                     }
                                 }
@@ -758,7 +786,7 @@
                                                 nextS.state = 'FARMING'; nextS.targetX = harvestable.x; nextS.targetY = harvestable.y;
                                             } else {
                                                 if (Math.random() < 0.5) {
-                                                    nextS.state = 'GATHER'; nextS.targetX = rand(1,MAP_WIDTH-2); nextS.targetY = rand(1,MAP_HEIGHT-2); nextS.thought='徒手採集...';
+                                                    nextS.state = 'GATHER'; nextS.targetX = rand(2,MAP_WIDTH-3); nextS.targetY = rand(2,MAP_HEIGHT-3); nextS.thought='徒手採集...';
                                                 } else {
                                                     nextS.targetX = nextS.x + rand(-2,2); nextS.targetY = nextS.y + rand(-2,2); 
                                                 }
@@ -772,10 +800,10 @@
                                     if (nextS.hidden) { nextS.hidden = false; nextS.y += 1; }
                                     if (Math.random() < 0.02) {
                                          const task = Math.random();
-                                         if (task < 0.3 && nextS.tools.axe) { nextS.state = 'CHOP'; nextS.targetX = rand(1,MAP_WIDTH-2); nextS.targetY=rand(1,MAP_HEIGHT-2); nextS.thought='去伐木'; }
-                                         else if (task < 0.6 && nextS.tools.pick) { nextS.state = 'MINE'; nextS.targetX = rand(1,MAP_WIDTH-2); nextS.targetY=rand(1,MAP_HEIGHT-2); nextS.thought='去採礦'; }
+                                         if (task < 0.3 && nextS.tools.axe) { nextS.state = 'CHOP'; nextS.targetX = rand(2,MAP_WIDTH-3); nextS.targetY=rand(2,MAP_HEIGHT-3); nextS.thought='去伐木'; }
+                                         else if (task < 0.6 && nextS.tools.pick) { nextS.state = 'MINE'; nextS.targetX = rand(2,MAP_WIDTH-3); nextS.targetY=rand(2,MAP_HEIGHT-3); nextS.thought='去採礦'; }
                                          else { 
-                                             if (Math.random() < 0.5) { nextS.state = 'GATHER'; nextS.targetX = rand(1,MAP_WIDTH-2); nextS.targetY = rand(1,MAP_HEIGHT-2); nextS.thought='徒手採集...'; } 
+                                             if (Math.random() < 0.5) { nextS.state = 'GATHER'; nextS.targetX = rand(2,MAP_WIDTH-3); nextS.targetY = rand(2,MAP_HEIGHT-3); nextS.thought='徒手採集...'; } 
                                              else { nextS.targetX = nextS.x + rand(-2,2); nextS.targetY = nextS.y + rand(-2,2); }
                                          }
                                     }
@@ -825,8 +853,8 @@
                         }
 
                         if (nextS.targetX !== null) {
-                             nextS.targetX = clamp(nextS.targetX, 1, MAP_WIDTH-2);
-                             nextS.targetY = clamp(nextS.targetY, 1, MAP_HEIGHT-2);
+                             nextS.targetX = clamp(nextS.targetX, 2, MAP_WIDTH-3);
+                             nextS.targetY = clamp(nextS.targetY, 2, MAP_HEIGHT-3);
                              const dx = nextS.targetX - nextS.x; const dy = nextS.targetY - nextS.y;
                              if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) { nextS.targetX = null; }
                              else {
@@ -838,8 +866,9 @@
                              }
                         }
                         
-                        nextS.x = clamp(nextS.x, 1, MAP_WIDTH-2);
-                        nextS.y = clamp(nextS.y, 1, MAP_HEIGHT-2);
+                        // Final strict clamp to prevent walking out
+                        nextS.x = clamp(nextS.x, 2, MAP_WIDTH-3);
+                        nextS.y = clamp(nextS.y, 2, MAP_HEIGHT-3);
 
                         return nextS;
                     });
@@ -1053,7 +1082,12 @@
 
                 if (s.state === 'FIGHTING' || s.state === 'DEFEND') { ctx.font='10px serif'; ctx.fillText('⚔️', px+8, py); }
                 if (s.state.includes('CRAFT')) { ctx.font = '10px monospace'; ctx.fillStyle = '#ffff00'; ctx.fillText('🔨', px+8, py); }
-                if (s.age < 16) { ctx.font='10px serif'; ctx.fillText('👶', px, py); } 
+                if (s.age < 16) { ctx.font='10px serif'; ctx.fillText('👶', px, py); }
+                
+                // Visual for BREAKDOWN
+                if (s.state === 'BREAKDOWN') {
+                     ctx.font='12px serif'; ctx.fillStyle = '#9b59b6'; ctx.fillText('😵?', px + 8, py - 5);
+                }
             };
 
             const drawCreature = (ctx, c) => {
@@ -1236,6 +1270,7 @@
                                                         <div>
                                                             <div className="font-bold text-[#ffccaa]">{selectedObj.sign} <span className="text-[10px] text-gray-500">Gen{selectedObj.generation}</span></div>
                                                             <div className="text-xs text-gray-400">{selectedObj.trait} / {selectedObj.state}</div>
+                                                            {selectedObj.state === 'BREAKDOWN' && <div className="text-xs text-purple-400 font-bold animate-pulse">精神崩潰</div>}
                                                         </div>
                                                     </div>
                                                     
@@ -1261,16 +1296,16 @@
                                                             <div>
                                                                 <div className="flex justify-between text-[10px] text-gray-400 mb-0.5"><span>🧠 精神</span><span>{Math.floor(selectedObj.mood)}</span></div>
                                                                 <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
-                                                                    <div className="h-full bg-blue-400 transition-all duration-500" style={{width: `${selectedObj.mood}%`}}></div>
+                                                                    <div className={`h-full transition-all duration-500 ${selectedObj.mood < 20 ? 'bg-purple-500' : 'bg-blue-400'}`} style={{width: `${selectedObj.mood}%`}}></div>
                                                                 </div>
-                                                                <div className="text-right text-[10px] text-gray-400 mt-0.5">
-                                                                    {selectedObj.mood > 80 ? '💖 渴望繁衍' : (selectedObj.mood < 20 ? '💢 易怒暴躁' : (selectedObj.mood < 10 ? '😵 崩潰' : '平靜'))}
+                                                                <div className={`text-right text-[10px] mt-0.5 ${selectedObj.mood < 20 ? 'text-purple-400 font-bold' : 'text-gray-400'}`}>
+                                                                    {selectedObj.mood > 80 ? '💖 渴望繁衍' : (selectedObj.mood < 20 ? '💢 易怒暴躁' : (selectedObj.mood < 10 ? '😵 精神崩潰' : '平靜'))}
                                                                 </div>
                                                             </div>
                                                         )}
                                                     </div>
 
-                                                    {selectedObj.thought && <div className="bg-black p-2 rounded text-[10px] text-[#a5d6a7] italic mt-2">"{selectedObj.thought}"</div>}
+                                                    {selectedObj.thought && <div className={`p-2 rounded text-[10px] italic mt-2 ${selectedObj.state === 'BREAKDOWN' ? 'bg-purple-900 text-purple-200 border border-purple-500' : 'bg-black text-[#a5d6a7]'}`}>"{selectedObj.thought}"</div>}
                                                     
                                                     {selectedObj.sign && (
                                                         <>
