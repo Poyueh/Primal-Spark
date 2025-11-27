@@ -172,7 +172,7 @@
             WORK: ["嘿咻...嘿咻...", "為了部落！", "這工作真累人。", "希望能找到好東西。", "再撐一下。", "勞動使我快樂...吧？"],
             EAT: ["真好吃！", "終於有東西吃了。", "냠냠...", "希望能吃飽。", "這味道不錯。", "感謝大自然的饋贈。"],
             SLEEP: ["呼...呼...", "好睏...", "晚安...", "Zzz...", "明天又是新的一天。", "別吵我..."],
-            CHAT: ["真的假的？", "哈哈，太好笑了！", "你最近還好嗎？", "聽說昨天...", "那個人好奇怪。", "這天氣真糟。"],
+            CHAT: ["真的假的？", "哈哈，太好笑了！", "你最近還好嗎？", "聽說昨天...", "那個人好奇怪。", "這天氣真糟。", "今晚吃什麼？", "小心野獸！"],
             FIGHT: ["去死吧！", "別過來！", "看招！", "為了榮耀！", "我跟你拼了！", "好可怕！"],
             FLEE: ["救命啊！", "快跑！", "打不過快逃！", "別殺我！", "我不玩了！", "腳底抹油！"],
             PANIC: ["我不想死...", "這是什麼鬼地方...", "嗚嗚嗚...", "誰來救救我...", "腦袋好痛...", "不要過來！"],
@@ -417,7 +417,7 @@
             const initCreatures = [];
             const types = Object.keys(CREATURE_STATS);
             
-            for(let i=0; i<15; i++) { // Increased count for diversity
+            for(let i=0; i<30; i++) { // Increased to 30
                 const r = Math.random();
                 let type = 'RABBIT';
                 
@@ -670,15 +670,42 @@
                     Goal: AGGRESSIVELY gather resources (Wood/Stone) to build a mighty civilization.
                     Show your new intelligence in your thoughts.
                     Crafting Costs: Axe needs 10 Wood. Pick needs 15 Wood.
-                    Available Actions: EAT (if hungry & food > 0), SLEEP (if tired), GATHER (collect food/sticks from bush. DO THIS if you have no Axe/Pick or low food), CHOP (collect wood, NEEDS AXE & Tree), MINE (collect stone, NEEDS PICK & Rock), CRAFT_AXE (needs 10 wood, no axe. TOP PRIORITY if wood >= 10), CRAFT_PICK (needs 15 wood, no pick. TOP PRIORITY if wood >= 15), CHAT (if friend nearby), IDLE (avoid this)
-                    Decide ONE action. Return strictly JSON: { "action": "ACTION_NAME", "thought": "Short thought in Traditional Chinese (max 10 chars). Reflect on your awakening or the 'Voice'." }`;
+                    Available Actions: 
+                    - EAT (if hungry & food > 0)
+                    - SLEEP (if tired)
+                    - GATHER (collect food/sticks from bush. DO THIS if you have no Axe/Pick or low food)
+                    - CHOP (collect wood, NEEDS AXE & Tree)
+                    - MINE (collect stone, NEEDS PICK & Rock)
+                    - CRAFT_AXE (needs 10 wood, no axe. TOP PRIORITY if wood >= 10)
+                    - CRAFT_PICK (needs 15 wood, no pick. TOP PRIORITY if wood >= 15)
+                    - CHAT (if friend nearby, output dialogue in thought)
+                    - IDLE (avoid this)
+                    Decide ONE action. Return strictly JSON: { "action": "ACTION_NAME", "thought": "Short thought or dialogue in Traditional Chinese (max 15 chars)." }`;
 
                     const resultText = await callGemini(prompt, userApiKey);
                     if (!resultText) throw new Error("AI response was empty or failed.");
                     let decision = { action: 'IDLE', thought: '...' };
                     try {
-                        const jsonMatch = resultText.match(/\{[\s\S]*\}/);
-                        if (jsonMatch) decision = JSON.parse(jsonMatch[0]);
+                        let jsonStr = resultText;
+                        const firstOpen = resultText.indexOf('{');
+                        if (firstOpen !== -1) {
+                            let depth = 0;
+                            let lastClose = -1;
+                            for (let i = firstOpen; i < resultText.length; i++) {
+                                if (resultText[i] === '{') depth++;
+                                else if (resultText[i] === '}') {
+                                    depth--;
+                                    if (depth === 0) {
+                                        lastClose = i;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (lastClose !== -1) {
+                                jsonStr = resultText.substring(firstOpen, lastClose + 1);
+                            }
+                        }
+                        decision = JSON.parse(jsonStr);
                     } catch (e) { console.error("AI JSON Parse Error", e); }
 
                     setSims(prev => prev.map(s => {
@@ -692,7 +719,14 @@
                         else if (act === 'MINE') { const target = findNearestResource(nextS, ['ROCK', 'GOLD_ROCK']); if(target) { nextS.state = 'MINE'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; } }
                         else if (act === 'CRAFT_AXE') { nextS.state = 'CRAFT'; nextS.craftType = 'AXE'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 100; }
                         else if (act === 'CRAFT_PICK') { nextS.state = 'CRAFT'; nextS.craftType = 'PICK'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 100; }
-                        else if (act === 'CHAT') { if (surroundings.friendId) { const friend = prev.find(f => f.id === surroundings.friendId); if(friend) { nextS.state = 'APPROACH_FRIEND'; nextS.targetId = friend.id; nextS.targetX = friend.x; nextS.targetY = friend.y; nextS.stateLock = 60; } } }
+                        else if (act === 'CHAT') { 
+                            if (surroundings.friendId) { 
+                                const friend = prev.find(f => f.id === surroundings.friendId); 
+                                if(friend) { 
+                                    nextS.state = 'APPROACH_FRIEND'; nextS.targetId = friend.id; nextS.targetX = friend.x; nextS.targetY = friend.y; nextS.stateLock = 60; 
+                                } 
+                            } 
+                        }
                         else { nextS.stateLock = 30; }
                         setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 60, color: '#0ff', text: '💡', isThought: true }]);
                         return nextS;
@@ -746,6 +780,20 @@
                 if (tickRef.current % 10 === 0 && disaster === DISASTERS.NONE && Math.random() < 0.005) {
                     const r = Math.random();
                     setWeather(r < 0.3 ? WEATHER.RAIN : (r < 0.4 ? WEATHER.SNOW : WEATHER.SUNNY)); 
+                }
+                
+                // Spawn Beasts over time
+                if (tickRef.current % 1000 === 0 && creatures.length < 20) {
+                     const typeKeys = Object.keys(CREATURE_STATS);
+                     const randomType = typeKeys[Math.floor(Math.random() * typeKeys.length)];
+                     const newBeast = {
+                        id: `c_respawn_${Date.now()}`, type: randomType,
+                        x: rand(2, MAP_WIDTH-3), y: rand(2, MAP_HEIGHT-3),
+                        hp: CREATURE_STATS[randomType].hp,
+                        targetX: null, targetY: null,
+                        state: 'WANDER', animFrame: rand(0,10), dir: 1
+                    };
+                    setCreatures(prev => [...prev, newBeast]);
                 }
 
                 if (disaster === DISASTERS.QUAKE) setShake(prev => (tickRef.current % 4 === 0 ? rand(-5, 5) : 0)); else setShake(0);
@@ -845,7 +893,13 @@
                                     }
                                 } else if (fightingFriend && nextS.state !== 'FLEE' && nextS.state !== 'SLEEP') {
                                     if (nextS.state !== 'DEFEND' && nextS.state !== 'SHOOT') {
-                                        if (nextS.tools.bow || nextS.traits.bravery > 0.3) { nextS.state = nextS.tools.bow ? 'SHOOT' : 'DEFEND'; nextS.targetId = fightingFriend.targetId; nextS.stateLock = 60; nextS.thought = "撐住！我來了！"; }
+                                        // COOPERATION: Lower bravery threshold if friend is fighting
+                                        if (nextS.tools.spear || nextS.tools.bow || nextS.traits.bravery > 0.2) { 
+                                            nextS.state = nextS.tools.bow ? 'SHOOT' : 'DEFEND'; 
+                                            nextS.targetId = fightingFriend.targetId; 
+                                            nextS.stateLock = 60; 
+                                            nextS.thought = "撐住！我來了！"; 
+                                        }
                                         else { nextS.state = 'FLEE'; nextS.targetX = MAP_WIDTH/2 + rand(-5, 5); nextS.targetY = MAP_HEIGHT/2 + rand(-5, 5); nextS.stateLock = 40; addEvent(getLog('FLEE', nextS.sign)); }
                                     }
                                 } else if (nearbyEnemy) {
@@ -882,7 +936,44 @@
                         
                         if (nextS.state === 'EAT' && isInBase(nextS)) { if (tribe.food > 0) { setTribe(t => ({...t, food: t.food - 1})); nextS.hunger = 100; nextS.mood += 5; nextS.state = 'IDLE'; nextS.stateLock = 0; nextS.thought = "吃飽了，活著真好。"; } else { nextS.thought = "沒食物了..."; nextS.state = 'IDLE'; nextS.stateLock = 0; } }
                         else if (nextS.state === 'SLEEP') { const dist = Math.sqrt((nextS.x - MAP_WIDTH/2)**2 + (nextS.y - MAP_HEIGHT/2)**2); if (dist < 1.5) { nextS.hidden = true; nextS.energy += 0.5; nextS.sanity += 0.1; if(nextS.energy >= 100 && !isNight) { nextS.state = 'IDLE'; nextS.stateLock = 0; nextS.hidden = false; nextS.x = MAP_WIDTH/2 + rand(-2, 2); nextS.y = MAP_HEIGHT/2 + rand(-1, 2) + 2; } } else { nextS.hidden = false; const speed = 0.06; const dx = MAP_WIDTH/2 - nextS.x; const dy = MAP_HEIGHT/2 - nextS.y; const d = Math.sqrt(dx*dx + dy*dy); if (d > 0) { nextS.x += (dx/d) * speed; nextS.y += (dy/d) * speed; } } }
-                        else if (nextS.state === 'APPROACH_FRIEND') { const friend = prev.find(f => f.id === nextS.targetId); if (friend && friend.state !== 'DEAD') { const dist = Math.sqrt((nextS.x - friend.x)**2 + (nextS.y - friend.y)**2); if (dist < 1.5) { let isRomance = false; if (nextS.age >= 18 && friend.age >= 18 && nextS.gender !== friend.gender && nextS.mateCooldown <= 0 && prev.length < MAX_POPULATION) { const chance = (nextS.mood > 80 && friend.mood > 80) ? 0.4 : 0.1; if (Math.random() < chance) { isRomance = true; nextS.state = 'LOVE'; nextS.stateLock = 150; nextS.mateCooldown = 3000; nextS.thought = "💖 墜入愛河..."; if (nextS.gender === 'F') { addEvent(`💖 ${nextS.sign} 與 ${friend.sign} 互生情愫`); } } } if (!isRomance) { nextS.state = 'CHAT'; nextS.stateLock = 100; nextS.thought = "聊聊近況..."; if (tickRef.current % 20 === 0) { const emojis = ['💬', '😂', '❤️', '👋', '😊']; const emoji = emojis[Math.floor(Math.random() * emojis.length)]; setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE - 10, life: 60, color: '#fff', text: emoji, isThought: true }]); } nextS.mood = Math.min(100, nextS.mood + 0.5); nextS.sanity = Math.min(100, nextS.sanity + 0.5); } } else { nextS.targetX = friend.x + (Math.sin(tickRef.current) * 0.5); nextS.targetY = friend.y + (Math.cos(tickRef.current) * 0.5); } } else { nextS.state = 'IDLE'; nextS.stateLock = 0; } }
+                        else if (nextS.state === 'APPROACH_FRIEND') { 
+                            const friend = prev.find(f => f.id === nextS.targetId); 
+                            if (friend && friend.state !== 'DEAD') { 
+                                const dist = Math.sqrt((nextS.x - friend.x)**2 + (nextS.y - friend.y)**2); 
+                                if (dist < 1.5) { 
+                                    let isRomance = false; 
+                                    if (nextS.age >= 18 && friend.age >= 18 && nextS.gender !== friend.gender && nextS.mateCooldown <= 0 && prev.length < MAX_POPULATION) { 
+                                        const chance = (nextS.mood > 80 && friend.mood > 80) ? 0.4 : 0.1; 
+                                        if (Math.random() < chance) { 
+                                            isRomance = true; 
+                                            nextS.state = 'LOVE'; 
+                                            nextS.stateLock = 150; 
+                                            nextS.mateCooldown = 3000; 
+                                            nextS.thought = "💖 墜入愛河..."; 
+                                            if (nextS.gender === 'F') { addEvent(`💖 ${nextS.sign} 與 ${friend.sign} 互生情愫`); } 
+                                        } 
+                                    } 
+                                    if (!isRomance) { 
+                                        nextS.state = 'CHAT'; 
+                                        nextS.stateLock = 100; 
+                                        // CHAT Logic for Non-AI
+                                        const chatLines = PRE_CANNED_THOUGHTS['CHAT'];
+                                        nextS.thought = chatLines[Math.floor(Math.random() * chatLines.length)];
+                                        
+                                        if (tickRef.current % 20 === 0) { 
+                                            const emojis = ['💬', '😂', '❤️', '👋', '😊']; 
+                                            const emoji = emojis[Math.floor(Math.random() * emojis.length)]; 
+                                            setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE - 10, life: 60, color: '#fff', text: emoji, isThought: true }]); 
+                                        } 
+                                        nextS.mood = Math.min(100, nextS.mood + 0.5); 
+                                        nextS.sanity = Math.min(100, nextS.sanity + 0.5); 
+                                    } 
+                                } else { 
+                                    nextS.targetX = friend.x + (Math.sin(tickRef.current) * 0.5); 
+                                    nextS.targetY = friend.y + (Math.cos(tickRef.current) * 0.5); 
+                                } 
+                            } else { nextS.state = 'IDLE'; nextS.stateLock = 0; } 
+                        }
                         else if (nextS.state === 'LOVE') { if (tickRef.current % 15 === 0) { setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE - 15, life: 50, color: '#ff69b4', text: '❤️', isThought: true }]); nextS.mood = Math.min(100, nextS.mood + 1); nextS.sanity = Math.min(100, nextS.sanity + 1); } if (nextS.stateLock <= 0) { if (nextS.gender === 'F' && prev.length < MAX_POPULATION) { const baby = generateSim(null, nextS.x, nextS.y, nextS.generation + 1, 0); baby.traits.bravery = Math.min(1, Math.max(0, nextS.traits.bravery + (Math.random()*0.2 - 0.1))); newBabies.push(baby); addEvent(getLog('BIRTH', baby.sign)); setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 100, color: '#fff', text: '👶', isThought: true }]); } nextS.state = 'IDLE'; } }
                         else if (nextS.state === 'CHAT') { if (tickRef.current % 20 === 0) { nextS.mood = Math.min(100, nextS.mood + 0.5); nextS.sanity = Math.min(100, nextS.sanity + 0.5); } if (nextS.stateLock <= 0) nextS.state = 'IDLE'; }
                         else if (nextS.state === 'SHOOT' || nextS.state === 'DEFEND') { const target = creatures.find(c => c.id === nextS.targetId && c.hp > 0); if (target) { const dist = Math.sqrt((nextS.x-target.x)**2 + (nextS.y-target.y)**2); const range = nextS.state === 'SHOOT' ? 4 : 1.2; if (dist > range) { const speed = 0.08; nextS.x += Math.sign(target.x - nextS.x) * speed; nextS.y += Math.sign(target.y - nextS.y) * speed; } else if (nextS.state === 'SHOOT' && dist < 3) { nextS.x -= Math.sign(target.x - nextS.x) * 0.05; nextS.y -= Math.sign(target.y - nextS.y) * 0.05; } if (tickRef.current % 30 === 0) { if (nextS.state === 'SHOOT') { setProjectiles(p => [...p, { x: nextS.x, y: nextS.y, vx: (target.x - nextS.x) * 0.15, vy: (target.y - nextS.y) * 0.15, life: 50, ownerId: nextS.id, dmg: 15, color: PALETTE.TOOL_SPEAR }]); } else { target.hp -= 10; setParticles(p => [...p, { x:target.x*TILE_SIZE, y:target.y*TILE_SIZE, life:10, color:'#f00', text:'💥'}]); } } } else { nextS.state = 'IDLE'; nextS.stateLock = 0; } }
@@ -1400,6 +1491,14 @@
                                             </span>
                                             {userApiKey && <span className="text-[10px] text-green-400 border border-green-600 px-1 rounded">AI 連結中</span>}
                                         </div>
+                                        {/* TOOLS DISPLAY */}
+                                        <div className="flex gap-2 mt-2 mb-2">
+                                            {selectedObj.tools.axe && <span className="bg-gray-700 p-1 rounded text-xs cursor-help" title="斧頭">🪓</span>}
+                                            {selectedObj.tools.pick && <span className="bg-gray-700 p-1 rounded text-xs cursor-help" title="鎬子">⛏️</span>}
+                                            {selectedObj.tools.spear && <span className="bg-gray-700 p-1 rounded text-xs cursor-help" title="長矛">⚔️</span>}
+                                            {!selectedObj.tools.axe && !selectedObj.tools.pick && !selectedObj.tools.spear && <span className="text-gray-600 text-[10px]">無裝備</span>}
+                                        </div>
+                                        
                                         <div className="text-xs text-yellow-200 italic mb-4 p-2 bg-black/40 rounded border border-gray-700">
                                             "{selectedObj.thought}"
                                         </div>
