@@ -5,31 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>星辰部落: 文明崛起 (Tribe of Stars)</title>
     
-    <!-- 1. 載入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 2. 載入 React 與 ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- 3. 載入 Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <style>
-        body { margin: 0; overflow: hidden; background-color: #111; }
+        body { margin: 0; overflow: hidden; background-color: #111; user-select: none; }
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-        
-        /* 自定義捲軸樣式 */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #1a1a1a; }
         ::-webkit-scrollbar-thumb { background: #4a4a4a; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #666; }
-
         button { touch-action: manipulation; }
-        
-        /* Log 視窗的淡入動畫 */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .log-item { animation: fadeIn 0.3s ease-out forwards; }
+        .build-cursor { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewport="0 0 24 24" fill="none" stroke="yellow" stroke-width="2"><rect x="2" y="2" width="20" height="20" /></svg>') 12 12, crosshair; }
+        @keyframes floatUp { 
+            0% { opacity: 0; transform: translateY(5px) scale(0.8); } 
+            10% { opacity: 1; transform: translateY(0) scale(1); } 
+            90% { opacity: 1; transform: translateY(-20px) scale(1); } 
+            100% { opacity: 0; transform: translateY(-30px) scale(0.9); } 
+        }
+        .thought-bubble { animation: floatUp 4s ease-in-out forwards; pointer-events: none; text-shadow: 1px 1px 0 #000; white-space: nowrap; z-index: 50; }
     </style>
 </head>
 <body>
@@ -45,68 +43,75 @@
         );
 
         const Icons = {
-            Sparkles: (p) => <Icon char="✨" {...p}/>,
-            Heart: (p) => <Icon char="❤️" {...p}/>,
-            Utensils: (p) => <Icon char="🍖" {...p}/>,
-            Shield: (p) => <Icon char="🛡️" {...p}/>,
-            CloudRain: (p) => <Icon char="🌧️" {...p}/>,
-            Snowflake: (p) => <Icon char="❄️" {...p}/>,
-            Sun: (p) => <Icon char="☀️" {...p}/>,
-            Cloud: (p) => <Icon char="☁️" {...p}/>,
-            Flame: (p) => <Icon char="🔥" {...p}/>,
-            Mountain: (p) => <Icon char="⛰️" {...p}/>,
-            Skull: (p) => <Icon char="💀" {...p}/>,
-            RefreshCw: (p) => <Icon char="🔄" {...p}/>,
-            X: (p) => <Icon char="❌" {...p}/>,
-            Brain: (p) => <Icon char="🧠" {...p}/>,
-            ScrollText: (p) => <Icon char="📜" {...p}/>,
-            MessageCircle: (p) => <Icon char="💬" {...p}/>,
-            HelpCircle: (p) => <Icon char="❓" {...p}/>,
-            Users: (p) => <Icon char="👥" {...p}/>,
-            Hammer: (p) => <Icon char="🔨" {...p}/>,
-            Zap: (p) => <Icon char="⚡" {...p}/>,
-            Home: (p) => <Icon char="🏠" {...p}/>,
-            Biohazard: (p) => <Icon char="☣️" {...p}/>,
-            Baby: (p) => <Icon char="👶" {...p}/>,
-            Sword: (p) => <Icon char="⚔️" {...p}/>,
-            Crown: (p) => <Icon char="👑" {...p}/>,
-            Box: (p) => <Icon char="📦" {...p}/>,
-            ChevronUp: (p) => <Icon char="▲" {...p}/>,
-            ChevronDown: (p) => <Icon char="▼" {...p}/>
+            Sparkles: (p) => <Icon char="✨" {...p}/>, Heart: (p) => <Icon char="❤️" {...p}/>, Utensils: (p) => <Icon char="🍖" {...p}/>,
+            Shield: (p) => <Icon char="🛡️" {...p}/>, CloudRain: (p) => <Icon char="🌧️" {...p}/>, Snowflake: (p) => <Icon char="❄️" {...p}/>,
+            Sun: (p) => <Icon char="☀️" {...p}/>, Cloud: (p) => <Icon char="☁️" {...p}/>, Flame: (p) => <Icon char="🔥" {...p}/>,
+            Mountain: (p) => <Icon char="⛰️" {...p}/>, Skull: (p) => <Icon char="💀" {...p}/>, RefreshCw: (p) => <Icon char="🔄" {...p}/>,
+            X: (p) => <Icon char="❌" {...p}/>, Brain: (p) => <Icon char="🧠" {...p}/>, ScrollText: (p) => <Icon char="📜" {...p}/>,
+            MessageCircle: (p) => <Icon char="💬" {...p}/>, HelpCircle: (p) => <Icon char="❓" {...p}/>, Users: (p) => <Icon char="👥" {...p}/>,
+            Hammer: (p) => <Icon char="🔨" {...p}/>, Zap: (p) => <Icon char="⚡" {...p}/>, Home: (p) => <Icon char="🏠" {...p}/>,
+            Biohazard: (p) => <Icon char="☣️" {...p}/>, Baby: (p) => <Icon char="👶" {...p}/>, Sword: (p) => <Icon char="⚔️" {...p}/>,
+            Crown: (p) => <Icon char="👑" {...p}/>, Box: (p) => <Icon char="📦" {...p}/>, ChevronUp: (p) => <Icon char="▲" {...p}/>,
+            ChevronDown: (p) => <Icon char="▼" {...p}/>, Target: (p) => <Icon char="🎯" {...p}/>, Save: (p) => <Icon char="💾" {...p}/>,
+            Key: (p) => <Icon char="🔑" {...p}/>
         };
-
-        const apiKey = ""; 
 
         // --- Constants & Config ---
         const PIXEL_FONT = "'Courier New', Courier, monospace";
         const TILE_SIZE = 32;
-        const SCALE = 1.5; // Slightly zoom out for larger map
-        const MAP_WIDTH = 40; // Requirement 6: Larger Map
+        const SCALE = 1.5; 
+        const MAP_WIDTH = 40; 
         const MAP_HEIGHT = 40;
         const DAY_TICKS = 800; 
         const MAX_POPULATION = 50;
+        const AI_COOLDOWN_TICKS = 150; // AI calls every ~3-5 seconds
         
-        const CRAZY_THOUGHTS = ["它們在看我...", "一切都沒意義...", "天塌下來了...", "我是誰？", "哈哈哈...", "別過來！", "黑暗...好黑..."];
+        // Tool Crafting Costs
+        const TOOL_COSTS = {
+            AXE: 10,  // Wood needed
+            PICK: 15, // Wood needed
+            SPEAR: 20 // Wood needed
+        };
 
-        // Requirement 1: 10+ Wisdoms (Tech Tree)
+        // --- Tech Tree Definitions with Effects ---
         const TECH_TREE = [
-            // Era 1: Cave
-            "火種保存", "石器打磨", "語言溝通", "獸皮縫製", "採集辨識",
-            // Era 2: Tribe
-            "簡易農業", "陶器製作", "弓箭狩獵", "草藥學", "基礎建築",
-            // Era 3: City
-            "青銅冶煉", "文字記錄", "法律制定", "貨幣交易", "車輪運輸",
-            // Era 4: Nation
-            "鋼鐵鍛造", "哲學思考", "軍事陣法", "大型灌溉", "航海技術"
+            { id: 'STONE_TOOLS', name: '石器打磨', desc: '解鎖製作 [斧頭] 與 [鎬子]', icon: '🪨' },
+            { id: 'FIRE', name: '火種保存', desc: '解鎖建造 [營火] (夜間治療)', icon: '🔥' },
+            { id: 'ARCH', name: '基礎建築', desc: '解鎖建造 [木牆] (防禦)', icon: '🪵' },
+            { id: 'HUNTING', name: '狩獵技術', desc: '解鎖製作 [長矛] (戰鬥)', icon: '🗡️' },
+            { id: 'GATHERING', name: '採集辨識', desc: '灌木採集食物 +2', icon: '🫐' },
+            { id: 'BRONZE', name: '青銅冶煉', desc: '解鎖建造 [箭塔]', icon: '🗼' },
+            { id: 'MEDICINE', name: '草藥學', desc: '營火治療效果 3倍', icon: '🌿' },
+            { id: 'IRON', name: '鋼鐵鍛造', desc: '伐木與採礦效率大幅提升', icon: '⚒️' },
+            { id: 'STRATEGY', name: '軍事陣法', desc: '族人對抗野獸時更勇敢', icon: '🛡️' },
+            { id: 'FARMING', name: '大型灌溉', desc: '採集食物效率再提升', icon: '🌾' }
         ];
 
-        // Requirement 5: Civilization Stages (Enhanced with Descriptions)
         const CIV_STAGES = [
             { id: 0, name: '穴居時代', icon: '🕳️', minTech: 0, sprite: 'cave', desc: '原始的天然岩洞，能勉強遮風避雨。', stats: { def: 10, heal: 1, cap: 200 } },
-            { id: 1, name: '部落時代', icon: '⛺', minTech: 5, sprite: 'hut', desc: '用木材與獸皮搭建的聚落，設有簡易倉庫。', stats: { def: 30, heal: 2, cap: 500 } },
-            { id: 2, name: '城邦時代', icon: '🏘️', minTech: 10, sprite: 'house', desc: '石木混合的堅固建築，文明的火種在此燃燒。', stats: { def: 80, heal: 4, cap: 2000 } },
-            { id: 3, name: '帝國時代', icon: '🏰', minTech: 15, sprite: 'castle', desc: '巍峨的石砌城堡，象徵著至高無上的權力。', stats: { def: 200, heal: 8, cap: 10000 } }
+            { id: 1, name: '部落時代', icon: '⛺', minTech: 3, sprite: 'hut', desc: '用木材與獸皮搭建的聚落，設有簡易倉庫。', stats: { def: 30, heal: 2, cap: 500 } }, 
+            { id: 2, name: '城邦時代', icon: '🏘️', minTech: 6, sprite: 'house', desc: '石木混合的堅固建築，文明的火種在此燃燒。', stats: { def: 80, heal: 4, cap: 2000 } },
+            { id: 3, name: '帝國時代', icon: '🏰', minTech: 9, sprite: 'castle', desc: '巍峨的石砌城堡，象徵著至高無上的權力。', stats: { def: 200, heal: 8, cap: 10000 } }
         ];
+
+        // --- Creature Stats (Restored) ---
+        const CREATURE_STATS = {
+            RABBIT: { hp: 30, type: 'PASSIVE', dmg: 0, name: '兔子', sprite: 'rabbit' },
+            DEER: { hp: 50, type: 'PASSIVE', dmg: 0, name: '鹿', sprite: 'deer' },
+            SHEEP: { hp: 40, type: 'PASSIVE', dmg: 0, name: '綿羊', sprite: 'sheep' },
+            COW: { hp: 120, type: 'PASSIVE', dmg: 0, name: '乳牛', sprite: 'cow' },
+            FOX: { hp: 60, type: 'HOSTILE', dmg: 5, name: '狐狸', sprite: 'fox' },
+            BOAR: { hp: 100, type: 'HOSTILE', dmg: 8, name: '野豬', sprite: 'boar' },
+            WOLF: { hp: 80, type: 'HOSTILE', dmg: 10, name: '惡狼', sprite: 'wolf' },
+            BEAR: { hp: 200, type: 'HOSTILE', dmg: 20, name: '巨熊', sprite: 'bear' },
+            DINOSAUR: { hp: 800, type: 'HOSTILE', dmg: 40, name: '暴龍', sprite: 'dinosaur' }
+        };
+
+        const BUILDINGS = {
+            BONFIRE: { id: 'BONFIRE', name: '營火', cost: { wood: 20, stone: 0 }, desc: '夜間治療周圍族人', sprite: 'bonfire', hp: 50, reqTech: 'FIRE' },
+            TOWER: { id: 'TOWER', name: '箭塔', cost: { wood: 50, stone: 20 }, desc: '自動攻擊敵人', sprite: 'tower', hp: 200, range: 6, dmg: 10, reqTech: 'BRONZE' },
+            WALL: { id: 'WALL', name: '木牆', cost: { wood: 10, stone: 0 }, desc: '阻擋敵人前進', sprite: 'wall', hp: 300, reqTech: 'ARCH' }
+        };
 
         const PALETTE = {
             OUTLINE: '#1a1c2c', SKIN: '#ffccaa', SKIN_SHADOW: '#d48e7e',
@@ -120,12 +125,14 @@
             LEAF_L: '#66bb6a', LEAF_D: '#2e7d32', LEAF_PINE: '#1b5e20',
             FLOWER_R: '#e57373', FLOWER_Y: '#fff176', MUSHROOM: '#f44336',
             FUR_WOLF: '#90a4ae', FUR_BEAR: '#4e342e', FUR_DEER: '#a1887f', FUR_RABBIT: '#fafafa',
+            FUR_FOX: '#e67e22', FUR_SHEEP: '#f5f6fa', SKIN_PIG: '#d48e7e',
             DINO_GREEN: '#558b2f', DINO_EYE: '#ffeb3b', 
             WHITE: '#ffffff', GOLD: '#ffd700', RED: '#ff0000',
-            TOOL_AXE: '#8d6e63', TOOL_HEAD: '#90a4ae', TOOL_SPEAR: '#d7ccc8',
+            TOOL_AXE: '#8d6e63', TOOL_HEAD: '#90a4ae', TOOL_SPEAR: '#d7ccc8', TOOL_BOW: '#8d6e63',
             SICK_SKIN: '#88aa88',
             HUT_ROOF: '#e6c98e', HOUSE_ROOF: '#a1887f', CASTLE_WALL: '#90a4ae',
-            BONE_WHITE: '#e0e0e0'
+            BONE_WHITE: '#e0e0e0', FIRE_1: '#ffeb3b', FIRE_2: '#ff5722',
+            BERRY: '#e91e63'
         };
 
         const DISASTERS = {
@@ -163,19 +170,59 @@
             { sign: '雙魚', gender: 'F', color: '#a29bfe', hair: '#6c5ce7', trait: '浪漫' }
         ];
 
-        // --- Utils ---
+        // NEW: Pre-canned thoughts for offline mode
+        const PRE_CANNED_THOUGHTS = {
+            IDLE: ["發呆中...", "今天天氣不錯。", "肚子有點餓。", "好無聊啊...", "雲看起來像雞腿。", "想睡覺了..."],
+            WORK: ["嘿咻...嘿咻...", "為了部落！", "這工作真累人。", "希望能找到好東西。", "再撐一下。", "勞動使我快樂...吧？"],
+            EAT: ["真好吃！", "終於有東西吃了。", "냠냠...", "希望能吃飽。", "這味道不錯。", "感謝大自然的饋贈。"],
+            SLEEP: ["呼...呼...", "好睏...", "晚安...", "Zzz...", "明天又是新的一天。", "別吵我..."],
+            CHAT: ["真的假的？", "哈哈，太好笑了！", "你最近還好嗎？", "聽說昨天...", "那個人好奇怪。", "這天氣真糟。"],
+            FIGHT: ["去死吧！", "別過來！", "看招！", "為了榮耀！", "我跟你拼了！", "好可怕！"],
+            FLEE: ["救命啊！", "快跑！", "打不過快逃！", "別殺我！", "我不玩了！", "腳底抹油！"],
+            PANIC: ["我不想死...", "這是什麼鬼地方...", "嗚嗚嗚...", "誰來救救我...", "腦袋好痛...", "不要過來！"],
+            CRAFT: ["製作工具中...", "這個綁緊一點...", "需要一把好斧頭。", "敲敲打打...", "快做好了！"],
+            INSANE: ["嘿嘿嘿...", "蟲子...皮膚下有蟲子...", "天空在融化...", "別過來！你是惡魔！", "我要飛...", "安靜！聲音太大了！"]
+        };
+
+        // LOG TEMPLATES
+        const LOG_TEMPLATES = {
+            FIGHT_START: [
+                "⚔️ {name} 遭遇 {enemy}，戰鬥開始！", 
+                "{name} 為了保衛家園對抗 {enemy}！", 
+                "⚠️ {name} 被 {enemy} 襲擊了！"
+            ],
+            FLEE: ["🏃 {name} 驚慌失措地逃跑了！", "{name} 覺得保命要緊，轉身就跑。"],
+            PANIC: ["😱 {name} 精神崩潰了！", "{name} 在恐懼中顫抖...", "{name} 開始胡言亂語。"],
+            DEATH: ["💀 {name} 回歸了星辰...", "{name} 倒下了，部落失去了一位成員。"],
+            OLD_AGE: ["🕯️ {name} 壽終正寢，安詳地離開了。", "{name} 走完了漫長的一生。"],
+            BIRTH: ["👶 {name} 為部落帶來了新生命！", "部落誕生了一位新成員 {name}！"],
+            INSANITY: ["🌀 {name} 理智斷線，陷入了瘋狂！", "{name} 眼神渙散，開始攻擊周圍的一切。"],
+            ATTACK_FRIEND: ["🔪 {name} 因瘋狂誤傷了同伴！", "{name} 陷入幻覺發起了攻擊！"]
+        };
+
+        const ENEMY_NAMES = {
+            'WOLF': '惡狼',
+            'BEAR': '巨熊',
+            'DINOSAUR': '暴龍',
+            'FOX': '狐狸',
+            'BOAR': '野豬'
+        };
+
+        const getLog = (type, name, target = "", enemy = "") => {
+            const templates = LOG_TEMPLATES[type] || ["{name} 發生了事件。"];
+            const template = templates[Math.floor(Math.random() * templates.length)];
+            return template.replace("{name}", name).replace("{target}", target).replace("{enemy}", enemy);
+        };
+
         const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
         const noise = (x, y) => Math.sin(x/3.5) + Math.cos(y/4.5);
         const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
-        const callGemini = async (prompt, type) => {
-            if (!apiKey) { 
-                await new Promise(r => setTimeout(r, 800));
-                return type === 'SAGA' ? "部落的篝火照亮了新時代的道路。" : "沈思中...";
-            }
+        const callGemini = async (prompt, userKey) => {
+            if (!userKey) return null;
             try {
                 const response = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${userKey}`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -183,23 +230,28 @@
                 });
                 const data = await response.json();
                 return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-            } catch (error) { return null; }
+            } catch (error) { console.error("AI Error:", error); return null; }
         };
 
-        // --- Graphics ---
         const SPRITE_MATRICES = {
             CHAR_M: ["........................",".......HHHHHH...........","......HSSSSSSH..........",".....HSSKSSKSSH.........",".....HSSSSSSSSH.........","......SSSSSSSS..........","....CCCSCCCCSCCC........","....CCCSCCCCSCCC........","....CCCCCCCCCCCC........","....KKKCCCCCCKKK........","....K.KCCCCCCK.K........","......KSSSSSSK..........","......KSSSSSSK..........","......KKK..KKK.........."],
             CHAR_F: ["........................","......HHHHHHHH..........",".....HSSSSSSSSH.........",".....HSSKSSKSSH.........",".....HSSSSSSSSH.........",".....SSSSSSSSSS.........","....CCCSCCCCSCCC........","...CCCCSCCCCSCCCC.......","...CCCCCCCCCCCCCC.......","...CCCCCCCCCCCCCC.......","....CCCCCCCCCCCC........",".....KSSSSSSssk.........",".....KSSSSSSssk.........",".....KKK....KKK........."],
             TREE_OAK: [".......LLLLLL.......",".....LLLLLLLLLL.....","....LLLLLLLLLLLL....","...LLLLLLLLLLLLLL...","...LLLLLLLLLLLLLL...","....LLLLLLLLLLLL....",".....LLLLLLLLLL.....",".......WWWWWW.......",".......WWWWWW.......",".......WWWWWW.......","......WWWWWWWW......"],
             TREE_PINE: ["..........L.........",".........LLL........","........LLLLL.......",".......LLLLLLL......",".........LLL........","........LLLLL.......",".......LLLLLLL......","......LLLLLLLLL.....",".....LLLLLLLLLLL....","........WWWWW.......",".......WWWWWWW......"],
             BUSH: ["....................","......LLLLLLL.......",".....LLLLLLLLL......","....LLLLLLLLLLL.....","....LLLLLLLLLLL.....",".....LLLLLLLLL......"],
+            BERRY_BUSH: ["....................","......LLRLLRL.......",".....LLLRLLRLL......","....LLLLLLLLLLL.....","....LLLLLLLLLLL.....",".....LLLLLLLLL......"],
             FLOWER: [".........R..........","........RYR.........",".........R..........",".........G..........",".........G.........."],
             MUSHROOM: ["........RRR.........",".......RRRRR........",".......RWWWR........","........WWW.........","........WWW........."],
             ROCK: [".......KKKKKK.......",".....KKMMMMMMKK.....","....KMMLLLLLLMMK....","...KMLLLLLLLLLLMK...","...KMMMMMMMMMMMMK...","...KDDDDDDDDDDDDK...","....KKDDDDDDDDKK....","......KKKKKKKK......"],
+            GOLD_ROCK: [".......KKKKKK.......",".....KKMMMMMMKK.....","....KMMYYYMMMKMK....","...KMYYYYYYYYYMK...","...KMMYYYYYYYYMK...","...KDDDDDDDDDDDDK...","....KKDDDDDDDDKK....","......KKKKKKKK......"],
             RABBIT: [".......KK...........","......KWWK..........",".....KWWWWK.........",".....KWWWWK.........","......KKKK.........."],
             WOLF: ["....................",".......K............","......KGK...........",".....KGGGK..........","....KGGGGGK...K.....","...KGGGGGGGGKKGK....","...KGGGGGGGGGGGK....","....KGGGGGGGGGK.....","....K.K.....K.K....."],
             BEAR: [".........KK...KK....","......KKKBBKKKBBK...",".....KBBBBBBBBBBBK..","....KBBBBBBBBBBBBBK.","...KBBBBBBBBBBBBBBBK","...KBBBBBBBBBBBBBBBK","...KBBBBBBBBBBBBBBBK","....KB.B.B.....B.B..","....KK.K.K.....K.K.."],
             DEER: ["...........K...K....","............K.K.....","..........KKKBKK....",".........KBBBBBBK...","........KBBBBBBBBK..",".......KBBBBBBBBBK..",".......K.B.....B....",".......K.K.....K...."],
+            FOX: ["...........K........","..........KOK.......",".........KOOK.......","........KOOOK.......",".......KOOOOK...O...","......KOOOOOOKKOK...",".....KOOOOOOOOOK....","....KOOOOOOOOOK.....","....K.K......K.K...."],
+            BOAR: ["....................",".........KKK........",".......KKKKK........","......KKDDDKK.......",".....KDDDDDDDK......","....KDDDDDDDDDK.....","...KDDDDDDDDDDDK....","...KDDDDDDDDDDDK....","....K.K......K.K...."],
+            SHEEP: ["....................","........WWW.........",".......WWWWW........","......WWWWWWW.......",".....WWWWWWWWW......",".....WWWWWWWWW......","......WWWWWWW.......","......K.K.K.K......."],
+            COW: ["....................",".........KK.........","......KKWWKK........",".....KWWWWWWK.......","....KWWWWWWWWK......","....KWBWWBWWK.......","....KWWWWWWWWK......","....KWWWWWWWWK......",".....K.K..K.K......."],
             WHEAT_GROW: ["................","....1......1....","...111....111...","....1......1....","................"],
             WHEAT_READY: ["....3......3....","...333....333...","...333....333...","....3......3....","....3......3...."],
             DINOSAUR: ["........................","................KKKKK...","...............KGGGGGK..","...............KGGYGGK..","...............KGGGGGK..",".......KKKK...KGGGGGK...",".....KKGGGGKKKGGGGGK....","....KGGGGGGGGGGGGGK.....","...KGGGGGGGGGGGGGK......","...KGGGGGGGGGGGGK.......","....KGGGGGGGGGGK........",".....KGGK..KGGK.........","......KK....KK.........."],
@@ -207,7 +259,11 @@
             CAVE: [".....KKKKKKKKK.....","...KKXXXXXXXXXKK...","..KXXXXXXXXXXXXXK..",".KXXXXXXXXXXXXXXXK.",".KXXXXXXXXXXXXXXXK.","KXXXXXXXXXXXXXXXXXK","KXXXXXXXXXXXXXXXXXK","KXXXXXX.....XXXXXXK","KXXXXXX.....XXXXXXK","KXXXXXX.....XXXXXXK"],
             HUT: [".........K.........",".......KRRK........","......KRRRRK.......",".....KRRRRRRK......","....KRRRRRRRRK.....","...KRRRRRRRRRRK....","..KWWWWWWWWWWWWK...","..KW..W....W..WK...","..KW..W....W..WK...","..KWWWW....WWWWK..."],
             HOUSE: ["...................","...KKKKKKKKKKKKK...","...KRRRRRRRRRRRK...","...KRRRRRRRRRRRK...","...KRRRRRRRRRRRK...","...KKKKKKKKKKKKK...","...KWWWWWWWWWWWK...","...KWWWWWWWWWWWK...","...KWW.WWWW.WWWK...","...KWW.WWWW.WWWK..."],
-            CASTLE: [".KK...KK...KK...KK.",".KWK.KWK...KWK.KWK.",".KWWKWWK...KWWKWWK.",".KWWWWWKKKKKWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWW.WWWWWWWWK.",".KWWWWWW.WWWWWWWWK.",".KWWWWWW.WWWWWWWWK."]
+            CASTLE: [".KK...KK...KK...KK.",".KWK.KWK...KWK.KWK.",".KWWKWWK...KWWKWWK.",".KWWWWWKKKKKWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWWWWWWWWWWWK.",".KWWWWWW.WWWWWWWWK.",".KWWWWWW.WWWWWWWWK.",".KWWWWWW.WWWWWWWWK."],
+            BONFIRE: [".........F..........","........FFF.........",".......FFFFF........",".........W..........","........W W........."],
+            TOWER: [".......KKKKK........",".......KWWWK........",".......KWWWK........",".......KWWWK........","......KKWWWKK.......","......KWWWWWK.......","......KWWWWWK.......","......KWWWWWK.......","......KWWWWWK......."],
+            WALL: ["....................","....................","....................","....................","...WWWWWWWWWWWWWW...","...WWWWWWWWWWWWWW...","...WWWWWWWWWWWWWW...","...WWWWWWWWWWWWWW..."],
+            ARROW: [".........K..........",".........W..........",".........W..........",".........W..........","........FFF........."]
         };
 
         const renderMatrix = (ctx, matrix, colors, offsetX = 0, offsetY = 0) => {
@@ -257,14 +313,20 @@
             makeSprite('tree_oak', SPRITE_MATRICES.TREE_OAK, {'L': PALETTE.LEAF_D, 'W': PALETTE.WOOD_D}, 1, 2, 6, 10);
             makeSprite('tree_pine', SPRITE_MATRICES.TREE_PINE, {'L': PALETTE.LEAF_PINE, 'W': PALETTE.WOOD_D}, 1, 2, 6, 8);
             makeSprite('bush', SPRITE_MATRICES.BUSH, {'L': PALETTE.LEAF_L}, 1, 1, 4, 16);
+            makeSprite('berry_bush', SPRITE_MATRICES.BERRY_BUSH, {'L': PALETTE.LEAF_L, 'R': PALETTE.BERRY}, 1, 1, 4, 16);
             makeSprite('flower', SPRITE_MATRICES.FLOWER, {'R': PALETTE.FLOWER_R, 'Y': PALETTE.FLOWER_Y, 'G': PALETTE.GRASS_L}, 1, 1, 10, 16);
             makeSprite('mushroom', SPRITE_MATRICES.MUSHROOM, {'R': PALETTE.MUSHROOM, 'W': PALETTE.WHITE}, 1, 1, 10, 16);
             makeSprite('rock', SPRITE_MATRICES.ROCK, {'K': PALETTE.OUTLINE, 'M': PALETTE.STONE_M, 'L': PALETTE.STONE_L, 'D': PALETTE.STONE_D}, 1, 1, 8, 16);
+            makeSprite('gold_rock', SPRITE_MATRICES.GOLD_ROCK, {'K': PALETTE.OUTLINE, 'M': PALETTE.STONE_M, 'Y': PALETTE.GOLD, 'D': PALETTE.STONE_D}, 1, 1, 8, 16);
             makeSprite('rabbit', SPRITE_MATRICES.RABBIT, {'W': PALETTE.FUR_RABBIT}, 1, 1, 8, 16);
             makeSprite('wolf', SPRITE_MATRICES.WOLF, {'G': PALETTE.FUR_WOLF}, 1, 1, 4, 12);
             makeSprite('bear', SPRITE_MATRICES.BEAR, {'B': PALETTE.FUR_BEAR}, 1.5, 1.5, 4, 10);
             makeSprite('deer', SPRITE_MATRICES.DEER, {'B': PALETTE.FUR_DEER}, 1, 1.5, 4, 10);
             makeSprite('dinosaur', SPRITE_MATRICES.DINOSAUR, {'G': PALETTE.DINO_GREEN, 'Y': PALETTE.DINO_EYE}, 2, 2, 16, 16); 
+            makeSprite('fox', SPRITE_MATRICES.FOX, {'O': PALETTE.FUR_FOX}, 1, 1, 4, 12); // New
+            makeSprite('boar', SPRITE_MATRICES.BOAR, {'D': PALETTE.SKIN_PIG}, 1, 1, 4, 12); // New
+            makeSprite('sheep', SPRITE_MATRICES.SHEEP, {'W': PALETTE.FUR_SHEEP}, 1, 1, 4, 12); // New
+            makeSprite('cow', SPRITE_MATRICES.COW, {'W': PALETTE.WHITE, 'B': PALETTE.OUTLINE}, 1, 1, 4, 12); // New
             makeSprite('wheat_1', SPRITE_MATRICES.WHEAT_GROW, { '1': PALETTE.WHEAT_1 }, 1, 1, 8, 16);
             makeSprite('wheat_2', SPRITE_MATRICES.WHEAT_READY, { '3': PALETTE.WHEAT_3 }, 1, 1, 8, 16);
             makeSprite('skull', SPRITE_MATRICES.SKULL, { 'W': PALETTE.BONE_WHITE, 'B': PALETTE.OUTLINE }, 1, 1, 8, 10);
@@ -272,6 +334,10 @@
             makeSprite('hut', SPRITE_MATRICES.HUT, { 'R': PALETTE.HUT_ROOF, 'W': PALETTE.WOOD_L }, 2, 2, 16, 24);
             makeSprite('house', SPRITE_MATRICES.HOUSE, { 'R': PALETTE.HOUSE_ROOF, 'W': PALETTE.STONE_L }, 2, 2, 16, 24);
             makeSprite('castle', SPRITE_MATRICES.CASTLE, { 'W': PALETTE.CASTLE_WALL }, 2, 2, 16, 24);
+            makeSprite('bonfire', SPRITE_MATRICES.BONFIRE, { 'F': PALETTE.FIRE_2, 'W': PALETTE.WOOD_D }, 1, 1, 8, 10);
+            makeSprite('tower', SPRITE_MATRICES.TOWER, { 'W': PALETTE.WOOD_L }, 1, 1, 8, 8);
+            makeSprite('wall', SPRITE_MATRICES.WALL, { 'W': PALETTE.WOOD_D }, 1, 1, 0, 8);
+            makeSprite('arrow', SPRITE_MATRICES.ARROW, { 'W': PALETTE.TOOL_SPEAR, 'F': PALETTE.RED }, 1, 1, 8, 8);
 
             return cache;
         };
@@ -294,28 +360,31 @@
                     else if (n < -0.3) type = 'FOREST';
                     
                     const dist = Math.sqrt((x-centerX)**2 + (y-centerY)**2);
-                    if (dist < 5) {
-                        type = 'MOUNTAIN_GROUND';
-                        if (dist < 1.5) decoration = 'BASE'; // Replaces CAVE
-                        else if (Math.random() < 0.1) decoration = 'ROCK';
+                    if (dist < 6) {
+                        type = 'GRASS';
+                        if (dist < 1.5) decoration = 'BASE';
+                        else if (Math.random() < 0.1) decoration = 'BERRY_BUSH';
                     } else {
                         if (type === 'FOREST') {
-                            if (Math.random() > 0.6) decoration = 'TREE_OAK';
-                            else decoration = 'TREE_PINE';
-                            if (Math.random() < 0.1) decoration = 'MUSHROOM';
+                            const r = Math.random();
+                            if (r > 0.7) decoration = 'TREE_OAK';
+                            else if (r > 0.4) decoration = 'TREE_PINE';
+                            else if (r > 0.3) decoration = 'BERRY_BUSH'; 
+                            else if (r < 0.1) decoration = 'MUSHROOM';
                         } else if (type === 'GRASS') {
                             const rnd = Math.random();
                             if (rnd < 0.05) decoration = 'ROCK';
-                            else if (rnd < 0.1) decoration = 'BUSH';
+                            else if (rnd < 0.08) decoration = 'BERRY_BUSH'; 
+                            else if (rnd < 0.12) decoration = 'BUSH';
                             else if (rnd < 0.15) decoration = 'FLOWER';
                         } else if (type === 'MOUNTAIN_GROUND') {
-                            if (Math.random() < 0.15) decoration = 'ROCK';
+                            const r = Math.random();
+                            if (r < 0.15) decoration = 'ROCK';
+                            else if (r < 0.18) decoration = 'GOLD_ROCK'; 
                         }
                     }
-                    
                     if (decoration === 'BASE' && (Math.abs(x - centerX) > 0.5 || Math.abs(y - centerY) > 0.5)) decoration = null;
                     if (Math.abs(x - centerX) < 0.5 && Math.abs(y - centerY) < 0.5) decoration = 'BASE';
-
                     row.push({ x, y, type, decoration });
                 }
                 newMap.push(row);
@@ -323,36 +392,53 @@
             return newMap;
         };
 
-        const generateSim = (id, x, y, gen = 1) => {
+        const generateSim = (id, x, y, gen = 1, age = 18) => {
             const z = ZODIACS[Math.floor(Math.random() * ZODIACS.length)];
+            const traits = {
+                bravery: Math.random(),   
+                diligence: Math.random(), 
+                social: Math.random(),    
+                madness: Math.random() * 0.2 
+            };
             return {
                 id: id || `sim_${Date.now()}_${Math.random()}`, ...z,
                 x: x || MAP_WIDTH/2 + rand(-1,1), y: y || MAP_HEIGHT/2 + rand(-1,1) + 2,
-                hp: 100, hunger: 100, energy: 100, mood: 80, age: 18, generation: gen,
+                hp: 100, hunger: 100, energy: 100, mood: 80, sanity: 100, 
+                age: age, generation: gen, traits: traits,
                 state: 'IDLE', targetX: null, targetY: null, actionTimer: 0, targetId: null,
                 inventory: { wood:0, food:0, stone:0 },
-                tools: { axe: false, pick: false, spear: false },
-                thought: '又是新的一天...',
+                tools: { axe: false, pick: false, spear: false, bow: false },
+                thought: '這個世界好大...', 
                 animFrame: rand(0,10), dir: 1, hidden: false, sick: false,
-                buffTimer: 0, // Requirement 3: Clear Blessing
-                mateCooldown: 0
+                buffTimer: 0, mateCooldown: 0,
+                lastThoughtTime: 0,
+                stateLock: 0 
             };
         };
 
         const generateCreaturesData = () => {
             const initCreatures = [];
-            for(let i=0; i<12; i++) {
+            const types = Object.keys(CREATURE_STATS);
+            
+            for(let i=0; i<15; i++) { // Increased count for diversity
                 const r = Math.random();
                 let type = 'RABBIT';
-                if (r > 0.95) type = 'DINOSAUR'; // 5% chance for Dino
-                else if (r > 0.9) type = 'BEAR';
-                else if (r > 0.7) type = 'WOLF';
-                else if (r > 0.4) type = 'DEER';
+                
+                // Weighted Random Spawn
+                if (r > 0.98) type = 'DINOSAUR';
+                else if (r > 0.95) type = 'BEAR';
+                else if (r > 0.90) type = 'WOLF';
+                else if (r > 0.85) type = 'BOAR';
+                else if (r > 0.80) type = 'FOX';
+                else if (r > 0.65) type = 'DEER';
+                else if (r > 0.50) type = 'COW';
+                else if (r > 0.35) type = 'SHEEP';
+                else type = 'RABBIT';
                 
                 initCreatures.push({
                     id: `c_${Date.now()}_${i}`, type,
-                    x: rand(2, MAP_WIDTH-3), y: rand(2, MAP_HEIGHT-3), // Ensure creatures spawn within safe bounds
-                    hp: type==='DINOSAUR'?800 : (type==='BEAR'?200 : (type==='WOLF'?80 : 30)),
+                    x: rand(2, MAP_WIDTH-3), y: rand(2, MAP_HEIGHT-3),
+                    hp: CREATURE_STATS[type].hp,
                     targetX: null, targetY: null,
                     state: 'WANDER', animFrame: rand(0,10), dir: 1
                 });
@@ -365,7 +451,8 @@
             const [map, setMap] = useState([]);
             const [sims, setSims] = useState([]);
             const [creatures, setCreatures] = useState([]);
-            const [farms, setFarms] = useState([]);
+            const [buildings, setBuildings] = useState([]);
+            const [projectiles, setProjectiles] = useState([]);
             const [particles, setParticles] = useState([]);
             const [tribe, setTribe] = useState({ wood: 0, stone: 0, food: 100, tech: 0, unlockedTechs: [] });
             const [weather, setWeather] = useState(WEATHER.SUNNY);
@@ -374,38 +461,67 @@
             const [era, setEra] = useState(1);
             const [mana, setMana] = useState(999999);
             const [selectedId, setSelectedId] = useState(null);
+            const [buildMode, setBuildMode] = useState(null);
             const [events, setEvents] = useState([{id: 0, text:'族人仰望星空，故事開始了...'}]); 
             const [isGameOver, setIsGameOver] = useState(false);
-            const [isSoulSearching, setIsSoulSearching] = useState(false);
-            const [isWritingSaga, setIsWritingSaga] = useState(false);
             const [disaster, setDisaster] = useState(DISASTERS.NONE);
             const [disasterTimer, setDisasterTimer] = useState(0);
             const [shake, setShake] = useState(0);
-            // New State for Log Toggle
             const [isLogOpen, setIsLogOpen] = useState(true);
             const [flash, setFlash] = useState(0);
+            const [userApiKey, setUserApiKey] = useState(""); 
+            const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+            const [isSaving, setIsSaving] = useState(false); 
+            
+            // AI Logic Refs
+            const aiTimerRef = useRef(AI_COOLDOWN_TICKS);
+            
+            // NEW: AI Decision Queue System
+            const aiRequestQueue = useRef([]);
+            const isAiProcessing = useRef(false);
 
             const canvasRef = useRef(null);
             const tickRef = useRef(0);
             const requestRef = useRef();
             const logEndRef = useRef(null);
-            const actionQueue = useRef([]); // Queue for Map modifications
+            const savedGame = useRef(false);
 
-            // Scroll to bottom when events change 
             useEffect(() => {
-                if (isLogOpen) {
-                    logEndRef.current?.scrollIntoView({ behavior: "smooth" });
-                }
+                if (isLogOpen) logEndRef.current?.scrollIntoView({ behavior: "smooth" });
             }, [events, isLogOpen]);
 
             useEffect(() => {
+                const save = localStorage.getItem('TribeSave');
+                if (save) {
+                    try {
+                        const d = JSON.parse(save);
+                        setTribe(d.tribe); setSims(d.sims); setBuildings(d.buildings || []);
+                        setEra(d.era); setDay(d.day); setMana(d.mana);
+                        setMap(d.map || generateMapData()); 
+                        // Regenerate creatures if old save lacks new types or just for freshness
+                        setCreatures(generateCreaturesData()); 
+                        addEvent('已讀取部落存檔。');
+                        savedGame.current = true;
+                    } catch(e) { console.error("Save error", e); }
+                }
+
                 setSprites(createSprites());
-                setMap(generateMapData());
-                setSims(Array(12).fill(0).map((_, i) => generateSim(`start_${i}`, null, null, 1)));
-                setCreatures(generateCreaturesData());
+                if (!savedGame.current) {
+                    setMap(generateMapData());
+                    setSims(Array(12).fill(0).map((_, i) => generateSim(`start_${i}`, null, null, 1, 18)));
+                    setCreatures(generateCreaturesData());
+                }
             }, []);
 
-            // Check for Game Over (Restored)
+            useEffect(() => {
+                if (tickRef.current > 0 && tickRef.current % 1000 === 0 && sims.length > 0) {
+                    const saveData = { tribe, sims, buildings, map, era, day, mana };
+                    localStorage.setItem('TribeSave', JSON.stringify(saveData));
+                    setIsSaving(true);
+                    setTimeout(() => setIsSaving(false), 2000);
+                }
+            }, [tribe, sims, buildings, map, era, day, mana]);
+
             useEffect(() => {
                 if (sims.length > 0 && sims.every(s => s.state === 'DEAD') && !isGameOver) {
                     setIsGameOver(true);
@@ -417,90 +533,238 @@
             };
 
             const startNextEra = () => {
-                setEra(e => e + 1); setDay(1); setTime(0); setMana(999999);
-                setMap(generateMapData()); 
-                setSims(Array(12).fill(0).map((_, i) => generateSim(`era${era+1}_${i}`, null, null, era+1)));
-                setCreatures(generateCreaturesData());
-                setFarms([]); setTribe(prev => ({ ...prev, food: 100, wood: 0, stone: 0 }));
-                setIsGameOver(false); setDisaster(DISASTERS.NONE);
-                addEvent(`=== 第 ${era + 1} 紀元開啟 ===`);
+                localStorage.removeItem('TribeSave');
+                window.location.reload();
             };
 
-            const handleSoulSearch = async (sim) => {
-                if (mana < 10) return;
-                setIsSoulSearching(true); setMana(prev => prev - 10);
-                const thought = await callGemini(null, 'SOUL'); 
-                if (thought) {
-                    setSims(prev => prev.map(s => s.id === sim.id ? { ...s, thought: thought.trim() } : s));
-                    addEvent(`${sim.sign} 的靈魂發出了低語...`);
+            // Helper to check tech
+            const hasTech = (techId) => tribe.unlockedTechs.includes(techId);
+
+            const handleBuild = (type) => {
+                const b = BUILDINGS[type];
+                if (b.reqTech && !hasTech(b.reqTech)) {
+                    addEvent(`❌ 未解鎖科技: ${TECH_TREE.find(t=>t.id===b.reqTech).name}`);
+                    return;
                 }
-                setIsSoulSearching(false);
-            };
-
-            const handleTribeSaga = async () => {
-                if (mana < 50) return;
-                setIsWritingSaga(true); setMana(prev => prev - 50);
-                const prompt = `Write a cryptic, mythic, single-sentence log entry (max 20 words) for a primitive tribe in Traditional Chinese. Context: Era ${era}, Tech Lv ${tribe.tech}, Pop ${sims.length}, Food ${Math.floor(tribe.food)}, Weather ${weather.name}, Disaster ${disaster.name}.`;
-                const saga = await callGemini(prompt, 'SAGA');
-                if (saga) addEvent(`📜 史詩: ${saga.trim()}`);
-                else { addEvent(`❌ 史詩撰寫失敗`); setMana(prev => prev + 50); }
-                setIsWritingSaga(false);
+                setBuildMode(type);
+                addEvent(`建築模式: 請點擊地面建造 ${b.name}`);
             };
 
             const castSpell = (type) => {
                 if (type === 'DISASTER') {
-                    if (mana < 100) return;
+                    if (mana < 100) { addEvent("神力不足 (需要 100)"); return; }
                     setMana(m => m - 100);
                     const keys = Object.keys(DISASTERS).filter(k => k !== 'NONE');
-                    const pickKey = keys[Math.floor(Math.random() * keys.length)];
-                    const selectedDisaster = DISASTERS[pickKey];
-                    setDisaster(selectedDisaster);
-                    setDisasterTimer(600);
+                    const selectedDisaster = DISASTERS[keys[Math.floor(Math.random() * keys.length)]];
+                    setDisaster(selectedDisaster); setDisasterTimer(600);
                     addEvent(`⚠️ 神諭：${selectedDisaster.name} 降臨！`);
-                    if (pickKey === 'LOCUSTS') setTribe(t => ({...t, food: 0}));
-                    if (pickKey === 'BEASTS') setCreatures(prev => [...prev, ...generateCreaturesData().slice(0,5)]);
-                    return;
-                }
-                // ... (rest of castSpell)
-                if (mana < 20) return;
-                if (['FOOD', 'HEAL', 'BUFF'].includes(type) && selectedId && selectedId !== 'BASE_CENTER') {
-                    setSims(prev => prev.map(s => {
-                        if (s.id !== selectedId) return s;
-                        if (type === 'FOOD') { setMana(m => m - 30); addEvent(`賜予 ${s.sign} 食物`); return { ...s, hunger: 100, mood: Math.min(100, s.mood+10) }; }
-                        else if (type === 'HEAL') { setMana(m => m - 30); addEvent(`${s.sign} 傷口癒合`); return { ...s, hp: 100, sick: false, mood: Math.min(100, s.mood+10) }; }
-                        else if (type === 'BUFF') { 
-                            setMana(m => m - 30); 
-                            addEvent(`${s.sign} 獲得神力`); 
-                            // Curing Breakdown
-                            if (s.state === 'BREAKDOWN') {
-                                return { ...s, energy: 100, mood: 80, state: 'IDLE', buffTimer: 500, thought: '神拯救了我！' };
-                            }
-                            return { ...s, energy: 100, mood: 100, buffTimer: 500, thought: '力量湧現！' }; 
-                        }
-                        return s;
-                    }));
+                    if (selectedDisaster.id === 'BEASTS') setCreatures(prev => [...prev, ...generateCreaturesData().slice(0,5)]);
                     return;
                 }
                 
                 if (type === 'TECH') {
                     if (tribe.tech >= TECH_TREE.length) { addEvent("文明已達巔峰"); return; }
+                    if (mana < 50) { addEvent("神力不足 (需要 50)"); return; }
                     setMana(m => m - 50);
                     const newTech = TECH_TREE[tribe.tech];
-                    setTribe(t => ({...t, tech: t.tech + 1, unlockedTechs: [...t.unlockedTechs, newTech]}));
-                    addEvent(`💡 發明了 [${newTech}] (Lv.${tribe.tech + 1})`);
+                    setTribe(t => ({...t, tech: t.tech + 1, unlockedTechs: [...t.unlockedTechs, newTech.id]}));
+                    addEvent(`💡 發明了 [${newTech.name}] - ${newTech.desc}`);
+                    setFlash(1); // Visual Flash
+                    return;
+                }
+                
+                // Unit Spells (FOOD, HEAL, BUFF)
+                if (['FOOD', 'HEAL', 'BUFF'].includes(type)) {
+                    if (!selectedId || selectedId === 'BASE_CENTER') {
+                        addEvent("❌ 請先點擊選擇一個族人");
+                        return;
+                    }
+                    
+                    // Check Mana Cost (30 for unit spells)
+                    if (mana < 30) { addEvent("神力不足 (需要 30)"); return; }
+
+                    const targetSim = sims.find(s => s.id === selectedId);
+                    if (!targetSim) {
+                        addEvent("❌ 目標無效");
+                        return;
+                    }
+
+                    setMana(m => m - 30);
+                    setSims(prev => prev.map(s => {
+                        if (s.id !== selectedId) return s;
+                        if (type === 'FOOD') return { ...s, hunger: 100, mood: Math.min(100, s.mood+20) };
+                        if (type === 'HEAL') return { ...s, hp: 100, sick: false, mood: Math.min(100, s.mood+20) };
+                        if (type === 'BUFF') return { ...s, energy: 100, mood: 100, buffTimer: 500 };
+                        return s;
+                    }));
+
+                    // Visual Feedback
+                    const emojis = { FOOD: '🍖', HEAL: '💚', BUFF: '✨' };
+                    const names = { FOOD: '賜食', HEAL: '治癒', BUFF: '賜福' };
+                    setParticles(p => [...p, { x: targetSim.x*TILE_SIZE, y: targetSim.y*TILE_SIZE - 20, life: 60, color: '#fff', text: emojis[type], isThought: true }]);
+                    addEvent(`對 ${targetSim.sign} 施展了 ${names[type]}`);
                     return;
                 }
 
+                // Global Weather Spells
+                if (mana < 20) { addEvent("神力不足 (需要 20)"); return; }
+                
                 setMana(m => m - 20);
-                if (type === 'SUN') { setWeather(WEATHER.SUNNY); setDisaster(DISASTERS.NONE); addEvent('神蹟：祈晴'); }
-                else if (type === 'RAIN') { setWeather(WEATHER.RAIN); setDisaster(DISASTERS.NONE); addEvent('神蹟：祈雨'); }
+                if (type === 'SUN') { setWeather(WEATHER.SUNNY); setDisaster(DISASTERS.NONE); addEvent('神蹟：祈晴'); setFlash(0.5); }
+                else if (type === 'RAIN') { setWeather(WEATHER.RAIN); setDisaster(DISASTERS.NONE); addEvent('神蹟：祈雨'); setFlash(0.5); }
+            };
+
+            const findNearestResource = (sim, types) => {
+                let nearest = null;
+                let minDist = 999;
+                for(let y=2; y<MAP_HEIGHT-2; y++) {
+                    for(let x=2; x<MAP_WIDTH-2; x++) {
+                        const tile = map[y][x];
+                        if (types.includes(tile.decoration)) {
+                            const d = Math.sqrt((x-sim.x)**2 + (y-sim.y)**2);
+                            if (d < minDist) {
+                                minDist = d;
+                                nearest = {x, y};
+                            }
+                        }
+                    }
+                }
+                return nearest;
+            };
+
+            // --- NEW: AI Decision Logic ---
+            const processAiQueue = async () => {
+                if (isAiProcessing.current || aiRequestQueue.current.length === 0 || !userApiKey) return;
+                
+                isAiProcessing.current = true;
+                const { simId, simState, tribeStats, surroundings } = aiRequestQueue.current.shift();
+
+                try {
+                    const prompt = `
+                    Roleplay as a villager in a survival game.
+                    Your Stats: HP ${Math.floor(simState.hp)}, Hunger ${Math.floor(simState.hunger)}, Energy ${Math.floor(simState.energy)}, Sanity ${Math.floor(simState.sanity)}.
+                    Traits: Bravery ${simState.traits.bravery.toFixed(1)}, Diligence ${simState.traits.diligence.toFixed(1)}.
+                    Inventory: ${simState.tools.axe ? 'Has Axe' : 'No Axe'}, ${simState.tools.pick ? 'Has Pick' : 'No Pick'}.
+                    Tribe Resources: Wood ${Math.floor(tribeStats.wood)}, Stone ${Math.floor(tribeStats.stone)}, Food ${Math.floor(tribeStats.food)}.
+                    
+                    Surroundings:
+                    - Nearest Tree: ${surroundings.tree ? 'Yes' : 'No'}
+                    - Nearest Rock: ${surroundings.rock ? 'Yes' : 'No'}
+                    - Nearest Bush: ${surroundings.bush ? 'Yes' : 'No'}
+                    - Nearest Friend: ${surroundings.friend ? 'Yes' : 'No'}
+
+                    Goal: Help the tribe survive and grow. Prioritize survival (eating/sleeping) then work (gathering/crafting) then social.
+                    Crafting Costs: Axe needs 10 Wood. Pick needs 15 Wood.
+                    
+                    Available Actions:
+                    - EAT (if hungry & food > 0)
+                    - SLEEP (if tired)
+                    - GATHER (collect food/sticks from bush)
+                    - CHOP (collect wood, NEEDS AXE & Tree)
+                    - MINE (collect stone, NEEDS PICK & Rock)
+                    - CRAFT_AXE (needs 10 wood, no axe)
+                    - CRAFT_PICK (needs 15 wood, no pick)
+                    - CHAT (if friend nearby)
+                    - IDLE (if nothing to do)
+
+                    Decide ONE action. Return strictly JSON:
+                    { "action": "ACTION_NAME", "thought": "Short thought in Traditional Chinese (max 10 chars)" }
+                    `;
+
+                    const resultText = await callGemini(prompt, userApiKey);
+                    let decision = { action: 'IDLE', thought: '...' };
+                    
+                    try {
+                        // Extract JSON if wrapped in markdown
+                        const jsonMatch = resultText.match(/\{[\s\S]*\}/);
+                        if (jsonMatch) {
+                            decision = JSON.parse(jsonMatch[0]);
+                        }
+                    } catch (e) {
+                        console.error("AI JSON Parse Error", e);
+                    }
+
+                    // Apply Decision
+                    setSims(prev => prev.map(s => {
+                        if (s.id !== simId) return s;
+                        let nextS = { ...s, state: 'IDLE', thought: decision.thought || s.thought, lastThoughtTime: Date.now() };
+                        
+                        // Parse Action
+                        const act = decision.action;
+                        if (act === 'SLEEP') {
+                            nextS.state = 'SLEEP'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 200;
+                        } else if (act === 'EAT') {
+                            nextS.state = 'EAT'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 100;
+                        } else if (act === 'GATHER') {
+                            const target = findNearestResource(nextS, ['BERRY_BUSH']);
+                            if(target) { nextS.state = 'GATHER'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; }
+                        } else if (act === 'CHOP') {
+                            const target = findNearestResource(nextS, ['TREE_OAK', 'TREE_PINE']);
+                            if(target) { nextS.state = 'CHOP'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; }
+                        } else if (act === 'MINE') {
+                            const target = findNearestResource(nextS, ['ROCK', 'GOLD_ROCK']);
+                            if(target) { nextS.state = 'MINE'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; }
+                        } else if (act === 'CRAFT_AXE') {
+                            nextS.state = 'CRAFT'; nextS.craftType = 'AXE'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 100;
+                        } else if (act === 'CRAFT_PICK') {
+                            nextS.state = 'CRAFT'; nextS.craftType = 'PICK'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 100;
+                        } else if (act === 'CHAT') {
+                            if (surroundings.friendId) {
+                                const friend = prev.find(f => f.id === surroundings.friendId);
+                                if(friend) { nextS.state = 'APPROACH_FRIEND'; nextS.targetId = friend.id; nextS.targetX = friend.x; nextS.targetY = friend.y; nextS.stateLock = 60; }
+                            }
+                        }
+                        
+                        // Particle effect for AI decision
+                        setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 60, color: '#0ff', text: '💡', isThought: true }]);
+                        return nextS;
+                    }));
+
+                } catch (error) {
+                    console.error("AI Decision Logic Error", error);
+                    // Fallback to IDLE on error to let default logic pick up later
+                    setSims(prev => prev.map(s => s.id === simId ? { ...s, state: 'IDLE', stateLock: 0 } : s));
+                } finally {
+                    isAiProcessing.current = false;
+                    // Trigger next in queue shortly
+                    setTimeout(processAiQueue, 200);
+                }
+            };
+
+            // Trigger AI Queue processing occasionally
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    processAiQueue();
+                }, 500);
+                return () => clearInterval(interval);
+            }, [userApiKey]); // Re-bind if key changes
+
+            // --- AI Logic Wrapper (Updated for Fallback) ---
+            const triggerAiThought = async (sim, targetSim = null) => {
+                // Keep original thought logic for flavor text (separate from behavior)
+                // ... existing implementation ...
+                if (!userApiKey) {
+                    let type = sim.state;
+                    if (['CHOP', 'GATHER', 'MINE'].includes(type)) type = 'WORK';
+                    if (['SHOOT', 'DEFEND'].includes(type)) type = 'FIGHT';
+                    if (['APPROACH_FRIEND'].includes(type)) type = 'IDLE';
+                    if (type === 'CRAFT') type = 'CRAFT';
+                    if (type === 'INSANE') type = 'INSANE';
+                    
+                    const texts = PRE_CANNED_THOUGHTS[type] || PRE_CANNED_THOUGHTS['IDLE'];
+                    const text = texts[Math.floor(Math.random() * texts.length)];
+                    
+                    setSims(prev => prev.map(s => s.id === sim.id ? { ...s, thought: text, lastThoughtTime: Date.now() } : s));
+                    setParticles(prev => [...prev, { x: sim.x*TILE_SIZE, y: sim.y*TILE_SIZE, life: 120, color: '#fff', text: text, isThought: true }]);
+                    return;
+                }
+                // ... (rest of API call for thoughts)
             };
 
             const update = useCallback(() => {
                 if (isGameOver) return;
                 const isNight = time > DAY_TICKS * 0.6 || disaster === DISASTERS.DARKNESS;
                 
-                // Disaster Timer & Flash
                 if (disaster !== DISASTERS.NONE) {
                     setDisasterTimer(prev => {
                         if (prev <= 1) { setDisaster(DISASTERS.NONE); addEvent('天災已退去。'); return 0; }
@@ -511,414 +775,637 @@
 
                 if (tickRef.current % 10 === 0 && disaster === DISASTERS.NONE && Math.random() < 0.005) {
                     const r = Math.random();
-                    let nextW = r < 0.3 ? WEATHER.RAIN : (r < 0.4 ? WEATHER.SNOW : WEATHER.SUNNY);
-                    setWeather(nextW); 
+                    setWeather(r < 0.3 ? WEATHER.RAIN : (r < 0.4 ? WEATHER.SNOW : WEATHER.SUNNY)); 
                 }
 
                 if (disaster === DISASTERS.QUAKE) setShake(prev => (tickRef.current % 4 === 0 ? rand(-5, 5) : 0)); else setShake(0);
                 
-                // 1. Dynamic Environment: Growth
-                if (tickRef.current % 50 === 0 && disaster === DISASTERS.NONE && weather !== WEATHER.SNOW) {
-                    const gx = rand(2, MAP_WIDTH-3);
-                    const gy = rand(2, MAP_HEIGHT-3);
-                    actionQueue.current.push({type: 'GROW', x: gx, y: gy});
-                }
-
-                // Disaster Logic
-                if (disaster === DISASTERS.METEOR && tickRef.current % 5 === 0) {
-                     setParticles(prev => [...prev, { x: rand(0, MAP_WIDTH * TILE_SIZE), y: -50, speed: rand(12,20), life: 50, color: '#ff4500', type: 'METEOR', vx: -2, vy: rand(12,20) }]);
-                }
-                if (disaster === DISASTERS.THUNDER && Math.random() < 0.03) {
-                    setFlash(1.0); 
-                    // Lightning strikes logic
-                    const lx = rand(2, MAP_WIDTH-3);
-                    const ly = rand(2, MAP_HEIGHT-3);
-                    actionQueue.current.push({type: 'DESTROY', x: lx, y: ly}); // Destroy tree
-                    setParticles(prev => [...prev, { x: lx*TILE_SIZE, y: ly*TILE_SIZE, life: 10, color: '#fff', type: 'FLASH', vx:0, vy:0 }]);
-                }
-                if (disaster === DISASTERS.PLAGUE && tickRef.current % 10 === 0) {
-                    setParticles(prev => [...prev, { x: rand(0, MAP_WIDTH * TILE_SIZE), y: rand(0, MAP_HEIGHT * TILE_SIZE), life: 100, color: '#4caf50', type: 'SPORE', vx: rand(-0.5, 0.5), vy: rand(-0.5, 0.5) }]);
-                }
-
-                setParticles(prev => prev.map(p => {
-                    let np = { ...p, x: p.x + (p.vx||0), y: p.y + (p.vy||0), life: p.life - 1 };
-                    // Meteor Impact
-                    if (p.type === 'METEOR' && (np.life <= 0 || np.y > MAP_HEIGHT * TILE_SIZE)) {
-                         // Destroy terrain at impact
-                         const mx = Math.floor(p.x / TILE_SIZE);
-                         const my = Math.floor(p.y / TILE_SIZE);
-                         if (mx > 0 && mx < MAP_WIDTH && my > 0 && my < MAP_HEIGHT) {
-                             actionQueue.current.push({type: 'DESTROY', x: mx, y: my});
+                // AI/Fallback Auto-Trigger Logic (For thoughts)
+                if (aiTimerRef.current > 0) {
+                    aiTimerRef.current--;
+                } else {
+                    // ... (Existing thought trigger logic)
+                    const candidates = sims.filter(s => s.state !== 'DEAD' && s.state !== 'SLEEP' && s.state !== 'AI_THINKING');
+                    // ...
+                    if (candidates.length > 0) {
+                         const chosenSim = candidates[Math.floor(Math.random() * candidates.length)];
+                         // Trigger thoughts less frequently if using behavior AI to save tokens
+                         if (!userApiKey || Math.random() < 0.2) { 
+                             triggerAiThought(chosenSim);
                          }
+                         aiTimerRef.current = AI_COOLDOWN_TICKS + rand(0, 50);
                     }
-                    if (disaster === DISASTERS.BLIZZARD && p.type === 'SNOW') { np.x -= 2; }
-                    return np;
-                }).filter(p => p.life > 0));
+                }
 
-                setFarms(prev => prev.map(f => {
-                    if ([DISASTERS.DROUGHT, DISASTERS.FLOOD, DISASTERS.LOCUSTS].includes(disaster)) return { ...f, stage: 0 };
-                    return { ...f, stage: Math.min(100, f.stage + 0.1) };
-                }));
+                if (tickRef.current % 20 === 0) {
+                    buildings.forEach(b => {
+                        if (b.type === 'BONFIRE' && isNight) {
+                             setSims(prev => prev.map(s => {
+                                 if (s.state !== 'DEAD' && Math.sqrt((s.x - b.x)**2 + (s.y - b.y)**2) < 4) {
+                                     if(Math.random()<0.3) setParticles(p => [...p, {x:s.x*TILE_SIZE, y:s.y*TILE_SIZE, life:10, color:'#0f0', vy:-1}]);
+                                     // Tech Effect: Medicine increases healing
+                                     const healAmount = hasTech('MEDICINE') ? 3 : 1;
+                                     return {...s, hp: Math.min(100, s.hp + healAmount), sanity: Math.min(100, s.sanity+2), mood: Math.min(100, s.mood+1)};
+                                 }
+                                 return s;
+                             }));
+                        } else if (b.type === 'TOWER') {
+                            const target = creatures.find(c => CREATURE_STATS[c.type].type === 'HOSTILE' && c.hp > 0 && Math.sqrt((c.x-b.x)**2 + (c.y-b.y)**2) < BUILDINGS.TOWER.range);
+                            if (target) {
+                                setProjectiles(prev => [...prev, {
+                                    x: b.x, y: b.y, 
+                                    vx: (target.x - b.x) * 0.1, vy: (target.y - b.y) * 0.1, 
+                                    life: 60, ownerId: b.id, dmg: BUILDINGS.TOWER.dmg, color: PALETTE.TOOL_SPEAR
+                                }]);
+                            }
+                        }
+                    });
+                }
 
-                // Boss Logic
-                let bossTargetId = null;
-                sims.forEach(s => {
-                    if (s.state === 'DEFEND' || s.state === 'HUNT') {
-                        const target = creatures.find(c => c.id === s.targetId && c.type === 'DINOSAUR');
-                        if (target) bossTargetId = target.id;
+                setProjectiles(prev => prev.map(p => {
+                    const nx = p.x + p.vx; const ny = p.y + p.vy;
+                    const hitCreature = creatures.find(c => Math.abs(c.x - nx) < 0.5 && Math.abs(c.y - ny) < 0.5 && c.hp > 0);
+                    if (hitCreature) {
+                        hitCreature.hp -= p.dmg;
+                        setParticles(pts => [...pts, { x: nx*TILE_SIZE, y: ny*TILE_SIZE, life: 10, color: '#f00', text: `-${p.dmg}` }]);
+                        return null; 
                     }
+                    return { ...p, x: nx, y: ny, life: p.life - 1 };
+                }).filter(p => p !== null && p.life > 0));
+
+                setCreatures(prev => prev.filter(c => c.hp > 0 || c.animFrame++ < 100));
+                
+                setSims(prev => {
+                    let newBabies = [];
+                    const updatedSims = prev.map(s => {
+                        if (s.state === 'DEAD') return s;
+                        
+                        // NEW: AI Thinking Pause
+                        if (s.state === 'AI_THINKING') return s;
+
+                        let nextS = { ...s };
+
+                        if (nextS.stateLock > 0) nextS.stateLock--; 
+
+                        if (nextS.buffTimer > 0) nextS.buffTimer--;
+                        if (nextS.mateCooldown > 0) nextS.mateCooldown--;
+
+                        if (tickRef.current % 10 === 0) {
+                             nextS.hunger -= 0.1; 
+                             nextS.energy -= 0.04;
+                             
+                             // Aging logic
+                             if (tickRef.current % DAY_TICKS === 0) {
+                                 nextS.age += 1;
+                                 if (nextS.age > 60 && Math.random() < 0.05) { // Death by old age
+                                     nextS.state = 'DEAD';
+                                     addEvent(getLog('OLD_AGE', nextS.sign));
+                                 }
+                             }
+
+                             if(isNight && nextS.state !== 'SLEEP' && nextS.state !== 'IDLE') nextS.sanity -= 0.1;
+                             if(nextS.hunger <= 0) { nextS.hp -= 0.5; nextS.sanity -= 0.5; }
+                             if(nextS.hp <= 0 && nextS.state !== 'DEAD') { nextS.state = 'DEAD'; addEvent(getLog('DEATH', nextS.sign)); }
+                             if(nextS.sanity < 20 && Math.random() < 0.01 && nextS.state !== 'PANIC' && nextS.state !== 'INSANE') { 
+                                 nextS.thought = "聲音...我聽到聲音..."; 
+                                 nextS.state = 'PANIC'; 
+                                 addEvent(getLog('PANIC', nextS.sign));
+                             }
+                             // NEW: Insanity Trigger
+                             if (nextS.sanity <= 0 && nextS.state !== 'INSANE' && nextS.state !== 'DEAD') {
+                                 nextS.state = 'INSANE';
+                                 nextS.stateLock = 200;
+                                 nextS.thought = "不要...不要過來！";
+                                 addEvent(getLog('INSANITY', nextS.sign));
+                             }
+                        }
+
+                        const isEmergencyCheck = tickRef.current % 5 === 0;
+                        const isStandardCheck = nextS.state === 'IDLE' || tickRef.current % 30 === 0;
+
+                        if ((isStandardCheck && nextS.stateLock <= 0) || isEmergencyCheck) {
+                            const nearbyFriends = prev.filter(f => f.id !== nextS.id && f.state !== 'DEAD' && Math.sqrt((f.x-nextS.x)**2 + (f.y-nextS.y)**2) < 15);
+                            const fightingFriend = nearbyFriends.find(f => f.state === 'DEFEND' || f.state === 'SHOOT');
+                            const workingFriend = nearbyFriends.find(f => f.state === 'CHOP' || f.state === 'GATHER' || f.state === 'MINE');
+                            
+                            // Check for Reflexes (Emergency overrides)
+                            const nearbyEnemy = creatures.find(c => CREATURE_STATS[c.type].type === 'HOSTILE' && c.hp > 0 && Math.sqrt((c.x-nextS.x)**2 + (c.y-nextS.y)**2) < 8);
+                            const isReflexSituation = nearbyEnemy || fightingFriend || (nextS.hunger < 5 && tribe.food > 0) || nextS.state === 'INSANE';
+
+                            // --- DECISION BRANCHING ---
+                            // 1. REFLEX LAYER: Immediate danger or extreme need (Always code-based for speed)
+                            if (isReflexSituation) {
+                                // NEW: INSANE BEHAVIOR
+                                if (nextS.state === 'INSANE') {
+                                    // Decay health from stress
+                                    if (tickRef.current % 50 === 0) nextS.hp -= 1;
+                                    
+                                    // Recovery check
+                                    if (nextS.sanity > 30) {
+                                        nextS.state = 'IDLE';
+                                        nextS.stateLock = 0;
+                                        nextS.thought = "剛剛發生了什麼...";
+                                        addEvent(`${nextS.sign} 恢復了理智。`);
+                                    } else {
+                                        // Random crazy actions
+                                        const r = Math.random();
+                                        if (r < 0.05) {
+                                            // Attack nearby friend
+                                            const victim = nearbyFriends.find(v => Math.sqrt((v.x-nextS.x)**2 + (v.y-nextS.y)**2) < 3);
+                                            if (victim) {
+                                                setProjectiles(p => [...p, {
+                                                    x: nextS.x, y: nextS.y,
+                                                    vx: (victim.x - nextS.x) * 0.2, vy: (victim.y - nextS.y) * 0.2,
+                                                    life: 20, ownerId: nextS.id, dmg: 5, color: '#800080' // Purple damage
+                                                }]);
+                                                addEvent(getLog('ATTACK_FRIEND', nextS.sign));
+                                                nextS.stateLock = 30;
+                                            }
+                                        } else if (r < 0.2) {
+                                            // Wander aimlessly
+                                            nextS.targetX = nextS.x + rand(-5, 5); 
+                                            nextS.targetY = nextS.y + rand(-5, 5);
+                                            nextS.stateLock = 40;
+                                        } else if (r < 0.22) {
+                                            // Scream thought
+                                            triggerAiThought(nextS);
+                                        }
+                                    }
+                                }
+                                // Reflex Logic (Fight, Flee, Panic Eat)
+                                else if (fightingFriend && nextS.state !== 'FLEE' && nextS.state !== 'SLEEP') {
+                                    // ... Support Friend Logic ...
+                                    if (nextS.state !== 'DEFEND' && nextS.state !== 'SHOOT') {
+                                        if (nextS.tools.bow || nextS.traits.bravery > 0.3) {
+                                            nextS.state = nextS.tools.bow ? 'SHOOT' : 'DEFEND';
+                                            nextS.targetId = fightingFriend.targetId; 
+                                            nextS.stateLock = 60;
+                                            nextS.thought = "撐住！我來了！";
+                                            // ...
+                                        } else {
+                                            nextS.state = 'FLEE';
+                                            nextS.targetX = MAP_WIDTH/2 + rand(-5, 5); nextS.targetY = MAP_HEIGHT/2 + rand(-5, 5); 
+                                            nextS.stateLock = 40;
+                                            addEvent(getLog('FLEE', nextS.sign));
+                                        }
+                                    }
+                                } else if (nearbyEnemy) {
+                                    // ... Self Defense Logic ...
+                                    const enemyName = CREATURE_STATS[nearbyEnemy.type].name || '野獸';
+                                    if (nextS.tools.bow || (nextS.traits.bravery > 0.6 && nextS.hp > 50)) {
+                                        nextS.state = nextS.tools.bow ? 'SHOOT' : 'DEFEND';
+                                        nextS.targetId = nearbyEnemy.id;
+                                        nextS.stateLock = 50;
+                                        nextS.hidden = false; 
+                                        addEvent(getLog('FIGHT_START', nextS.sign, "", enemyName));
+                                    } else {
+                                        nextS.state = 'FLEE';
+                                        nextS.targetX = MAP_WIDTH/2 + rand(-5, 5); nextS.targetY = MAP_HEIGHT/2 + rand(-5, 5);
+                                        nextS.thought = "快跑啊！";
+                                        nextS.stateLock = 30;
+                                        nextS.hidden = false; 
+                                        addEvent(getLog('FLEE', nextS.sign));
+                                    }
+                                } else if (nextS.hunger < 5 && tribe.food > 0) {
+                                    // Starvation Panic Eat
+                                    nextS.state = 'EAT'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 100;
+                                }
+                            } 
+                            // 2. COGNITIVE LAYER: Routine behaviors
+                            else if (userApiKey && nextS.state !== 'AI_THINKING' && isStandardCheck) {
+                                // --- AI MODE ---
+                                // Switch to AI Thinking state and queue request
+                                nextS.state = 'AI_THINKING';
+                                nextS.stateLock = 999; // Lock until AI responds
+                                
+                                // Gather context for AI
+                                const context = {
+                                    simId: nextS.id,
+                                    simState: { ...nextS },
+                                    tribeStats: { ...tribe },
+                                    surroundings: {
+                                        tree: findNearestResource(nextS, ['TREE_OAK', 'TREE_PINE']),
+                                        rock: findNearestResource(nextS, ['ROCK', 'GOLD_ROCK']),
+                                        bush: findNearestResource(nextS, ['BERRY_BUSH']),
+                                        friend: nearbyFriends.length > 0,
+                                        friendId: nearbyFriends[0]?.id
+                                    }
+                                };
+                                aiRequestQueue.current.push(context);
+                            } 
+                            // 3. FALLBACK LAYER: Default hardcoded logic (Original code)
+                            else if (!userApiKey && nextS.stateLock <= 0 && isStandardCheck) {
+                                // --- ORIGINAL CODE LOGIC ---
+                                let scores = {
+                                    EAT: (100 - nextS.hunger) * 3, 
+                                    SLEEP: (100 - nextS.energy) * (isNight ? 3 : 0.5),
+                                    WORK: (nextS.energy) * (nextS.traits.diligence + 0.3) * (tribe.wood < 300 || tribe.food < 200 || tribe.stone < 200 ? 2 : 1) + (workingFriend ? 40 : 0),
+                                    SOCIAL: nextS.traits.social * (150 - nextS.mood) + (nextS.sanity < 50 ? 50 : 0)
+                                };
+
+                                if (scores.EAT > 200 && tribe.food > 0) {
+                                    nextS.state = 'EAT'; 
+                                    nextS.targetX = MAP_WIDTH/2 + rand(-2, 2); 
+                                    nextS.targetY = MAP_HEIGHT/2 + rand(-2, 2);
+                                    nextS.stateLock = 100;
+                                    nextS.hidden = false;
+                                } else if (scores.SLEEP > 150) {
+                                    nextS.state = 'SLEEP'; 
+                                    nextS.targetX = MAP_WIDTH/2; 
+                                    nextS.targetY = MAP_HEIGHT/2;
+                                    nextS.stateLock = 200;
+                                } else if (scores.SOCIAL > 80) {
+                                    const friend = nearbyFriends[Math.floor(Math.random() * nearbyFriends.length)];
+                                    if (friend) {
+                                        nextS.state = 'APPROACH_FRIEND';
+                                        nextS.targetId = friend.id;
+                                        nextS.targetX = friend.x; nextS.targetY = friend.y;
+                                        nextS.stateLock = 60;
+                                        nextS.hidden = false;
+                                    } else {
+                                        nextS.state = 'IDLE';
+                                        nextS.hidden = false;
+                                    }
+                                } else if (scores.WORK > 30) { 
+                                    const hasAxe = nextS.tools.axe;
+                                    const hasPick = nextS.tools.pick;
+                                    const hasSpear = nextS.tools.spear;
+
+                                    // Tech Checks
+                                    const canCraftTools = hasTech('STONE_TOOLS');
+                                    const canCraftSpear = hasTech('HUNTING');
+
+                                    // 1. Gather Food & Sticks (Bootstrap)
+                                    // Condition: Starving OR (Need wood for tools AND Can't chop yet)
+                                    if (tribe.food < 150 || (tribe.wood < TOOL_COSTS.AXE && !hasAxe)) { 
+                                        const bush = findNearestResource(nextS, ['BERRY_BUSH']);
+                                        if (bush) {
+                                            nextS.state = 'GATHER'; 
+                                            nextS.targetX = bush.x; nextS.targetY = bush.y;
+                                            nextS.stateLock = 150;
+                                            nextS.hidden = false;
+                                        } else {
+                                            nextS.state = 'IDLE';
+                                            nextS.hidden = false;
+                                        }
+                                    }
+                                    // 2. Craft Tools (Needs Tech)
+                                    else if (!hasAxe && tribe.wood >= TOOL_COSTS.AXE && canCraftTools && tribe.wood < 400) {
+                                        nextS.state = 'CRAFT';
+                                        nextS.craftType = 'AXE';
+                                        nextS.targetX = MAP_WIDTH/2 + rand(-1,1);
+                                        nextS.targetY = MAP_HEIGHT/2 + rand(-1,1);
+                                        nextS.stateLock = 100;
+                                        nextS.thought = "製作斧頭...";
+                                        nextS.hidden = false;
+                                    }
+                                    else if (!hasPick && tribe.wood >= TOOL_COSTS.PICK && canCraftTools && tribe.stone < 300) {
+                                        nextS.state = 'CRAFT';
+                                        nextS.craftType = 'PICK';
+                                        nextS.targetX = MAP_WIDTH/2 + rand(-1,1);
+                                        nextS.targetY = MAP_HEIGHT/2 + rand(-1,1);
+                                        nextS.stateLock = 100;
+                                        nextS.thought = "製作鎬子...";
+                                        nextS.hidden = false;
+                                    }
+                                    else if (!hasSpear && tribe.wood >= TOOL_COSTS.SPEAR && canCraftSpear) {
+                                        nextS.state = 'CRAFT';
+                                        nextS.craftType = 'SPEAR';
+                                        nextS.targetX = MAP_WIDTH/2 + rand(-1,1);
+                                        nextS.targetY = MAP_HEIGHT/2 + rand(-1,1);
+                                        nextS.stateLock = 100;
+                                        nextS.thought = "製作長矛...";
+                                        nextS.hidden = false;
+                                    }
+                                    // 3. Mine Stone (Needs Pick)
+                                    else if (tribe.stone < 300 && hasPick) {
+                                        let target = null;
+                                        if (workingFriend && workingFriend.state === 'MINE') {
+                                             const nearbyRock = findNearestResource(workingFriend, ['ROCK', 'GOLD_ROCK']);
+                                             if(nearbyRock) target = nearbyRock;
+                                        }
+                                        if (!target) target = findNearestResource(nextS, ['ROCK', 'GOLD_ROCK']);
+                                        
+                                        if (target) {
+                                            nextS.state = 'MINE';
+                                            nextS.targetX = target.x; nextS.targetY = target.y;
+                                            nextS.stateLock = 150;
+                                            nextS.hidden = false;
+                                        } else {
+                                            nextS.state = 'IDLE';
+                                        }
+                                    }
+                                    // 4. Chop Wood (Needs Axe)
+                                    else if (tribe.wood < 400 && hasAxe) { 
+                                        let target = null;
+                                        if (workingFriend && workingFriend.state === 'CHOP') {
+                                             const nearbyTree = findNearestResource(workingFriend, ['TREE_OAK', 'TREE_PINE']);
+                                             if(nearbyTree) target = nearbyTree;
+                                        }
+                                        if (!target) target = findNearestResource(nextS, ['TREE_OAK', 'TREE_PINE']);
+                                        
+                                        if (target) {
+                                            nextS.state = 'CHOP';
+                                            nextS.targetX = target.x; nextS.targetY = target.y;
+                                            nextS.stateLock = 150;
+                                            nextS.hidden = false;
+                                        } else {
+                                            nextS.state = 'IDLE';
+                                        }
+                                    }
+                                    else { 
+                                        nextS.state = 'IDLE';
+                                        nextS.targetX = nextS.x + rand(-3, 3); nextS.targetY = nextS.y + rand(-3, 3);
+                                        nextS.hidden = false;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (nextS.state === 'EAT' && isInBase(nextS)) {
+                            if (tribe.food > 0) {
+                                setTribe(t => ({...t, food: t.food - 1}));
+                                nextS.hunger = 100; nextS.mood += 5; nextS.state = 'IDLE';
+                                nextS.stateLock = 0; 
+                                nextS.thought = "吃飽了，活著真好。";
+                            } else {
+                                nextS.thought = "沒食物了...";
+                                nextS.state = 'IDLE';
+                                nextS.stateLock = 0; 
+                            }
+                        }
+                        else if (nextS.state === 'SLEEP') {
+                             const dist = Math.sqrt((nextS.x - MAP_WIDTH/2)**2 + (nextS.y - MAP_HEIGHT/2)**2);
+                             if (dist < 1.5) {
+                                 nextS.hidden = true;
+                                 nextS.energy += 0.5; 
+                                 nextS.sanity += 0.1;
+                                 
+                                 if(nextS.energy >= 100 && !isNight) {
+                                     nextS.state = 'IDLE';
+                                     nextS.stateLock = 0;
+                                     nextS.hidden = false;
+                                     nextS.x = MAP_WIDTH/2 + rand(-2, 2);
+                                     nextS.y = MAP_HEIGHT/2 + rand(-1, 2) + 2;
+                                 }
+                             } else {
+                                 nextS.hidden = false;
+                                 const speed = 0.06;
+                                 const dx = MAP_WIDTH/2 - nextS.x;
+                                 const dy = MAP_HEIGHT/2 - nextS.y;
+                                 const d = Math.sqrt(dx*dx + dy*dy);
+                                 if (d > 0) {
+                                     nextS.x += (dx/d) * speed;
+                                     nextS.y += (dy/d) * speed;
+                                 }
+                             }
+                        }
+                        else if (nextS.state === 'APPROACH_FRIEND') {
+                            const friend = prev.find(f => f.id === nextS.targetId);
+                            if (friend && friend.state !== 'DEAD') {
+                                const dist = Math.sqrt((nextS.x - friend.x)**2 + (nextS.y - friend.y)**2);
+                                if (dist < 1.5) {
+                                    // --- NEW: REPRODUCTION LOGIC (ROMANCE) ---
+                                    let isRomance = false;
+                                    // Check: Adult, Opposite Gender, Not on Cooldown, Pop Cap
+                                    if (nextS.age >= 18 && friend.age >= 18 && nextS.gender !== friend.gender && 
+                                        nextS.mateCooldown <= 0 && prev.length < MAX_POPULATION) {
+                                        
+                                        // Base chance 10%, High mood (>80) boosts to 40%
+                                        const chance = (nextS.mood > 80 && friend.mood > 80) ? 0.4 : 0.1;
+                                        
+                                        if (Math.random() < chance) {
+                                            isRomance = true;
+                                            nextS.state = 'LOVE';
+                                            nextS.stateLock = 150; // Love takes time
+                                            nextS.mateCooldown = 3000; // Cooldown ~4 days
+                                            nextS.thought = "💖 墜入愛河...";
+                                            
+                                            // Only log once per couple (simple heuristic)
+                                            if (nextS.gender === 'F') {
+                                                addEvent(`💖 ${nextS.sign} 與 ${friend.sign} 互生情愫`);
+                                            }
+                                        }
+                                    }
+
+                                    if (!isRomance) {
+                                        // Fallback to CHAT
+                                        nextS.state = 'CHAT';
+                                        nextS.stateLock = 100; 
+                                        nextS.thought = "聊聊近況...";
+                                        
+                                        if (tickRef.current % 20 === 0) {
+                                            const emojis = ['💬', '😂', '❤️', '👋', '😊'];
+                                            const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                                            setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE - 10, life: 60, color: '#fff', text: emoji, isThought: true }]);
+                                        }
+                                        
+                                        nextS.mood = Math.min(100, nextS.mood + 0.5);
+                                        nextS.sanity = Math.min(100, nextS.sanity + 0.5);
+                                    }
+                                } else {
+                                    nextS.targetX = friend.x + (Math.sin(tickRef.current) * 0.5); 
+                                    nextS.targetY = friend.y + (Math.cos(tickRef.current) * 0.5);
+                                }
+                            } else {
+                                nextS.state = 'IDLE';
+                                nextS.stateLock = 0; 
+                            }
+                        }
+                        // --- NEW: LOVE STATE HANDLER ---
+                        else if (nextS.state === 'LOVE') {
+                             if (tickRef.current % 15 === 0) {
+                                 setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE - 15, life: 50, color: '#ff69b4', text: '❤️', isThought: true }]);
+                                 nextS.mood = Math.min(100, nextS.mood + 1);
+                                 nextS.sanity = Math.min(100, nextS.sanity + 1);
+                             }
+                             
+                             if (nextS.stateLock <= 0) {
+                                 // End of romance -> Baby (Only Female spawns to prevent duplicates)
+                                 if (nextS.gender === 'F' && prev.length < MAX_POPULATION) {
+                                     const baby = generateSim(null, nextS.x, nextS.y, nextS.generation + 1, 0);
+                                     // Inherit some traits
+                                     baby.traits.bravery = Math.min(1, Math.max(0, nextS.traits.bravery + (Math.random()*0.2 - 0.1)));
+                                     newBabies.push(baby);
+                                     addEvent(getLog('BIRTH', baby.sign));
+                                     // Visual pop
+                                     setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 100, color: '#fff', text: '👶', isThought: true }]);
+                                 }
+                                 nextS.state = 'IDLE';
+                             }
+                        }
+                        else if (nextS.state === 'CHAT') {
+                             if (tickRef.current % 20 === 0) {
+                                nextS.mood = Math.min(100, nextS.mood + 0.5);
+                                nextS.sanity = Math.min(100, nextS.sanity + 0.5);
+                             }
+                             if (nextS.stateLock <= 0) nextS.state = 'IDLE';
+                        }
+                        else if (nextS.state === 'SHOOT' || nextS.state === 'DEFEND') {
+                            const target = creatures.find(c => c.id === nextS.targetId && c.hp > 0);
+                            if (target) {
+                                const dist = Math.sqrt((nextS.x-target.x)**2 + (nextS.y-target.y)**2);
+                                const range = nextS.state === 'SHOOT' ? 4 : 1.2;
+                                
+                                if (dist > range) {
+                                    const speed = 0.08;
+                                    nextS.x += Math.sign(target.x - nextS.x) * speed;
+                                    nextS.y += Math.sign(target.y - nextS.y) * speed;
+                                } else if (nextS.state === 'SHOOT' && dist < 3) { 
+                                    nextS.x -= Math.sign(target.x - nextS.x) * 0.05;
+                                    nextS.y -= Math.sign(target.y - nextS.y) * 0.05;
+                                }
+
+                                if (tickRef.current % 30 === 0) { 
+                                    if (nextS.state === 'SHOOT') {
+                                        setProjectiles(p => [...p, {
+                                            x: nextS.x, y: nextS.y,
+                                            vx: (target.x - nextS.x) * 0.15, vy: (target.y - nextS.y) * 0.15,
+                                            life: 50, ownerId: nextS.id, dmg: 15, color: PALETTE.TOOL_SPEAR
+                                        }]);
+                                    } else {
+                                        target.hp -= 10;
+                                        setParticles(p => [...p, { x:target.x*TILE_SIZE, y:target.y*TILE_SIZE, life:10, color:'#f00', text:'💥'}]);
+                                    }
+                                }
+                            } else { 
+                                nextS.state = 'IDLE'; 
+                                nextS.stateLock = 0; 
+                            }
+                        }
+
+                        if (nextS.targetX !== null && !['SLEEP','EAT_ACTION','CHAT','SHOOT','DEFEND','CRAFT'].includes(nextS.state)) {
+                             const dx = nextS.targetX - nextS.x; const dy = nextS.targetY - nextS.y;
+                             if (Math.abs(dx) < 0.2 && Math.abs(dy) < 0.2) { 
+                                 if(['CHOP','GATHER','MINE'].includes(nextS.state)) {
+                                     // TECH BONUSES
+                                     const ironBonus = hasTech('IRON') ? 10 : 0;
+                                     const gatherBonus = hasTech('GATHERING') ? 2 : 0;
+                                     const farmBonus = hasTech('FARMING') ? 3 : 0;
+
+                                     setTribe(t => ({
+                                         ...t, 
+                                         wood: t.wood + (nextS.state==='CHOP' ? 20 + ironBonus : (nextS.state==='GATHER' ? 3 : 0)), 
+                                         food: t.food + (nextS.state==='GATHER' ? 8 + gatherBonus + farmBonus : 0),
+                                         stone: t.stone + (nextS.state==='MINE' ? 10 + ironBonus : 0)
+                                     }));
+                                     nextS.energy -= 10;
+                                     nextS.targetX = null; 
+                                     nextS.state = 'IDLE';
+                                     nextS.stateLock = 0; 
+                                 } else if (nextS.state === 'APPROACH_FRIEND') {
+                                 } else {
+                                     nextS.targetX = null;
+                                 }
+                             } else {
+                                 const speed = (nextS.state === 'DEFEND' || nextS.state === 'SHOOT') ? 0.08 : 0.06;
+                                 nextS.x += Math.sign(dx) * speed; nextS.y += Math.sign(dy) * speed;
+                             }
+                        }
+                        
+                        // Handle Crafting Action Completion
+                        if (nextS.state === 'CRAFT') {
+                            if (nextS.targetX !== null) {
+                                // Move to craft spot first
+                                const dx = nextS.targetX - nextS.x; const dy = nextS.targetY - nextS.y;
+                                if (Math.abs(dx) < 0.2 && Math.abs(dy) < 0.2) {
+                                    // Arrived, wait for lock
+                                    if (nextS.stateLock <= 0) {
+                                        // Craft complete
+                                        if (nextS.craftType === 'AXE' && tribe.wood >= TOOL_COSTS.AXE) {
+                                            setTribe(t => ({...t, wood: t.wood - TOOL_COSTS.AXE}));
+                                            nextS.tools.axe = true;
+                                            addEvent(`${nextS.sign} 製作了斧頭`);
+                                        } else if (nextS.craftType === 'PICK' && tribe.wood >= TOOL_COSTS.PICK) {
+                                            setTribe(t => ({...t, wood: t.wood - TOOL_COSTS.PICK}));
+                                            nextS.tools.pick = true;
+                                            addEvent(`${nextS.sign} 製作了鎬子`);
+                                        } else if (nextS.craftType === 'SPEAR' && tribe.wood >= TOOL_COSTS.SPEAR) {
+                                            setTribe(t => ({...t, wood: t.wood - TOOL_COSTS.SPEAR}));
+                                            nextS.tools.spear = true;
+                                            addEvent(`${nextS.sign} 製作了長矛`);
+                                        }
+                                        nextS.state = 'IDLE';
+                                        nextS.craftType = null;
+                                    }
+                                } else {
+                                    const speed = 0.06;
+                                    nextS.x += Math.sign(dx) * speed; nextS.y += Math.sign(dy) * speed;
+                                }
+                            }
+                        }
+
+                        prev.forEach(other => {
+                            if (other.id !== nextS.id && other.state !== 'DEAD') {
+                                const dist = Math.sqrt((nextS.x - other.x)**2 + (nextS.y - other.y)**2);
+                                if (dist < 0.6) { 
+                                    const pushX = nextS.x - other.x;
+                                    const pushY = nextS.y - other.y;
+                                    const force = 0.03;
+                                    if (pushX !== 0 || pushY !== 0) {
+                                        nextS.x += (pushX / dist) * force;
+                                        nextS.y += (pushY / dist) * force;
+                                    } else {
+                                        nextS.x += (Math.random() - 0.5) * force;
+                                        nextS.y += (Math.random() - 0.5) * force;
+                                    }
+                                }
+                            }
+                        });
+                        
+                        nextS.x = clamp(nextS.x, 2, MAP_WIDTH-3); nextS.y = clamp(nextS.y, 2, MAP_HEIGHT-3);
+                        return nextS;
+                    });
+                    return [...updatedSims, ...newBabies];
                 });
 
                 setCreatures(prev => prev.map(c => {
                     if (c.hp <= 0) return null;
                     let nextC = { ...c };
+                    const stats = CREATURE_STATS[c.type];
+                    const target = sims.find(s => s.state !== 'DEAD' && !s.hidden && Math.sqrt((s.x-c.x)**2+(s.y-c.y)**2) < 5);
                     
-                    sims.forEach(s => {
-                        if ((s.state === 'DEFEND' || s.state === 'HUNT' || s.state === 'FIGHTING') && s.targetId === nextC.id && Math.sqrt((s.x-nextC.x)**2 + (s.y-nextC.y)**2) < 2) {
-                             if (tickRef.current % 20 === 0) {
-                                 const dmg = s.tools.spear ? 30 : (s.tools.axe ? 20 : (s.tools.pick ? 15 : 8));
-                                 nextC.hp -= dmg;
-                                 setParticles(p => [...p, { x: nextC.x*TILE_SIZE, y: nextC.y*TILE_SIZE, life: 20, color: '#f00', vy: -2, text: `-${dmg}` }]);
-                                 if (nextC.hp <= 0) {
-                                     const reward = nextC.type === 'DINOSAUR' ? 200 : (nextC.type === 'BEAR' ? 80 : 30);
-                                     setTribe(t => ({...t, food: t.food + reward}));
-                                     addEvent(`${s.sign} 討伐了 ${nextC.type} (+${reward}食物)`);
-                                 }
-                             }
+                    if (target && stats.type === 'HOSTILE') {
+                        const dx = target.x - c.x; const dy = target.y - c.y;
+                        nextC.x += Math.sign(dx) * 0.04; nextC.y += Math.sign(dy) * 0.04;
+                        if (Math.sqrt(dx*dx+dy*dy) < 1 && tickRef.current % 20 === 0) {
+                            target.hp -= stats.dmg;
+                            target.sanity -= 5; 
+                            setParticles(p => [...p, { x:target.x*TILE_SIZE, y:target.y*TILE_SIZE, life:10, color:'#f00', text:'💥'}]);
                         }
-                    });
-
-                    if (nextC.hp <= 0) return null;
-
-                    if (['WOLF', 'BEAR', 'DINOSAUR'].includes(nextC.type)) {
-                        let targetSim = null;
-                        let minDist = nextC.type === 'DINOSAUR' ? 12 : 6; 
-                        sims.forEach(s => { if (s.state !== 'DEAD' && !s.hidden) { const d = Math.sqrt((s.x - nextC.x)**2 + (s.y - nextC.y)**2); if (d < minDist) { minDist = d; targetSim = s; } } });
-                        
-                        if (targetSim) {
-                             const dx = targetSim.x - nextC.x; const dy = targetSim.y - nextC.y;
-                             const speed = nextC.type === 'DINOSAUR' ? 0.03 : 0.04; 
-                             nextC.x += Math.sign(dx) * speed; nextC.y += Math.sign(dy) * speed;
-                             nextC.dir = Math.sign(dx);
-                             if (minDist < 1 && tickRef.current % 30 === 0) {
-                                 setParticles(p => [...p, { x: targetSim.x*TILE_SIZE, y: targetSim.y*TILE_SIZE, life: 20, color: '#ff0000', vy: -2, text: '💥' }]);
-                             }
-                        } else {
-                             if (Math.random() < 0.02) { nextC.targetX = rand(2, MAP_WIDTH-3); nextC.targetY = rand(2, MAP_HEIGHT-3); }
-                             if (nextC.targetX) {
-                                const dx = nextC.targetX - nextC.x; const dy = nextC.targetY - nextC.y;
-                                if(Math.abs(dx)<0.1 && Math.abs(dy)<0.1) nextC.targetX=null;
-                                else { nextC.x+=Math.sign(dx)*0.02; nextC.y+=Math.sign(dy)*0.02; nextC.dir=Math.sign(dx); }
-                             }
-                        }
-                    } else {
-                         if (Math.random() < 0.05) { nextC.targetX = rand(2, MAP_WIDTH-3); nextC.targetY = rand(2, MAP_HEIGHT-3); }
-                         if (nextC.targetX) {
-                            const dx = nextC.targetX - nextC.x; const dy = nextC.targetY - nextC.y;
-                            if (Math.abs(dx)<0.1 && Math.abs(dy)<0.1) nextC.targetX=null;
-                            else { nextC.x += Math.sign(dx)*0.04; nextC.y += Math.sign(dy)*0.04; nextC.dir=Math.sign(dx); nextC.animFrame++; }
-                        }
+                    } else if (Math.random() < 0.02) {
+                         nextC.x += rand(-1,1); nextC.y += rand(-1,1);
                     }
                     nextC.x = clamp(nextC.x, 2, MAP_WIDTH-3); nextC.y = clamp(nextC.y, 2, MAP_HEIGHT-3);
                     return nextC;
                 }).filter(Boolean));
 
-                setSims(prev => {
-                    let newBabies = [];
-                    const updatedSims = prev.map(s => {
-                        if (s.state === 'DEAD') return s;
-                        let nextS = { ...s };
+                setParticles(prev => prev.map(p => ({...p, x: p.x + (p.vx||0), y: p.y + (p.vy||0), life: p.life-1})).filter(p => p.life > 0));
 
-                        if (nextS.buffTimer > 0) nextS.buffTimer--;
-                        if (nextS.mateCooldown > 0) nextS.mateCooldown--;
-
-                        creatures.forEach(c => {
-                            if (['WOLF', 'BEAR', 'DINOSAUR'].includes(c.type) && c.hp > 0) {
-                                const dist = Math.sqrt((c.x - nextS.x)**2 + (c.y - nextS.y)**2);
-                                if (dist < 1) {
-                                    if (tickRef.current % 30 === 0) {
-                                        const dmg = c.type === 'DINOSAUR' ? 40 : (c.type === 'BEAR' ? 15 : 8);
-                                        nextS.hp -= dmg;
-                                        if (nextS.hp <= 0) { nextS.state = 'DEAD'; nextS.hidden = false; addEvent(`☠️ ${nextS.sign} 被 ${c.type} 吞噬了！`); }
-                                    }
-                                }
-                            }
-                        });
-                        
-                        if (nextS.state === 'DEAD') return nextS;
-
-                        if (tickRef.current % 10 === 0) {
-                            nextS.hunger -= 0.2; nextS.energy -= 0.1;
-                            if (nextS.hunger > 80 && nextS.energy > 80) nextS.mood = Math.min(100, nextS.mood + 1);
-                            if (nextS.hunger < 30 || nextS.energy < 30 || nextS.sick) nextS.mood = Math.max(0, nextS.mood - 1);
-                            if (nextS.hunger <= 0 || nextS.hp <= 0) { nextS.state = 'DEAD'; nextS.hidden = false; addEvent(`${nextS.sign} 逝去了...`); return nextS; }
-                            
-                            // BREAKDOWN CHECK
-                            if (nextS.mood < 10 && nextS.state !== 'BREAKDOWN' && Math.random() < 0.05) {
-                                nextS.state = 'BREAKDOWN';
-                                addEvent(`${nextS.sign} 精神崩潰了！`);
-                                nextS.thought = CRAZY_THOUGHTS[Math.floor(Math.random() * CRAZY_THOUGHTS.length)];
-                            }
-                        }
-                        
-                        // BREAKDOWN LOGIC
-                        if (nextS.state === 'BREAKDOWN') {
-                            if (tickRef.current % 20 === 0) nextS.hp -= 0.5; // Self-harm/Stress
-                            if (Math.random() < 0.1) nextS.targetX = nextS.x + rand(-2, 2);
-                            if (Math.random() < 0.1) nextS.targetY = nextS.y + rand(-2, 2);
-                            if (nextS.mood > 40) {
-                                nextS.state = 'IDLE';
-                                nextS.thought = '我清醒了...';
-                            }
-                            // Skip normal behavior
-                            if (nextS.targetX !== null) {
-                                 nextS.targetX = clamp(nextS.targetX, 2, MAP_WIDTH-3);
-                                 nextS.targetY = clamp(nextS.targetY, 2, MAP_HEIGHT-3);
-                                 const dx = nextS.targetX - nextS.x; const dy = nextS.targetY - nextS.y;
-                                 if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) { nextS.targetX = null; }
-                                 else {
-                                     nextS.x += Math.sign(dx) * 0.02; nextS.y += Math.sign(dy) * 0.02;
-                                 }
-                            }
-                            // Strict clamp for breakdown movement
-                            nextS.x = clamp(nextS.x, 2, MAP_WIDTH-3);
-                            nextS.y = clamp(nextS.y, 2, MAP_HEIGHT-3);
-                            return nextS;
-                        }
-                        
-                        prev.forEach(attacker => {
-                            if (attacker.id !== nextS.id && attacker.state === 'FIGHTING' && attacker.targetId === nextS.id && attacker.state !== 'DEAD') {
-                                const dist = Math.sqrt((attacker.x - nextS.x)**2 + (attacker.y - nextS.y)**2);
-                                if (dist < 1.5) {
-                                    if (tickRef.current % 20 === 0) { 
-                                        let dmg = 5; 
-                                        if (attacker.tools.spear) dmg = 15; else if (attacker.tools.axe) dmg = 10; else if (attacker.tools.pick) dmg = 8;
-                                        if (attacker.trait === '好鬥') dmg += 3;
-                                        nextS.hp -= dmg;
-                                        nextS.mood -= 10; 
-                                        if (nextS.state !== 'FIGHTING' && nextS.state !== 'FLEE') {
-                                            if (nextS.hp > 30) { nextS.state = 'FIGHTING'; nextS.targetId = attacker.id; } 
-                                            else { nextS.state = 'FLEE'; nextS.targetX = rand(2, MAP_WIDTH-3); nextS.targetY = rand(2, MAP_HEIGHT-3); }
-                                        }
-                                        setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 20, color: '#ff0000', vy: -2, text: `-${dmg}` }]);
-                                        if (nextS.hp <= 0) { addEvent(`☠️ ${attacker.sign} 殺害了 ${nextS.sign}！`); nextS.state = 'DEAD'; nextS.hidden = false; }
-                                    }
-                                }
-                            }
-                        });
-                        if (nextS.state === 'DEAD') return nextS;
-
-                        if (nextS.mood < 20 && !nextS.hidden && nextS.state !== 'FIGHTING' && nextS.state !== 'FLEE') {
-                            const victim = prev.find(v => v.id !== nextS.id && !v.hidden && v.state !== 'DEAD' && Math.sqrt((v.x-nextS.x)**2+(v.y-nextS.y)**2) < 3);
-                            if (victim) {
-                                nextS.state = 'FIGHTING'; nextS.targetId = victim.id; nextS.thought = '看你不順眼！';
-                                setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 30, color: '#f00', vy: -1, text: '💢' }]);
-                            }
-                        }
-
-                        if (nextS.mood > 80 && tribe.food > 50 && prev.length + newBabies.length < MAX_POPULATION && nextS.age > 16 && nextS.mateCooldown <= 0 && !nextS.hidden) {
-                            const partner = prev.find(p => p.id !== nextS.id && !p.hidden && p.age > 16 && p.gender !== nextS.gender && Math.sqrt((p.x-nextS.x)**2+(p.y-nextS.y)**2) < 1.5);
-                            if (partner && Math.random() < 0.005) {
-                                nextS.mateCooldown = 1000;
-                                const baby = generateSim(null, nextS.x, nextS.y, Math.max(nextS.generation, partner.generation) + 1);
-                                baby.age = 0; baby.thought = "哇哇！";
-                                newBabies.push(baby);
-                                setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE, life: 60, color: '#ff69b4', vy: -1, text: '❤️' }]);
-                                addEvent(`❤️ ${nextS.sign} 與 ${partner.sign} 誕生了新生命 (Gen ${baby.generation})`);
-                            }
-                        }
-
-                        if (nextS.state === 'FIGHTING') {
-                            const target = prev.find(t => t.id === nextS.targetId);
-                            if (target && target.state !== 'DEAD' && !target.hidden) {
-                                nextS.targetX = target.x; nextS.targetY = target.y;
-                            } else { nextS.state = 'IDLE'; nextS.thought = '哼，不堪一擊。'; }
-                        }
-                        
-                        const distToTarget = nextS.targetX !== null ? Math.sqrt((nextS.x - nextS.targetX)**2 + (nextS.y - nextS.targetY)**2) : 0;
-                        const inBase = isInBase(nextS);
-
-                        if (nextS.state === 'IDLE') {
-                            if (!nextS.hidden) {
-                                if (bossTargetId && (nextS.tools.spear || nextS.tools.axe) && nextS.hp > 40) {
-                                    nextS.state = 'DEFEND'; nextS.targetId = bossTargetId; nextS.thought = '合力討伐！';
-                                } else {
-                                    const nearestEnemy = creatures.find(c => ['WOLF','BEAR','DINOSAUR'].includes(c.type) && c.hp > 0 && Math.sqrt((c.x-nextS.x)**2 + (c.y-nextS.y)**2) < 6);
-                                    if (nearestEnemy) {
-                                        const brave = nextS.trait === '好鬥' || nextS.mood < 40;
-                                        const hasWeapon = nextS.tools.spear || nextS.tools.axe || nextS.tools.pick;
-                                        const isScary = nearestEnemy.type === 'DINOSAUR' && (!hasWeapon || nextS.hp < 60);
-
-                                        if (!isScary && nextS.hp > 30 && (hasWeapon || brave)) {
-                                            nextS.state = 'DEFEND'; nextS.targetId = nearestEnemy.id; nextS.thought = hasWeapon ? '受死吧！' : '跟你拼了！';
-                                        } else {
-                                            nextS.state = 'FLEE';
-                                            nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;
-                                            nextS.thought = '快跑啊！';
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (nextS.state === 'IDLE') {
-                                if (!nextS.tools.spear && tribe.wood >= 10 && tribe.stone >= 5) {
-                                    nextS.state = 'CRAFT_SPEAR'; nextS.actionTimer = 100; nextS.thought = '製作長矛...';
-                                } else if (!nextS.tools.axe && tribe.wood >= 10 && tribe.stone >= 5) {
-                                    nextS.state = 'CRAFT_AXE'; nextS.actionTimer = 100; nextS.thought = '製作斧頭...';
-                                } else if (!nextS.tools.pick && tribe.wood >= 10 && tribe.stone >= 5) {
-                                    nextS.state = 'CRAFT_PICK'; nextS.actionTimer = 100; nextS.thought = '製作鎬子...';
-                                } else if (nextS.hunger < 50) {
-                                    if (tribe.food > 0 && inBase) {
-                                        setTribe(t => ({...t, food: Math.max(0, t.food-10)}));
-                                        nextS.hunger = 100; nextS.thought = '吃飽了！';
-                                    } else {
-                                        let potentialPrey = null;
-                                        potentialPrey = creatures.find(c => ['RABBIT', 'DEER'].includes(c.type) && c.hp > 0 && Math.sqrt((c.x-nextS.x)**2 + (c.y-nextS.y)**2) < 15);
-                                        if (!potentialPrey && (nextS.tools.spear || nextS.tools.axe)) {
-                                            potentialPrey = creatures.find(c => ['WOLF', 'BEAR'].includes(c.type) && c.hp > 0 && Math.sqrt((c.x-nextS.x)**2 + (c.y-nextS.y)**2) < 10);
-                                        }
-
-                                        if (potentialPrey) {
-                                            nextS.state = 'HUNT'; nextS.targetId = potentialPrey.id; nextS.thought = '發現獵物！';
-                                        } else {
-                                            const harvestable = farms.find(f => f.stage >= 100);
-                                            if (harvestable && tribe.tech >= 1) {
-                                                nextS.state = 'FARMING'; nextS.targetX = harvestable.x; nextS.targetY = harvestable.y;
-                                            } else {
-                                                if (Math.random() < 0.5) {
-                                                    nextS.state = 'GATHER'; nextS.targetX = rand(2,MAP_WIDTH-3); nextS.targetY = rand(2,MAP_HEIGHT-3); nextS.thought='徒手採集...';
-                                                } else {
-                                                    nextS.targetX = nextS.x + rand(-2,2); nextS.targetY = nextS.y + rand(-2,2); 
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else if (nextS.energy < 20 || (isNight && !inBase)) {
-                                    nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2;
-                                    if (inBase) { nextS.state = 'SLEEP'; nextS.hidden = true; nextS.thought = '進洞休息...'; }
-                                } else {
-                                    if (nextS.hidden) { nextS.hidden = false; nextS.y += 1; }
-                                    if (Math.random() < 0.02) {
-                                         const task = Math.random();
-                                         if (task < 0.3 && nextS.tools.axe) { nextS.state = 'CHOP'; nextS.targetX = rand(2,MAP_WIDTH-3); nextS.targetY=rand(2,MAP_HEIGHT-3); nextS.thought='去伐木'; }
-                                         else if (task < 0.6 && nextS.tools.pick) { nextS.state = 'MINE'; nextS.targetX = rand(2,MAP_WIDTH-3); nextS.targetY=rand(2,MAP_HEIGHT-3); nextS.thought='去採礦'; }
-                                         else { 
-                                             if (Math.random() < 0.5) { nextS.state = 'GATHER'; nextS.targetX = rand(2,MAP_WIDTH-3); nextS.targetY = rand(2,MAP_HEIGHT-3); nextS.thought='徒手採集...'; } 
-                                             else { nextS.targetX = nextS.x + rand(-2,2); nextS.targetY = nextS.y + rand(-2,2); }
-                                         }
-                                    }
-                                }
-                            }
-                        } 
-                        else if (['CRAFT_AXE','CRAFT_PICK','CRAFT_SPEAR'].includes(nextS.state)) {
-                            nextS.actionTimer--;
-                            if (nextS.actionTimer <= 0) {
-                                if (nextS.state === 'CRAFT_AXE') { nextS.tools.axe = true; setTribe(t => ({...t, wood: Math.max(0, t.wood-10), stone: Math.max(0, t.stone-5)})); }
-                                else if (nextS.state === 'CRAFT_PICK') { nextS.tools.pick = true; setTribe(t => ({...t, wood: Math.max(0, t.wood-10), stone: Math.max(0, t.stone-5)})); }
-                                else if (nextS.state === 'CRAFT_SPEAR') { nextS.tools.spear = true; setTribe(t => ({...t, wood: Math.max(0, t.wood-10), stone: Math.max(0, t.stone-5)})); }
-                                nextS.state = 'IDLE'; nextS.thought = '工具完成了';
-                            }
-                        }
-                        else if (['CHOP','MINE','GATHER'].includes(nextS.state)) {
-                            if(nextS.actionTimer > 0) nextS.actionTimer--;
-                            else if (distToTarget < 1.0) {
-                                if (nextS.state === 'CHOP') { 
-                                    setTribe(t=>({...t, wood:t.wood+20})); nextS.state='IDLE'; nextS.thought='木頭入手'; 
-                                    // 2. Map Interaction: Remove Tree
-                                    actionQueue.current.push({type: 'REMOVE_DECO', x: Math.round(nextS.targetX), y: Math.round(nextS.targetY)});
-                                }
-                                else if (nextS.state === 'MINE') { 
-                                    setTribe(t=>({...t, stone:t.stone+10})); nextS.state='IDLE'; nextS.thought='石頭入手'; 
-                                    // 2. Map Interaction: Remove Rock
-                                    actionQueue.current.push({type: 'REMOVE_DECO', x: Math.round(nextS.targetX), y: Math.round(nextS.targetY)});
-                                }
-                                else if (nextS.state === 'GATHER') { 
-                                    const r = Math.random();
-                                    if (r < 0.6) { setTribe(t=>({...t, food:t.food+10})); nextS.thought='找到食物'; }
-                                    else if (r < 0.8) { setTribe(t=>({...t, wood:t.wood+5})); nextS.thought='撿到樹枝'; }
-                                    else { setTribe(t=>({...t, stone:t.stone+3})); nextS.thought='撿到石塊'; }
-                                    nextS.state='IDLE'; 
-                                }
-                            }
-                        } else if (nextS.state === 'SLEEP') {
-                            if(nextS.energy>=100){ nextS.state='IDLE'; nextS.hidden=false; nextS.y+=1; }
-                        } else if (nextS.state === 'DEFEND' || nextS.state === 'HUNT') {
-                            const enemy = creatures.find(c => c.id === nextS.targetId && c.hp > 0);
-                            if (enemy) {
-                                nextS.targetX = enemy.x; nextS.targetY = enemy.y;
-                            } else { nextS.state = 'IDLE'; nextS.thought = '目標已倒下'; }
-                        } else if (nextS.state === 'FLEE') {
-                             const distToCave = Math.sqrt((nextS.x - MAP_WIDTH/2)**2 + (nextS.y - MAP_HEIGHT/2)**2);
-                             if (distToCave < 1.5) { nextS.hidden = true; nextS.state = 'HIDING'; nextS.thought = '呼...躲起來。'; nextS.targetX = null; }
-                        }
-
-                        if (nextS.targetX !== null) {
-                             nextS.targetX = clamp(nextS.targetX, 2, MAP_WIDTH-3);
-                             nextS.targetY = clamp(nextS.targetY, 2, MAP_HEIGHT-3);
-                             const dx = nextS.targetX - nextS.x; const dy = nextS.targetY - nextS.y;
-                             if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) { nextS.targetX = null; }
-                             else {
-                                 let spd = nextS.buffTimer > 0 ? 0.08 : 0.05;
-                                 if (nextS.state === 'FLEE') spd = 0.08;
-                                 else if (nextS.state === 'HUNT') spd = 0.07; 
-                                 nextS.x += Math.sign(dx) * spd; nextS.y += Math.sign(dy) * spd;
-                                 nextS.dir = Math.sign(dx); nextS.animFrame++;
-                             }
-                        }
-                        
-                        // Final strict clamp to prevent walking out
-                        nextS.x = clamp(nextS.x, 2, MAP_WIDTH-3);
-                        nextS.y = clamp(nextS.y, 2, MAP_HEIGHT-3);
-
-                        return nextS;
-                    });
-                    return [...updatedSims, ...newBabies];
-                });
-                
-                // Process Map Actions
-                if (actionQueue.current.length > 0) {
-                    setMap(prevMap => {
-                        const newMap = prevMap.map(row => [...row]);
-                        let changed = false;
-                        actionQueue.current.forEach(action => {
-                            if (action.y >= 0 && action.y < MAP_HEIGHT && action.x >= 0 && action.x < MAP_WIDTH) {
-                                if (action.type === 'REMOVE_DECO') {
-                                    if (newMap[action.y][action.x].decoration) {
-                                        newMap[action.y][action.x].decoration = null;
-                                        changed = true;
-                                    }
-                                } else if (action.type === 'DESTROY') {
-                                    if (newMap[action.y][action.x].decoration) {
-                                        newMap[action.y][action.x].decoration = null;
-                                        changed = true;
-                                    }
-                                    if (newMap[action.y][action.x].type === 'FOREST') {
-                                        newMap[action.y][action.x].type = 'DIRT'; // Burn ground
-                                        changed = true;
-                                    }
-                                } else if (action.type === 'GROW') {
-                                    const tile = newMap[action.y][action.x];
-                                    if (!tile.decoration && (tile.type === 'GRASS' || tile.type === 'FOREST')) {
-                                        const r = Math.random();
-                                        if (r < 0.1) tile.decoration = 'TREE_OAK';
-                                        else if (r < 0.2) tile.decoration = 'TREE_PINE';
-                                        else if (r < 0.3) tile.decoration = 'BUSH';
-                                        else if (r < 0.4) tile.decoration = 'FLOWER';
-                                        changed = true;
-                                    }
-                                }
-                            }
-                        });
-                        actionQueue.current = []; // Clear queue
-                        return changed ? newMap : prevMap;
-                    });
+                // --- NEW: Weather & Disaster Visuals ---
+                // 1. Disaster Tints
+                if (disaster.color) {
+                    // This block is handled in draw function but updated here for state consistency if needed
                 }
+                
+                // 2. Weather Tints & Effects handled in draw function
 
-            }, [time, weather, farms, tribe, isGameOver, map, creatures, disaster, sims, flash]);
+            }, [isGameOver, time, disaster, buildings, projectiles, sims, creatures, tribe, map]); 
 
             const isInBase = (sim) => Math.sqrt((sim.x - MAP_WIDTH/2)**2 + (sim.y - MAP_HEIGHT/2)**2) < 6;
-
             const currentStage = CIV_STAGES.slice().reverse().find(s => tribe.tech >= s.minTech) || CIV_STAGES[0];
+
+            const handleSimClick = async (simId) => {
+                setSelectedId(simId);
+                if (simId === 'BASE_CENTER') return;
+
+                const sim = sims.find(s => s.id === simId);
+                // Allow manual click trigger even without API key (with 1s cooldown instead of 10s)
+                const cooldown = userApiKey ? 10000 : 1000;
+                if (sim && Date.now() - (sim.lastThoughtTime || 0) > cooldown) {
+                    triggerAiThought(sim);
+                }
+            };
 
             const draw = useCallback(() => {
                 const canvas = canvasRef.current; if (!canvas || !sprites) return;
@@ -936,6 +1423,12 @@
                     else ctx.drawImage(sprites.grass, px, py);
                 }));
 
+                buildings.forEach(b => {
+                    const px = b.x * TILE_SIZE; const py = b.y * TILE_SIZE;
+                    const sprite = sprites[BUILDINGS[b.type].sprite];
+                    if(sprite) ctx.drawImage(sprite, px, py - 8);
+                });
+
                 const objects = [];
                 map.forEach(row => row.forEach(tile => { if (tile.decoration) objects.push({ y: tile.y, type: 'DECO', subtype: tile.decoration, x: tile.x }); }));
                 sims.forEach(sim => { if(!sim.hidden) objects.push({ y: sim.y, type: 'SIM', data: sim }) });
@@ -949,168 +1442,199 @@
                         else if (obj.subtype === 'TREE_OAK') ctx.drawImage(sprites.tree_oak, px, py - TILE_SIZE);
                         else if (obj.subtype === 'TREE_PINE') ctx.drawImage(sprites.tree_pine, px, py - TILE_SIZE);
                         else if (obj.subtype === 'ROCK') ctx.drawImage(sprites.rock, px, py);
+                        else if (obj.subtype === 'GOLD_ROCK') ctx.drawImage(sprites.gold_rock, px, py);
                         else if (obj.subtype === 'BUSH') ctx.drawImage(sprites.bush, px, py);
+                        else if (obj.subtype === 'BERRY_BUSH') ctx.drawImage(sprites.berry_bush, px, py);
                         else if (obj.subtype === 'FLOWER') ctx.drawImage(sprites.flower, px, py);
                         else if (obj.subtype === 'MUSHROOM') ctx.drawImage(sprites.mushroom, px, py);
                     } else if (obj.type === 'SIM') drawSim(ctx, obj.data);
                     else if (obj.type === 'CREATURE') drawCreature(ctx, obj.data);
                 });
 
-                if (selectedId) {
-                    if (selectedId === 'BASE_CENTER') {
-                        const cx = (MAP_WIDTH / 2) * TILE_SIZE;
-                        const cy = (MAP_HEIGHT / 2) * TILE_SIZE;
-                        ctx.strokeStyle = '#ffd700'; ctx.lineWidth = 3;
-                        ctx.beginPath(); ctx.arc(cx + 16, cy + 16, 40, 0, Math.PI*2); ctx.stroke();
-                    } else {
-                        const target = [...sims, ...creatures].find(i => i.id === selectedId);
-                        if (target && !target.hidden) {
-                            const px = target.x * TILE_SIZE; const py = target.y * TILE_SIZE;
-                            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 2]);
-                            
-                            // DYNAMIC SELECTION BOX
-                            let w = TILE_SIZE;
-                            let h = TILE_SIZE;
-                            let ox = 0;
-                            let oy = 0;
+                projectiles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath(); ctx.arc(p.x * TILE_SIZE, p.y * TILE_SIZE, 3, 0, Math.PI*2); ctx.fill();
+                });
 
-                            if (target.type === 'DINOSAUR') {
-                                w = 48; // Wider
-                                h = 48; // Taller
-                                ox = 10; // Shift right to cover body
-                                oy = -10; // Shift up if needed
-                            } else if (target.type === 'BEAR') {
-                                w = 40;
-                            }
-
-                            ctx.strokeRect(px + ox, py + oy, w, h); 
-                            ctx.setLineDash([]);
-                        }
+                if (selectedId && selectedId !== 'BASE_CENTER') {
+                    const target = [...sims, ...creatures, ...buildings].find(i => i.id === selectedId);
+                    if (target && !target.hidden) {
+                        const px = target.x * TILE_SIZE; const py = target.y * TILE_SIZE;
+                        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 2]);
+                        ctx.strokeRect(px, py, TILE_SIZE, TILE_SIZE); 
+                        ctx.setLineDash([]);
                     }
                 }
 
                 particles.forEach(p => {
-                    if (p.text) {
+                    if (p.isThought) {
+                         ctx.save(); // NEW: Save context state
+                         ctx.font = '10px sans-serif';
+                         ctx.textAlign = 'center';
+                         ctx.textBaseline = 'middle';
+                         
+                         const textMetrics = ctx.measureText(p.text);
+                         const w = textMetrics.width;
+                         const h = 14;
+                         const padding = 6;
+                         
+                         // Draw Bubble Background (Rounded Rect)
+                         ctx.fillStyle = 'rgba(0,0,0,0.75)';
+                         ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                         ctx.lineWidth = 1;
+                         
+                         const bx = p.x - w/2 - padding;
+                         const by = p.y - 20; // Move up a bit
+                         
+                         ctx.beginPath();
+                         if (ctx.roundRect) {
+                            ctx.roundRect(bx, by, w + padding*2, h, 4);
+                         } else {
+                            ctx.rect(bx, by, w + padding*2, h);
+                         }
+                         ctx.fill();
+                         ctx.stroke();
+                         
+                         // Draw Text
+                         ctx.fillStyle = 'white';
+                         ctx.fillText(p.text, p.x, by + h/2);
+                         ctx.restore(); // NEW: Restore context state
+                    } else if (p.text) { 
+                        // Damage numbers / emojis
+                        ctx.save();
                         ctx.font = '12px serif'; 
-                        ctx.fillText(p.text, p.x, p.y);
-                    } else {
-                        ctx.fillStyle = p.color || '#fff';
-                        const w = p.type === 'METEOR' ? 4 : (p.type === 'FLASH' ? 32 : 2);
-                        const h = p.type === 'METEOR' ? 4 : (p.type === 'FLASH' ? 32 : 2);
-                        if (p.type === 'METEOR') { 
-                            ctx.fillStyle = '#ff8800'; 
-                            ctx.fillRect(p.x + 2, p.y - 4, 2, 4); 
-                            ctx.fillStyle = '#ff4500'; 
-                        }
-                        else if (p.type === 'SPORE') {
-                             ctx.fillStyle = '#4caf50';
-                             ctx.fillRect(p.x, p.y, 2, 2);
-                        }
-                        else ctx.fillRect(p.x, p.y, w, h);
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = p.color; 
+                        ctx.fillText(p.text, p.x, p.y); 
+                        ctx.restore();
+                    } else { 
+                        ctx.fillStyle = p.color; 
+                        ctx.fillRect(p.x, p.y, 2, 2); 
                     }
                 });
 
-                if (disaster !== DISASTERS.NONE && disaster.color) {
-                     const pulse = 0.8 + Math.sin(tickRef.current / 20) * 0.2;
-                     let baseColor = disaster.color;
-                     if (disaster === DISASTERS.DARKNESS) {
-                         ctx.fillStyle = baseColor;
-                     } else {
-                         let parts = baseColor.match(/[\d.]+/g);
-                         if (parts && parts.length === 4) {
-                             ctx.fillStyle = `rgba(${parts[0]}, ${parts[1]}, ${parts[2]}, ${parseFloat(parts[3]) * pulse})`;
-                         } else {
-                             ctx.fillStyle = baseColor; 
-                         }
-                     }
-                     ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); 
-                }
-                else if (time > DAY_TICKS * 0.6) { 
-                    ctx.fillStyle = 'rgba(10, 10, 30, 0.5)'; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); 
+                // --- NEW: Weather & Disaster Visuals ---
+                // 1. Disaster Tints
+                if (disaster.color) {
+                    ctx.fillStyle = disaster.color;
+                    ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE);
                 }
                 
-                if (flash > 0) {
-                    ctx.fillStyle = `rgba(255, 255, 255, ${flash})`;
-                    ctx.fillRect(0, 0, canvas.width, canvas.height); // Full screen
+                // 2. Weather Tints & Effects
+                if (weather.color) {
+                    ctx.fillStyle = weather.color;
+                    ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE);
                 }
 
-                ctx.restore();
-            }, [map, sprites, sims, creatures, weather, particles, farms, time, selectedId, tribe, disaster, shake, currentStage, flash]);
-
-            const drawSim = (ctx, s) => {
-                if (s.state === 'DEAD') { 
-                    const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE);
-                    ctx.drawImage(sprites.skull, px + 4, py + 10); 
-                    return; 
-                }
-                const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE);
-                const bounce = (s.state !== 'IDLE') ? Math.sin(s.animFrame) * 2 : 0;
-                
-                if (s.buffTimer > 0) {
+                // Rain/Snow Particles Animation
+                if (weather.id === 'RAIN' || weather.id === 'SNOW') {
                     ctx.save();
-                    ctx.strokeStyle = `rgba(255, 215, 0, ${0.5 + Math.sin(tickRef.current/5)*0.3})`;
-                    ctx.lineWidth = 2;
-                    ctx.beginPath(); ctx.arc(px+16, py+16, 12, 0, Math.PI*2); ctx.stroke();
-                    ctx.fillStyle = 'rgba(255, 215, 0, 0.2)'; ctx.fill();
+                    ctx.strokeStyle = weather.id === 'RAIN' ? 'rgba(150,150,255,0.4)' : 'rgba(255,255,255,0.6)';
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                    ctx.lineWidth = 1;
+                    const timeOffset = Date.now() / 10;
+                    
+                    // Simple procedural rain/snow based on pseudo-random
+                    for(let i=0; i<100; i++) {
+                        // Use a rolling pseudo-random based on time to animate
+                        const rx = ((i * 135724 + timeOffset * 2) % (MAP_WIDTH * TILE_SIZE));
+                        const ry = ((i * 9283 + timeOffset * (weather.id==='RAIN'?5:2)) % (MAP_HEIGHT * TILE_SIZE));
+                        
+                        ctx.beginPath();
+                        if (weather.id === 'RAIN') {
+                            ctx.moveTo(rx, ry);
+                            ctx.lineTo(rx - 2, ry + 10);
+                            ctx.stroke();
+                        } else {
+                            ctx.fillRect(rx, ry, 2, 2);
+                        }
+                    }
                     ctx.restore();
                 }
 
-                const matrix = s.gender === 'M' ? SPRITE_MATRICES.CHAR_M : SPRITE_MATRICES.CHAR_F;
-                const skinColor = s.sick ? PALETTE.SICK_SKIN : PALETTE.SKIN;
-                renderMatrix(ctx, matrix, { 'H': s.hair, 'S': skinColor, 's': PALETTE.SKIN_SHADOW, 'C': s.color, 'K': PALETTE.OUTLINE }, px + 4, py + 4 + bounce);
-                
-                // Draw Tools
-                let showTool = null;
-                
-                if (s.state === 'CHOP' && s.tools.axe) showTool = 'AXE';
-                else if (s.state === 'MINE' && s.tools.pick) showTool = 'PICK';
-                else if (s.state === 'DEFEND' || s.state === 'HUNT' || s.state === 'FIGHTING') showTool = s.tools.spear ? 'SPEAR' : (s.tools.axe ? 'AXE' : (s.tools.pick ? 'PICK' : null));
-                else if (s.tools.spear) showTool = 'SPEAR';
-                else if (s.tools.axe) showTool = 'AXE';
-                else if (s.tools.pick) showTool = 'PICK';
-
-                if (showTool === 'SPEAR') {
-                    ctx.fillStyle = PALETTE.TOOL_AXE; ctx.fillRect(px+24, py+4+bounce, 2, 16); 
-                    ctx.fillStyle = '#bdc3c7'; ctx.fillRect(px+23, py+2+bounce, 4, 4); 
-                } else if (showTool === 'AXE') {
-                    ctx.fillStyle = PALETTE.TOOL_AXE; ctx.fillRect(px+22, py+10+bounce, 2, 10); 
-                    ctx.fillStyle = '#7f8c8d'; ctx.fillRect(px+20, py+10+bounce, 6, 4); 
-                } else if (showTool === 'PICK') {
-                    ctx.fillStyle = PALETTE.TOOL_AXE; ctx.fillRect(px+22, py+10+bounce, 2, 10); 
-                    ctx.fillStyle = '#95a5a6'; ctx.fillRect(px+18, py+10+bounce, 10, 2); 
+                // Night Tint (Darkness)
+                if (time > DAY_TICKS * 0.6 || disaster.id === 'DARKNESS') { 
+                    const alpha = disaster.id === 'DARKNESS' ? 0.9 : 0.5;
+                    ctx.fillStyle = `rgba(10, 10, 30, ${alpha})`; 
+                    ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); 
                 }
 
-                if (s.state === 'FIGHTING' || s.state === 'DEFEND') { ctx.font='10px serif'; ctx.fillText('⚔️', px+8, py); }
-                if (s.state.includes('CRAFT')) { ctx.font = '10px monospace'; ctx.fillStyle = '#ffff00'; ctx.fillText('🔨', px+8, py); }
-                if (s.age < 16) { ctx.font='10px serif'; ctx.fillText('👶', px, py); }
+                // Flash Effect (for Spells)
+                if (flash > 0) {
+                    ctx.fillStyle = `rgba(255, 255, 200, ${flash * 0.3})`;
+                    ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE);
+                }
+
+                ctx.restore();
+            }, [map, sprites, sims, creatures, buildings, projectiles, particles, time, selectedId, tribe, disaster, shake, currentStage, buildMode, flash, weather]);
+
+            const drawSim = (ctx, s) => {
+                if (s.state === 'DEAD') { const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE); ctx.drawImage(sprites.skull, px + 4, py + 10); return; }
+                const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE);
+                const bounce = (s.state !== 'IDLE') ? Math.sin(s.animFrame) * 2 : 0;
                 
-                // Visual for BREAKDOWN
-                if (s.state === 'BREAKDOWN') {
-                     ctx.font='12px serif'; ctx.fillStyle = '#9b59b6'; ctx.fillText('😵?', px + 8, py - 5);
+                const matrix = s.gender === 'M' ? SPRITE_MATRICES.CHAR_M : SPRITE_MATRICES.CHAR_F;
+                // Age Scale
+                ctx.save();
+                if (s.age < 16) {
+                    const scale = 0.7;
+                    ctx.translate(px + TILE_SIZE/2, py + TILE_SIZE/2);
+                    ctx.scale(scale, scale);
+                    ctx.translate(-(px + TILE_SIZE/2), -(py + TILE_SIZE/2));
+                }
+                
+                renderMatrix(ctx, matrix, { 'H': s.hair, 'S': PALETTE.SKIN, 's': PALETTE.SKIN_SHADOW, 'C': s.color, 'K': PALETTE.OUTLINE }, px + 4, py + 4 + bounce);
+                
+                if (s.tools.bow) { ctx.fillStyle = '#8d6e63'; ctx.save(); ctx.translate(px+16, py+16); ctx.rotate(s.state==='SHOOT'?Math.random()*0.5:0); ctx.fillRect(-8, 0, 16, 2); ctx.fillRect(-8, -8, 2, 16); ctx.restore(); }
+                else if (s.tools.spear) { ctx.fillStyle = PALETTE.TOOL_SPEAR; ctx.fillRect(px+24, py+4+bounce, 2, 16); }
+                
+                ctx.restore();
+
+                let actionIcon = '';
+                if (s.state === 'EAT') actionIcon = '🍖';
+                else if (s.state === 'SLEEP') actionIcon = '💤';
+                else if (s.state === 'CHOP') actionIcon = '🪓';
+                else if (s.state === 'MINE') actionIcon = '⛏️';
+                else if (s.state === 'GATHER') actionIcon = '🍎';
+                else if (s.state === 'CHAT') actionIcon = '💬';
+                else if (s.state === 'LOVE') actionIcon = '💖'; 
+                else if (s.state === 'FLEE') actionIcon = '🏃';
+                else if (s.state === 'PANIC') actionIcon = '😱';
+                else if (s.state === 'INSANE') actionIcon = '🌀'; // Insane Icon
+                else if (s.state === 'CRAFT') actionIcon = '🔨';
+                else if (s.state === 'AI_THINKING') actionIcon = '💭'; 
+                else if (s.state === 'DEFEND' || s.state === 'SHOOT') actionIcon = '⚔️';
+
+                if (actionIcon) {
+                    ctx.font = '10px sans-serif';
+                    ctx.fillStyle = '#fff';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(actionIcon, px + TILE_SIZE/2, py - 5);
                 }
             };
 
             const drawCreature = (ctx, c) => {
                 const px = Math.floor(c.x * TILE_SIZE); const py = Math.floor(c.y * TILE_SIZE);
                 let matrix = SPRITE_MATRICES[c.type] || SPRITE_MATRICES.RABBIT;
-                let colors = {'W': PALETTE.FUR_RABBIT, 'G': PALETTE.FUR_WOLF, 'B': PALETTE.FUR_BEAR, 'K': PALETTE.OUTLINE};
-                if (c.type === 'DINOSAUR') {
-                    colors = {'G': PALETTE.DINO_GREEN, 'Y': PALETTE.DINO_EYE, 'K': PALETTE.OUTLINE};
-                }
-
+                let colors = {'W': PALETTE.FUR_RABBIT, 'G': PALETTE.FUR_WOLF, 'B': PALETTE.FUR_BEAR, 'K': PALETTE.OUTLINE, 'Y': PALETTE.DINO_EYE, 'O': PALETTE.FUR_FOX, 'D': PALETTE.SKIN_PIG};
+                if (c.type === 'DINOSAUR') colors.G = PALETTE.DINO_GREEN;
+                if (c.type === 'SHEEP') colors.W = PALETTE.FUR_SHEEP;
+                if (c.type === 'COW') { colors.W = PALETTE.WHITE; colors.B = PALETTE.OUTLINE; }
+                
                 ctx.save(); 
-                if (c.dir < 0) { 
-                    const width = c.type === 'DINOSAUR' ? TILE_SIZE * 2 : TILE_SIZE;
-                    ctx.translate(px + width, 0); ctx.scale(-1, 1); ctx.translate(-px, 0); 
-                }
+                if (c.dir < 0) { const width = c.type === 'DINOSAUR' ? TILE_SIZE * 2 : TILE_SIZE; ctx.translate(px + width, 0); ctx.scale(-1, 1); ctx.translate(-px, 0); }
                 renderMatrix(ctx, matrix, colors, px, py);
                 
-                // Boss HP Bar
-                if (c.type === 'DINOSAUR') {
-                    ctx.fillStyle = 'red'; ctx.fillRect(px + 10, py - 5, 40, 4);
-                    ctx.fillStyle = '#00ff00'; ctx.fillRect(px + 10, py - 5, 40 * (c.hp / 800), 4);
+                // Fix Health Bar Logic
+                const maxHp = CREATURE_STATS[c.type].hp;
+                if (c.hp < maxHp) { 
+                    const barWidth = c.type === 'DINOSAUR' ? 64 : 32;
+                    ctx.fillStyle='red'; 
+                    ctx.fillRect(px, py-4, barWidth, 3); 
+                    ctx.fillStyle='#0f0'; 
+                    ctx.fillRect(px, py-4, barWidth * (c.hp / maxHp), 3); 
                 }
-
+                
                 ctx.restore();
             };
 
@@ -1126,45 +1650,105 @@
 
             const handleCanvasClick = useCallback((e) => {
                 const rect = canvasRef.current.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / SCALE / TILE_SIZE;
-                const y = (e.clientY - rect.top) / SCALE / TILE_SIZE;
+                const x = Math.floor((e.clientX - rect.left) / SCALE / TILE_SIZE);
+                const y = Math.floor((e.clientY - rect.top) / SCALE / TILE_SIZE);
+                
+                if (buildMode) {
+                    const cost = BUILDINGS[buildMode].cost;
+                    if (tribe.wood >= cost.wood && tribe.stone >= cost.stone) {
+                        setBuildings(prev => [...prev, { id: Date.now(), type: buildMode, x, y, hp: BUILDINGS[buildMode].hp }]);
+                        setTribe(t => ({...t, wood: t.wood - cost.wood, stone: t.stone - cost.stone}));
+                        addEvent(`建造了 ${BUILDINGS[buildMode].name}`);
+                        setBuildMode(null);
+                    } else {
+                        addEvent(`資源不足！需 木${cost.wood} 石${cost.stone}`);
+                        setBuildMode(null);
+                    }
+                    return;
+                }
+
+                const clickX = (e.clientX - rect.left) / SCALE / TILE_SIZE;
+                const clickY = (e.clientY - rect.top) / SCALE / TILE_SIZE;
                 let closest = null; let minDist = 2.5;
-                // Priority to LIVING sims/creatures first for selection
-                [...sims.filter(s => !s.hidden), ...creatures].forEach(obj => { 
-                    const d = Math.sqrt((obj.x+0.5-x)**2 + (obj.y+0.5-y)**2); 
-                    // Skip dead bodies for primary selection unless very close and nothing else
-                    if (obj.state === 'DEAD' && d > 0.5) return; 
+                
+                const targets = [
+                    ...sims.filter(s => !s.hidden).map(s => ({...s, type: 'SIM'})), 
+                    ...creatures.map(c => ({...c, type: 'CREATURE'})),
+                    ...buildings.map(b => ({...b, type: 'BUILDING'}))
+                ];
+
+                targets.forEach(obj => { 
+                    const d = Math.sqrt((obj.x+0.5-clickX)**2 + (obj.y+0.5-clickY)**2); 
                     if(d<minDist){ closest=obj; minDist=d; } 
                 });
                 
                 if (closest) {
-                    setSelectedId(closest.id);
-                } else if (Math.sqrt((x-MAP_WIDTH/2)**2+(y-MAP_HEIGHT/2)**2) < 2.5) { 
+                    if (closest.type === 'BUILDING') {
+                         setSelectedId(closest.id);
+                    } else {
+                         handleSimClick(closest.id);
+                    }
+                } else if (Math.sqrt((clickX-MAP_WIDTH/2)**2+(clickY-MAP_HEIGHT/2)**2) < 2.5) {
                     setSelectedId('BASE_CENTER');
                 } else {
                     setSelectedId(null);
                 }
-            }, [sims, creatures]);
+            }, [sims, creatures, buildMode, tribe, userApiKey, buildings]);
 
-            const selectedObj = [...sims, ...creatures].find(s => s.id === selectedId);
+            const selectedObj = [...sims, ...creatures, ...buildings].find(s => s.id === selectedId);
 
             return (
-                <div className="flex flex-col h-[100dvh] bg-[#1a1c2c] text-[#c2c3c7]" style={{ fontFamily: PIXEL_FONT }}>
+                <div className={`flex flex-col h-[100dvh] bg-[#1a1c2c] text-[#c2c3c7] ${buildMode ? 'build-cursor' : ''}`} style={{ fontFamily: PIXEL_FONT }}>
                     {/* Top Bar */}
                     <div className="bg-[#292b3c] p-2 border-b-4 border-[#121215] flex justify-between items-center shadow-lg shrink-0 z-20">
                         <div className="flex gap-4 items-center">
-                            <div className="text-[#ffcd75] font-bold flex items-center gap-2"><Icons.Sparkles size={16}/> {mana}</div>
-                            <div className="bg-black/40 px-3 py-1 rounded text-sm flex items-center gap-2">
+                            <div className="text-[#ffcd75] font-bold flex items-center gap-2" title="神力 (Mana)"><Icons.Sparkles size={16}/> {Math.floor(mana)}</div>
+                            
+                            {/* Resources Panel (New) */}
+                            <div className="flex gap-3 text-xs font-mono bg-black/30 px-3 py-1 rounded border border-gray-700">
+                                <div className="text-[#8d6e63] flex items-center gap-1" title="木材">🪵 {Math.floor(tribe.wood)}</div>
+                                <div className="text-gray-400 flex items-center gap-1" title="石材">🪨 {Math.floor(tribe.stone)}</div>
+                                <div className="text-orange-400 flex items-center gap-1" title="食物">🍖 {Math.floor(tribe.food)}</div>
+                            </div>
+
+                            <div className="bg-black/40 px-3 py-1 rounded text-sm flex items-center gap-2 hidden md:flex">
                                 <span className="text-2xl">{currentStage.icon}</span>
                                 <div><div className="text-[10px] text-gray-400">Day {day}</div><div className="text-white font-bold">{currentStage.name}</div></div>
                             </div>
                         </div>
-                        <div className="flex gap-3 text-xs font-bold text-[#8b9bb4]">
-                            <span className="flex items-center gap-1"><Icons.Users size={12}/> {sims.filter(s=>s.state!=='DEAD').length}/{MAX_POPULATION}</span>
-                            <span>🍎 {Math.floor(tribe.food)}</span>
-                            <span>🔨 Tech Lv.{tribe.tech}</span>
+                        <div className="flex gap-3 items-center">
+                            <button onClick={() => setShowApiKeyInput(!showApiKeyInput)} className="text-xs bg-purple-900/50 hover:bg-purple-800 text-purple-200 px-2 py-1 rounded border border-purple-500 flex items-center gap-1">
+                                <Icons.Key size={12}/> {userApiKey ? 'AI 已連結' : '連結 AI'}
+                            </button>
+                            <span className="text-xs font-bold text-[#8b9bb4] flex items-center gap-1"><Icons.Users size={12}/> {sims.filter(s=>s.state!=='DEAD').length}/{MAX_POPULATION}</span>
                         </div>
                     </div>
+                    
+                    {/* NEW: Save Effect Overlay */}
+                    {isSaving && (
+                        <div className="absolute top-14 right-4 z-40 pointer-events-none flex items-center justify-end animate-bounce transition-opacity duration-500">
+                            <div className="bg-green-900/90 text-green-100 border border-green-500 px-3 py-1 rounded-full text-xs flex items-center gap-2 shadow-lg backdrop-blur-sm">
+                                <Icons.Save size={14} className="animate-pulse"/> 
+                                <span>系統存檔中...</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* API Key Modal */}
+                    {showApiKeyInput && (
+                        <div className="absolute top-14 right-4 z-50 bg-[#292b3c] p-4 rounded shadow-xl border border-gray-600 w-64">
+                            <h3 className="text-white text-sm mb-2 font-bold">連結 Google Gemini AI</h3>
+                            <p className="text-[10px] text-gray-400 mb-2">輸入 API Key 以啟用族人獨立思想與 AI 行為決策。</p>
+                            <input 
+                                type="password" 
+                                value={userApiKey} 
+                                onChange={(e) => setUserApiKey(e.target.value)} 
+                                placeholder="Paste API Key here..."
+                                className="w-full bg-black text-white text-xs p-2 rounded border border-gray-700 mb-2"
+                            />
+                            <button onClick={() => setShowApiKeyInput(false)} className="w-full bg-green-700 text-white text-xs py-1 rounded">確認</button>
+                        </div>
+                    )}
 
                     {/* Main Game Area */}
                     <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
@@ -1174,13 +1758,46 @@
                                 <button onClick={startNextEra} className="bg-red-900 px-8 py-4 rounded border-2 border-red-500 text-white flex items-center gap-2 hover:bg-red-800"><Icons.RefreshCw/> 重啟文明</button>
                             </div>
                         )}
-
+                        
                         <div className="relative flex-1 bg-black overflow-hidden flex">
+                            {/* MOVED: Overlays are now inside the canvas area to prevent blocking sidebar */}
+                            {buildMode && (
+                                <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-900/80 text-yellow-200 px-4 py-2 rounded z-50 border border-yellow-500 animate-pulse pointer-events-none">
+                                    建造模式：請點擊地圖空地
+                                </div>
+                            )}
+
+                            {/* NEW: Save Effect Overlay moved here */}
+                            {isSaving && (
+                                <div className="absolute top-4 right-4 z-40 pointer-events-none flex items-center justify-end animate-bounce transition-opacity duration-500">
+                                    <div className="bg-green-900/90 text-green-100 border border-green-500 px-3 py-1 rounded-full text-xs flex items-center gap-2 shadow-lg backdrop-blur-sm">
+                                        <Icons.Save size={14} className="animate-pulse"/> 
+                                        <span>系統存檔中...</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* API Key Modal moved here */}
+                            {showApiKeyInput && (
+                                <div className="absolute top-14 right-4 z-50 bg-[#292b3c] p-4 rounded shadow-xl border border-gray-600 w-64">
+                                    <h3 className="text-white text-sm mb-2 font-bold">連結 Google Gemini AI</h3>
+                                    <p className="text-[10px] text-gray-400 mb-2">輸入 API Key 以啟用族人獨立思想與 AI 行為決策。</p>
+                                    <input 
+                                        type="password" 
+                                        value={userApiKey} 
+                                        onChange={(e) => setUserApiKey(e.target.value)} 
+                                        placeholder="Paste API Key here..."
+                                        className="w-full bg-black text-white text-xs p-2 rounded border border-gray-700 mb-2"
+                                    />
+                                    <button onClick={() => setShowApiKeyInput(false)} className="w-full bg-green-700 text-white text-xs py-1 rounded">確認</button>
+                                </div>
+                            )}
+
                             <div className="w-full h-full overflow-auto flex items-center justify-center p-4 bg-[#0d0d10]">
                                 <canvas ref={canvasRef} width={MAP_WIDTH * TILE_SIZE * SCALE} height={MAP_HEIGHT * TILE_SIZE * SCALE} onClick={handleCanvasClick} className="border-4 border-[#3e2723] shadow-2xl cursor-crosshair" style={{ imageRendering: 'pixelated' }} />
                             </div>
                             
-                            {/* Updated Log Window with Collapse and Mobile Scrolling */}
+                            {/* Log */}
                             <div className={`absolute bottom-4 left-4 w-72 flex flex-col gap-1 z-30 transition-all duration-300 ${isLogOpen ? 'max-h-64' : 'max-h-10'}`}>
                                 <div className="flex justify-between items-center bg-[#292b3c] p-1 rounded-t border-t border-l border-r border-[#5d4037] cursor-pointer shadow-lg" onClick={() => setIsLogOpen(!isLogOpen)}>
                                     <span className="text-xs text-[#ffcd75] font-bold px-2">📜 歷史紀錄</span>
@@ -1188,152 +1805,183 @@
                                         {isLogOpen ? <Icons.ChevronDown size={14}/> : <Icons.ChevronUp size={14}/>}
                                     </button>
                                 </div>
-                                
-                                {isLogOpen ? (
-                                    <div className="bg-black/80 p-2 overflow-y-auto h-48 rounded-b border-b border-l border-r border-[#5d4037] scrollbar-thin pointer-events-auto touch-pan-y shadow-xl">
-                                         {events.map((ev) => (
-                                            <div key={ev.id} className="log-item text-white px-2 py-1 text-xs border-b border-gray-800 last:border-0">
-                                                {ev.text}
-                                            </div>
-                                        ))}
-                                         <div ref={logEndRef} />
-                                    </div>
-                                ) : (
-                                    // Collapsed view: Show only latest message
-                                    <div className="bg-black/80 p-2 rounded-b border-b border-l border-r border-[#5d4037] pointer-events-auto touch-pan-y shadow-xl">
-                                        <div className="text-white text-xs truncate px-1">
-                                            {events[events.length - 1]?.text || "..."}
-                                        </div>
-                                    </div>
-                                )}
+                                {isLogOpen && <div className="bg-black/80 p-2 overflow-y-auto h-48 rounded-b border-b border-l border-r border-[#5d4037] scrollbar-thin pointer-events-auto touch-pan-y shadow-xl">
+                                     {events.map((ev) => <div key={ev.id} className="log-item text-white px-2 py-1 text-xs border-b border-gray-800 last:border-0">{ev.text}</div>)}
+                                     <div ref={logEndRef} />
+                                </div>}
                             </div>
                         </div>
 
-                        {/* Sidebar - Increased height to 45vh for mobile to prevent hiding details */}
-                        <div className="w-full h-[45vh] md:w-72 md:h-auto bg-[#292b3c] border-t-4 md:border-t-0 md:border-l-4 border-[#121215] p-2 md:p-3 flex flex-col gap-2 md:gap-3 shadow-2xl z-20 shrink-0">
-                            <div className="bg-[#1a1c2c] p-2 md:p-3 rounded border border-[#3e2723]">
-                                <h3 className="text-[#ffcd75] text-sm mb-2 font-bold border-b border-[#3e2723] pb-1">神諭</h3>
-                                <div className="grid grid-cols-4 gap-2">
-                                    <button onClick={() => castSpell('SUN')} className="btn bg-[#3e2723] p-2 rounded flex items-center justify-center"><Icons.Sun className="text-yellow-400"/></button>
-                                    <button onClick={() => castSpell('RAIN')} className="btn bg-[#3e2723] p-2 rounded flex items-center justify-center"><Icons.CloudRain className="text-blue-400"/></button>
-                                    <button onClick={() => castSpell('TECH')} disabled={tribe.tech>=20} className="btn bg-[#3e2723] p-2 rounded relative group flex items-center justify-center">
-                                        <Icons.Brain className="text-purple-400"/>
-                                        <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">賜予科技 (50)</span>
-                                    </button>
-                                    <button onClick={handleTribeSaga} disabled={isWritingSaga} className="btn bg-indigo-900 p-2 rounded flex items-center justify-center"><Icons.ScrollText className="text-indigo-300"/></button>
-                                    <button onClick={() => castSpell('DISASTER')} disabled={mana < 100} className="col-span-4 bg-red-900/50 p-2 rounded flex items-center justify-center gap-2 border border-red-700 text-red-200 text-xs font-bold hover:bg-red-900"><Icons.Biohazard/> 降下天災 (100)</button>
-                                </div>
-                            </div>
+                        {/* Sidebar - Added overflow-y-auto to fix blocked content */}
+                        <div className="w-full h-[45vh] md:w-72 md:h-full bg-[#292b3c] border-t-4 md:border-t-0 md:border-l-4 border-[#121215] p-2 md:p-3 flex flex-col gap-2 md:gap-3 shadow-2xl z-20 shrink-0 overflow-y-auto">
+                            {(!selectedId || selectedId === 'BASE_CENTER') ? (
+                                <>
+                                    {/* NEW: Base Status Panel - Enhanced */}
+                                    <div className="bg-[#1a1c2c] p-3 rounded border border-[#3e2723] shadow-md shrink-0">
+                                        <div className="flex items-center gap-3 mb-3 border-b border-[#3e2723] pb-2">
+                                            <div className="text-3xl bg-black/40 p-2 rounded border border-gray-700">{currentStage.icon}</div>
+                                            <div className="flex-1">
+                                                <h3 className="text-[#ffcd75] text-base font-bold leading-tight">部落大本營</h3>
+                                                <div className="text-xs text-gray-400">{currentStage.name}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="space-y-3 text-xs">
+                                            {/* Population Bar */}
+                                            <div>
+                                                <div className="flex justify-between mb-1 text-gray-300">
+                                                    <span>👥 人口容量</span>
+                                                    <span>{sims.filter(s=>s.state!=='DEAD').length} / {currentStage.stats.cap}</span>
+                                                </div>
+                                                <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                                                    <div 
+                                                        className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-500" 
+                                                        style={{width: `${Math.min(100, (sims.filter(s=>s.state!=='DEAD').length / currentStage.stats.cap) * 100)}%`}}
+                                                    ></div>
+                                                </div>
+                                            </div>
 
-                            <div className="flex-1 bg-[#1a1c2c] p-2 md:p-3 rounded border border-[#3e2723] flex flex-col overflow-hidden">
-                                <div className="flex justify-between items-center border-b border-[#3e2723] mb-2 pb-1">
-                                    <h3 className="text-[#8b9bb4] text-sm font-bold">詳細資訊</h3>
-                                    {selectedId && <button onClick={() => setSelectedId(null)}><Icons.X size={14}/></button>}
-                                </div>
-                                
-                                <div className="flex-1 overflow-y-auto pr-1">
-                                    {selectedId === 'BASE_CENTER' ? (
-                                        <div className="space-y-2">
-                                            <div className="text-center py-2 border-b border-gray-700">
-                                                <div className="text-4xl mb-1">{currentStage.icon}</div>
-                                                <div className="font-bold text-[#ffcd75] text-lg">{currentStage.name}</div>
-                                                <div className="text-xs text-gray-400 mt-1 px-2">{currentStage.desc}</div>
+                                            {/* Stats Grid */}
+                                            <div className="grid grid-cols-3 gap-2">
+                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800">
+                                                    <div className="text-[10px] text-gray-500 mb-0.5">防禦</div>
+                                                    <div className="text-white font-mono text-sm">🛡️{currentStage.stats.def}</div>
+                                                </div>
+                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800">
+                                                    <div className="text-[10px] text-gray-500 mb-0.5">恢復</div>
+                                                    <div className="text-white font-mono text-sm">💚+{currentStage.stats.heal}</div>
+                                                </div>
+                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800">
+                                                    <div className="text-[10px] text-gray-500 mb-0.5">建築</div>
+                                                    <div className="text-white font-mono text-sm">🏠{buildings.length}</div>
+                                                </div>
                                             </div>
                                             
-                                            <div className="grid grid-cols-2 gap-2 text-xs bg-black/30 p-2 rounded">
-                                                <div className="flex justify-between"><span>🛡️ 防禦</span><span className="text-blue-300">{currentStage.stats.def}</span></div>
-                                                <div className="flex justify-between"><span>❤️ 恢復</span><span className="text-green-300">+{currentStage.stats.heal}/s</span></div>
-                                                <div className="flex justify-between col-span-2 border-t border-gray-700 pt-1 mt-1"><span>📦 庫存容量</span><span className="text-yellow-300">{currentStage.stats.cap}</span></div>
-                                            </div>
-
-                                            <div className="bg-[#111] p-2 rounded border border-gray-800">
-                                                <div className="text-xs text-gray-400 font-bold mb-2 flex items-center gap-1"><Icons.Box size={12}/> 資源倉庫</div>
-                                                <div className="grid grid-cols-3 gap-1 text-center text-xs">
-                                                    <div className="bg-[#222] p-1 rounded"><div className="text-orange-400">🍎</div>{Math.floor(tribe.food)}</div>
-                                                    <div className="bg-[#222] p-1 rounded"><div className="text-[#8d6e63]">🪵</div>{tribe.wood}</div>
-                                                    <div className="bg-[#222] p-1 rounded"><div className="text-gray-400">🧱</div>{tribe.stone}</div>
-                                                </div>
-                                            </div>
-
-                                            <div className="text-xs text-gray-400 font-bold mt-2 mb-1">避難中 ({sims.filter(s=>s.hidden && s.state !== 'DEAD').length}):</div>
-                                            <div className="max-h-32 overflow-y-auto space-y-1">
-                                                {sims.filter(s => s.hidden).map(s => <div key={s.id} className="text-[10px] bg-black p-1 rounded flex justify-between items-center"><span>{s.sign}</span><span className="text-gray-500 italic">zZz...</span></div>)}
-                                                {sims.filter(s => s.hidden).length === 0 && <div className="text-center text-gray-600 text-[10px] py-2">無人避難</div>}
+                                            <div className="text-[10px] text-gray-500 italic bg-black/20 p-2 rounded border border-gray-800/50">
+                                                "{currentStage.desc}"
                                             </div>
                                         </div>
-                                    ) : selectedObj ? (
-                                        <div className="flex flex-col gap-2">
-                                            {selectedObj.sign ? (
-                                                <>
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-10 h-10 border border-gray-600 bg-black relative overflow-hidden"><div className="absolute top-2 left-2 w-6 h-6" style={{backgroundColor: selectedObj.hair, borderRadius: '50% 50% 0 0'}}></div><div className="absolute top-4 left-1 w-8 h-8" style={{backgroundColor: selectedObj.color, borderRadius: '50% 50% 0 0'}}></div></div>
-                                                        <div>
-                                                            <div className="font-bold text-[#ffccaa]">{selectedObj.sign} <span className="text-[10px] text-gray-500">Gen{selectedObj.generation}</span></div>
-                                                            <div className="text-xs text-gray-400">{selectedObj.trait} / {selectedObj.state}</div>
-                                                            {selectedObj.state === 'BREAKDOWN' && <div className="text-xs text-purple-400 font-bold animate-pulse">精神崩潰</div>}
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div className="space-y-2 mt-3">
-                                                        {/* HP */}
-                                                        <div>
-                                                            <div className="flex justify-between text-[10px] text-gray-400 mb-0.5"><span>❤️ 生命</span><span>{Math.floor(selectedObj.hp)}</span></div>
-                                                            <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
-                                                                <div className="h-full bg-red-500 transition-all duration-500" style={{width: `${(selectedObj.hp / (selectedObj.type==='DINOSAUR'?800: (selectedObj.type==='BEAR'?200:100)))*100}%`}}></div>
-                                                            </div>
-                                                        </div>
-                                                        {/* Hunger (Only for Sims) */}
-                                                        {selectedObj.hunger !== undefined && (
-                                                            <div>
-                                                                <div className="flex justify-between text-[10px] text-gray-400 mb-0.5"><span>🍖 飢餓</span><span>{Math.floor(selectedObj.hunger)}</span></div>
-                                                                <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
-                                                                    <div className="h-full bg-orange-500 transition-all duration-500" style={{width: `${selectedObj.hunger}%`}}></div>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                        {/* Mood (Only for Sims) */}
-                                                        {selectedObj.mood !== undefined && (
-                                                            <div>
-                                                                <div className="flex justify-between text-[10px] text-gray-400 mb-0.5"><span>🧠 精神</span><span>{Math.floor(selectedObj.mood)}</span></div>
-                                                                <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
-                                                                    <div className={`h-full transition-all duration-500 ${selectedObj.mood < 20 ? 'bg-purple-500' : 'bg-blue-400'}`} style={{width: `${selectedObj.mood}%`}}></div>
-                                                                </div>
-                                                                <div className={`text-right text-[10px] mt-0.5 ${selectedObj.mood < 20 ? 'text-purple-400 font-bold' : 'text-gray-400'}`}>
-                                                                    {selectedObj.mood > 80 ? '💖 渴望繁衍' : (selectedObj.mood < 20 ? '💢 易怒暴躁' : (selectedObj.mood < 10 ? '😵 精神崩潰' : '平靜'))}
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
+                                    </div>
 
-                                                    {selectedObj.thought && <div className={`p-2 rounded text-[10px] italic mt-2 ${selectedObj.state === 'BREAKDOWN' ? 'bg-purple-900 text-purple-200 border border-purple-500' : 'bg-black text-[#a5d6a7]'}`}>"{selectedObj.thought}"</div>}
-                                                    
-                                                    {selectedObj.sign && (
+                                    {/* Build Menu */}
+                                    <div className="bg-[#1a1c2c] p-2 rounded border border-[#3e2723] shrink-0">
+                                        <h3 className="text-[#ffcd75] text-sm mb-2 font-bold border-b border-[#3e2723] pb-1 flex justify-between items-center">
+                                            <span>🔨 基地建設</span>
+                                            <span className="text-[10px] text-gray-500">點擊建造</span>
+                                        </h3>
+                                        <div className="space-y-2 max-h-32 overflow-y-auto pr-1 scrollbar-thin">
+                                            {Object.keys(BUILDINGS).map(key => {
+                                                const b = BUILDINGS[key];
+                                                const hasReq = !b.reqTech || hasTech(b.reqTech);
+                                                const canBuild = hasReq && tribe.wood >= b.cost.wood && tribe.stone >= b.cost.stone;
+                                                return (
+                                                    <button key={key} onClick={() => handleBuild(key)} disabled={!canBuild && hasReq} className={`w-full text-left p-2 rounded border text-xs flex justify-between items-center group transition-all ${canBuild ? 'bg-[#2d2a26] border-[#5d4037] hover:bg-[#3e2723] hover:border-yellow-600' : 'bg-gray-900 border-gray-800 opacity-50 cursor-not-allowed'}`}>
+                                                        <div>
+                                                            <div className={`font-bold ${canBuild ? 'text-gray-200 group-hover:text-yellow-200' : 'text-gray-600'}`}>
+                                                                {b.name}
+                                                            </div>
+                                                            <div className="text-[10px] text-gray-500">
+                                                                {!hasReq ? `🔒 需要 [${TECH_TREE.find(t=>t.id===b.reqTech).name}]` : b.desc}
+                                                            </div>
+                                                        </div>
+                                                        <div className="text-right text-[10px]">
+                                                            <div className={tribe.wood >= b.cost.wood ? "text-[#8d6e63]" : "text-red-500"}>🪵 {b.cost.wood}</div>
+                                                            <div className={tribe.stone >= b.cost.stone ? "text-gray-400" : "text-red-500"}>🪨 {b.cost.stone}</div>
+                                                        </div>
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="bg-[#1a1c2c] p-2 rounded border border-[#3e2723] flex-1 flex flex-col min-h-[120px] shrink-0">
+                                        <h3 className="text-[#8b9bb4] text-sm mb-2 font-bold border-b border-[#3e2723] pb-1">⚡ 神諭</h3>
+                                        <div className="grid grid-cols-4 gap-2 mt-auto">
+                                            <button onClick={() => castSpell('SUN')} className="btn bg-[#2d2a26] hover:bg-[#3e2723] border border-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors" title="祈禱晴天 (消耗 20)">
+                                                <Icons.Sun className="text-yellow-400" size={18}/>
+                                                <span className="text-[9px] text-gray-400">祈晴</span>
+                                            </button>
+                                            <button onClick={() => castSpell('RAIN')} className="btn bg-[#2d2a26] hover:bg-[#3e2723] border border-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors" title="祈禱雨天 (消耗 20)">
+                                                <Icons.CloudRain className="text-blue-400" size={18}/>
+                                                <span className="text-[9px] text-gray-400">祈雨</span>
+                                            </button>
+                                            
+                                            {/* Tech Button with Next Tech Preview */}
+                                            <button onClick={() => castSpell('TECH')} disabled={tribe.tech>=TECH_TREE.length} className="btn bg-[#2d2a26] hover:bg-[#3e2723] border border-[#5d4037] p-2 rounded relative group flex flex-col items-center justify-center gap-1 transition-colors disabled:opacity-50">
+                                                <Icons.Brain className="text-purple-400" size={18}/>
+                                                <span className="text-[9px] text-gray-400">啟發</span>
+                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 bg-black/90 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap border border-gray-700 z-50 pointer-events-none mb-1">
+                                                    {tribe.tech < TECH_TREE.length ? (
                                                         <>
-                                                            <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-[#3e2723]">
-                                                                <button onClick={() => castSpell('FOOD')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center"><Icons.Utensils className="text-orange-400"/><span className="text-[10px]">賜食</span></button>
-                                                                <button onClick={() => castSpell('HEAL')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center"><Icons.Heart className="text-red-400"/><span className="text-[10px]">治癒</span></button>
-                                                                <button onClick={() => castSpell('BUFF')} className="bg-[#3e2723] hover:bg-[#5d4037] p-2 rounded flex flex-col items-center"><Icons.Shield className="text-blue-400"/><span className="text-[10px]">賜福</span></button>
-                                                            </div>
-                                                            <button onClick={() => handleSoulSearch(selectedObj)} className="w-full mt-2 bg-gray-800 p-1.5 rounded text-[10px] border border-gray-600 text-purple-300">靈魂傾聽 (10)</button>
+                                                            <div className="font-bold text-yellow-300 mb-0.5">研發: {TECH_TREE[tribe.tech].icon} {TECH_TREE[tribe.tech].name}</div>
+                                                            <div className="text-gray-300">{TECH_TREE[tribe.tech].desc}</div>
+                                                            <div className="text-purple-300 mt-0.5">消耗: 50 MP</div>
                                                         </>
-                                                    )}
-                                                </>
-                                            ) : (
-                                                <div>
-                                                    <div className="font-bold text-lg">{selectedObj.type}</div>
-                                                    <div className="text-xs text-gray-500">HP: {selectedObj.hp}</div>
+                                                    ) : "科技已達巔峰"}
                                                 </div>
-                                            )}
+                                            </button>
+
+                                            <button onClick={() => castSpell('DISASTER')} disabled={mana < 100} className="bg-[#2d1a1a] hover:bg-[#3e1a1a] border border-red-900/50 p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors disabled:opacity-30" title="降下災難 (消耗 100)">
+                                                <Icons.Biohazard className="text-red-500" size={18}/>
+                                                <span className="text-[9px] text-red-400">天罰</span>
+                                            </button>
                                         </div>
-                                    ) : <div className="text-center text-gray-600 mt-10">點擊地圖物件查看</div>}
+                                    </div>
+                                </>
+                            ) : selectedObj ? (
+                                <div className="bg-[#1a1c2c] p-3 rounded border border-[#3e2723] flex-1 shrink-0">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h3 className="text-[#ffcd75] text-lg font-bold">{selectedObj.type === 'BUILDING' ? BUILDINGS[selectedObj.type].name : (selectedObj.sign || selectedObj.name || selectedObj.type)}</h3>
+                                        <button onClick={() => setSelectedId(null)}><Icons.X size={14}/></button>
+                                    </div>
+                                    {selectedObj.type === 'BUILDING' ? (
+                                        <div className="space-y-2 text-xs text-gray-300">
+                                            <div><span className="text-gray-500">類型：</span> {BUILDINGS[selectedObj.type].desc}</div>
+                                            <div><div className="flex justify-between text-[10px]"><span>HP</span><span>{Math.floor(selectedObj.hp)}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-green-500" style={{width:`${(selectedObj.hp / BUILDINGS[selectedObj.type].hp) * 100}%`}}></div></div></div>
+                                        </div>
+                                    ) : selectedObj.sign ? (
+                                        <>
+                                        <div className="text-xs text-gray-400 mb-2 flex items-center justify-between">
+                                            <span className="flex items-center gap-1">
+                                                {selectedObj.state} | 
+                                                {selectedObj.gender === 'M' ? <span className="text-blue-400 font-bold text-sm" title="男性">♂</span> : <span className="text-pink-400 font-bold text-sm" title="女性">♀</span>} 
+                                                {selectedObj.age}歲 | Gen{selectedObj.generation}
+                                            </span>
+                                            {userApiKey && <span className="text-[10px] text-green-400 border border-green-600 px-1 rounded">AI 連結中</span>}
+                                        </div>
+                                        <div className="text-xs text-yellow-200 italic mb-4 p-2 bg-black/40 rounded border border-gray-700">
+                                            "{selectedObj.thought}"
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div><div className="flex justify-between text-[10px]"><span>HP</span><span>{Math.floor(selectedObj.hp)}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-red-500" style={{width:`${selectedObj.hp}%`}}></div></div></div>
+                                            <div><div className="flex justify-between text-[10px]"><span>Hunger</span><span>{Math.floor(selectedObj.hunger)}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-orange-500" style={{width:`${selectedObj.hunger}%`}}></div></div></div>
+                                            <div><div className="flex justify-between text-[10px]"><span>Sanity</span><span>{Math.floor(selectedObj.sanity)}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-purple-500" style={{width:`${selectedObj.sanity}%`}}></div></div></div>
+                                            <div><div className="flex justify-between text-[10px]"><span>Energy</span><span>{Math.floor(selectedObj.energy)}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-blue-500" style={{width:`${selectedObj.energy}%`}}></div></div></div>
+                                        </div>
+                                        <div className="mt-4 grid grid-cols-3 gap-2">
+                                            <button onClick={() => castSpell('FOOD')} className="bg-[#3e2723] p-2 rounded text-[10px] text-center"><Icons.Utensils className="block mx-auto mb-1"/>賜食</button>
+                                            <button onClick={() => castSpell('HEAL')} className="bg-[#3e2723] p-2 rounded text-[10px] text-center"><Icons.Heart className="block mx-auto mb-1"/>治癒</button>
+                                            <button onClick={() => castSpell('BUFF')} className="bg-[#3e2723] p-2 rounded text-[10px] text-center"><Icons.Shield className="block mx-auto mb-1"/>賜福</button>
+                                        </div>
+                                        </>
+                                    ) : (
+                                        // CREATURE STATS DISPLAY
+                                        <div className="space-y-2 text-xs text-gray-300">
+                                            <div><span className="text-gray-500">類型：</span> {CREATURE_STATS[selectedObj.type].type === 'HOSTILE' ? '敵對生物' : '中立/被動生物'}</div>
+                                            <div><div className="flex justify-between text-[10px]"><span>HP</span><span>{Math.floor(selectedObj.hp)} / {CREATURE_STATS[selectedObj.type].hp}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-red-500" style={{width:`${Math.min(100, (selectedObj.hp / CREATURE_STATS[selectedObj.type].hp) * 100)}%`}}></div></div></div>
+                                        </div>
+                                    )}
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="flex-1 flex items-center justify-center text-gray-500 text-xs">
+                                    點擊基地或單位查看詳情
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             );
         };
-
         const root = createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
