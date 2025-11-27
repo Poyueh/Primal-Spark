@@ -64,9 +64,13 @@
         const MAP_HEIGHT = 40;
         const DAY_TICKS = 800; 
         const MAX_POPULATION = 50;
-        const AI_COOLDOWN_TICKS = 150;
+        const AI_COOLDOWN_TICKS = 150; 
         
-        const TOOL_COSTS = { AXE: 10, PICK: 15, SPEAR: 20 };
+        const TOOL_COSTS = {
+            AXE: 10,  
+            PICK: 15, 
+            SPEAR: 20 
+        };
 
         const TECH_TREE = [
             { id: 'STONE_TOOLS', name: '石器打磨', desc: '解鎖製作 [斧頭] 與 [鎬子]', icon: '🪨' },
@@ -177,7 +181,11 @@
         };
 
         const LOG_TEMPLATES = {
-            FIGHT_START: ["⚔️ {name} 遭遇 {enemy}，戰鬥開始！", "{name} 為了保衛家園對抗 {enemy}！", "⚠️ {name} 被 {enemy} 襲擊了！"],
+            FIGHT_START: [
+                "⚔️ {name} 遭遇 {enemy}，戰鬥開始！", 
+                "{name} 為了保衛家園對抗 {enemy}！", 
+                "⚠️ {name} 被 {enemy} 襲擊了！"
+            ],
             FLEE: ["🏃 {name} 驚慌失措地逃跑了！", "{name} 覺得保命要緊，轉身就跑。"],
             PANIC: ["😱 {name} 精神崩潰了！", "{name} 在恐懼中顫抖...", "{name} 開始胡言亂語。"],
             DEATH: ["💀 {name} 回歸了星辰...", "{name} 倒下了，部落失去了一位成員。"],
@@ -261,19 +269,23 @@
         const createSprites = () => {
             const cache = {};
             const createCanvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return { c, ctx: c.getContext('2d') }; };
+
             const { c: grassC, ctx: grassCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
             grassCtx.fillStyle = PALETTE.GRASS_BG; grassCtx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
             grassCtx.fillStyle = PALETTE.GRASS_L; for(let i=0; i<30; i++) grassCtx.fillRect(rand(0,31), rand(0,31), 1, 1);
             grassCtx.fillStyle = PALETTE.GRASS_D; for(let i=0; i<20; i++) grassCtx.fillRect(rand(0,31), rand(0,31), 1, 1);
             cache.grass = grassC;
+
             const { c: dirtC, ctx: dirtCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
             dirtCtx.fillStyle = PALETTE.DIRT; dirtCtx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
             dirtCtx.fillStyle = PALETTE.WOOD_D; for(let i=0; i<40; i++) dirtCtx.fillRect(rand(0,31), rand(0,31), 1, 1);
             cache.dirt = dirtC;
+
             const { c: sandC, ctx: sandCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
             sandCtx.fillStyle = PALETTE.SAND; sandCtx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
             sandCtx.fillStyle = '#d4b483'; for(let i=0; i<30; i++) sandCtx.fillRect(rand(0,31), rand(0,31), 1, 1);
             cache.sand = sandC;
+
             const { c: mtC, ctx: mtCtx } = createCanvas(TILE_SIZE, TILE_SIZE);
             mtCtx.fillStyle = PALETTE.MOUNTAIN_BG; mtCtx.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
             mtCtx.fillStyle = PALETTE.MOUNTAIN_FG; for(let i=0; i<25; i++) { let rx = rand(0,30); let ry = rand(0,30); mtCtx.fillRect(rx, ry, 2, 2); }
@@ -284,6 +296,7 @@
                 renderMatrix(ctx, mat, colors, ox, oy);
                 cache[name] = c;
             };
+
             makeSprite('tree_oak', SPRITE_MATRICES.TREE_OAK, {'L': PALETTE.LEAF_D, 'W': PALETTE.WOOD_D}, 1, 2, 6, 10);
             makeSprite('tree_pine', SPRITE_MATRICES.TREE_PINE, {'L': PALETTE.LEAF_PINE, 'W': PALETTE.WOOD_D}, 1, 2, 6, 8);
             makeSprite('bush', SPRITE_MATRICES.BUSH, {'L': PALETTE.LEAF_L}, 1, 1, 4, 16);
@@ -297,10 +310,10 @@
             makeSprite('bear', SPRITE_MATRICES.BEAR, {'B': PALETTE.FUR_BEAR}, 1.5, 1.5, 4, 10);
             makeSprite('deer', SPRITE_MATRICES.DEER, {'B': PALETTE.FUR_DEER}, 1, 1.5, 4, 10);
             makeSprite('dinosaur', SPRITE_MATRICES.DINOSAUR, {'G': PALETTE.DINO_GREEN, 'Y': PALETTE.DINO_EYE}, 2, 2, 16, 16); 
-            makeSprite('fox', SPRITE_MATRICES.FOX, {'O': PALETTE.FUR_FOX}, 1, 1, 4, 12);
-            makeSprite('boar', SPRITE_MATRICES.BOAR, {'D': PALETTE.SKIN_PIG}, 1, 1, 4, 12);
-            makeSprite('sheep', SPRITE_MATRICES.SHEEP, {'W': PALETTE.FUR_SHEEP}, 1, 1, 4, 12);
-            makeSprite('cow', SPRITE_MATRICES.COW, {'W': PALETTE.WHITE, 'B': PALETTE.OUTLINE}, 1, 1, 4, 12);
+            makeSprite('fox', SPRITE_MATRICES.FOX, {'O': PALETTE.FUR_FOX}, 1, 1, 4, 12); // New
+            makeSprite('boar', SPRITE_MATRICES.BOAR, {'D': PALETTE.SKIN_PIG}, 1, 1, 4, 12); // New
+            makeSprite('sheep', SPRITE_MATRICES.SHEEP, {'W': PALETTE.FUR_SHEEP}, 1, 1, 4, 12); // New
+            makeSprite('cow', SPRITE_MATRICES.COW, {'W': PALETTE.WHITE, 'B': PALETTE.OUTLINE}, 1, 1, 4, 12); // New
             makeSprite('wheat_1', SPRITE_MATRICES.WHEAT_GROW, { '1': PALETTE.WHEAT_1 }, 1, 1, 8, 16);
             makeSprite('wheat_2', SPRITE_MATRICES.WHEAT_READY, { '3': PALETTE.WHEAT_3 }, 1, 1, 8, 16);
             makeSprite('skull', SPRITE_MATRICES.SKULL, { 'W': PALETTE.BONE_WHITE, 'B': PALETTE.OUTLINE }, 1, 1, 8, 10);
@@ -312,6 +325,7 @@
             makeSprite('tower', SPRITE_MATRICES.TOWER, { 'W': PALETTE.WOOD_L }, 1, 1, 8, 8);
             makeSprite('wall', SPRITE_MATRICES.WALL, { 'W': PALETTE.WOOD_D }, 1, 1, 0, 8);
             makeSprite('arrow', SPRITE_MATRICES.ARROW, { 'W': PALETTE.TOOL_SPEAR, 'F': PALETTE.RED }, 1, 1, 8, 8);
+
             return cache;
         };
 
@@ -319,7 +333,6 @@
             const newMap = [];
             const centerX = MAP_WIDTH / 2;
             const centerY = MAP_HEIGHT / 2;
-            // 優化：將隨機偏移移出迴圈，產生更連貫的地形區塊
             const noiseOffsetX = Math.random() * 1000;
             const noiseOffsetY = Math.random() * 1000;
 
@@ -329,6 +342,7 @@
                     const n = noise(x + noiseOffsetX, y + noiseOffsetY);
                     let type = 'GRASS';
                     let decoration = null;
+                    
                     if (n > 0.8) type = 'WATER';
                     else if (n > 0.6) type = 'SAND'; 
                     else if (n < -0.6) type = 'MOUNTAIN_GROUND';
@@ -340,27 +354,26 @@
                         if (dist < 1.5) decoration = 'BASE';
                         else {
                             const r = Math.random();
-                            // 修改：大幅增加基地周圍的灌木叢，確保前期生存
                             if (r < 0.10) decoration = 'TREE_OAK';
-                            else if (r < 0.40) decoration = 'BERRY_BUSH'; // 30% 機率生成漿果叢
-                            else if (r < 0.55) decoration = 'BUSH';       // 15% 機率生成普通灌木
+                            else if (r < 0.40) decoration = 'BERRY_BUSH'; 
+                            else if (r < 0.55) decoration = 'BUSH';       
                             else if (r < 0.60) decoration = 'ROCK';
                             else if (r < 0.65) decoration = 'FLOWER';
                         }
                     } else {
                         if (type === 'FOREST') {
                             const r = Math.random();
-                            if (r > 0.6) decoration = 'TREE_OAK';
-                            else if (r > 0.35) decoration = 'TREE_PINE';
-                            else if (r > 0.20) decoration = 'BERRY_BUSH'; // 森林中也增加灌木
+                            if (r > 0.5) decoration = 'TREE_OAK';
+                            else if (r > 0.25) decoration = 'TREE_PINE';
+                            else if (r > 0.15) decoration = 'BERRY_BUSH'; 
                             else if (r < 0.05) decoration = 'MUSHROOM';
                         } else if (type === 'GRASS') {
                             const rnd = Math.random();
                             if (rnd < 0.05) decoration = 'ROCK';
-                            else if (rnd < 0.15) decoration = 'TREE_OAK'; 
-                            else if (rnd < 0.25) decoration = 'BERRY_BUSH'; // 平原增加漿果
-                            else if (rnd < 0.35) decoration = 'BUSH';       // 平原增加灌木
-                            else if (rnd < 0.40) decoration = 'FLOWER';
+                            else if (rnd < 0.12) decoration = 'TREE_OAK'; 
+                            else if (rnd < 0.18) decoration = 'BERRY_BUSH'; 
+                            else if (rnd < 0.25) decoration = 'BUSH';
+                            else if (rnd < 0.30) decoration = 'FLOWER';
                         } else if (type === 'MOUNTAIN_GROUND') {
                             const r = Math.random();
                             if (r < 0.15) decoration = 'ROCK';
@@ -378,7 +391,12 @@
 
         const generateSim = (id, x, y, gen = 1, age = 18) => {
             const z = ZODIACS[Math.floor(Math.random() * ZODIACS.length)];
-            const traits = { bravery: Math.random(), diligence: Math.random(), social: Math.random(), madness: Math.random() * 0.2 };
+            const traits = {
+                bravery: Math.random(),   
+                diligence: Math.random(), 
+                social: Math.random(),    
+                madness: Math.random() * 0.2 
+            };
             return {
                 id: id || `sim_${Date.now()}_${Math.random()}`, ...z,
                 x: x || MAP_WIDTH/2 + rand(-1,1), y: y || MAP_HEIGHT/2 + rand(-1,1) + 2,
@@ -389,22 +407,36 @@
                 tools: { axe: false, pick: false, spear: false, bow: false },
                 thought: '這個世界好大...', 
                 animFrame: rand(0,10), dir: 1, hidden: false, sick: false,
-                buffTimer: 0, mateCooldown: 0, lastThoughtTime: 0, stateLock: 0 
+                buffTimer: 0, mateCooldown: 0,
+                lastThoughtTime: 0,
+                stateLock: 0 
             };
         };
 
         const generateCreaturesData = () => {
             const initCreatures = [];
-            for(let i=0; i<15; i++) {
+            const types = Object.keys(CREATURE_STATS);
+            
+            for(let i=0; i<15; i++) { // Increased count for diversity
                 const r = Math.random();
                 let type = 'RABBIT';
-                if (r > 0.98) type = 'DINOSAUR'; else if (r > 0.95) type = 'BEAR'; else if (r > 0.90) type = 'WOLF';
-                else if (r > 0.85) type = 'BOAR'; else if (r > 0.80) type = 'FOX'; else if (r > 0.65) type = 'DEER';
-                else if (r > 0.50) type = 'COW'; else if (r > 0.35) type = 'SHEEP'; else type = 'RABBIT';
+                
+                // Weighted Random Spawn
+                if (r > 0.98) type = 'DINOSAUR';
+                else if (r > 0.95) type = 'BEAR';
+                else if (r > 0.90) type = 'WOLF';
+                else if (r > 0.85) type = 'BOAR';
+                else if (r > 0.80) type = 'FOX';
+                else if (r > 0.65) type = 'DEER';
+                else if (r > 0.50) type = 'COW';
+                else if (r > 0.35) type = 'SHEEP';
+                else type = 'RABBIT';
+                
                 initCreatures.push({
                     id: `c_${Date.now()}_${i}`, type,
                     x: rand(2, MAP_WIDTH-3), y: rand(2, MAP_HEIGHT-3),
-                    hp: CREATURE_STATS[type].hp, targetX: null, targetY: null,
+                    hp: CREATURE_STATS[type].hp,
+                    targetX: null, targetY: null,
                     state: 'WANDER', animFrame: rand(0,10), dir: 1
                 });
             }
@@ -419,7 +451,6 @@
             const [buildings, setBuildings] = useState([]);
             const [projectiles, setProjectiles] = useState([]);
             const [particles, setParticles] = useState([]);
-            // MODIFIED: Start with STONE_TOOLS unlocked (tech: 1 means next tech is index 1)
             const [tribe, setTribe] = useState({ wood: 0, stone: 0, food: 100, tech: 1, unlockedTechs: ['STONE_TOOLS'] });
             const [weather, setWeather] = useState(WEATHER.SUNNY);
             const [time, setTime] = useState(0);
@@ -439,7 +470,10 @@
             const [showApiKeyInput, setShowApiKeyInput] = useState(false);
             const [isSaving, setIsSaving] = useState(false); 
             
+            // AI Logic Refs
             const aiTimerRef = useRef(AI_COOLDOWN_TICKS);
+            
+            // NEW: AI Decision Queue System
             const aiRequestQueue = useRef([]);
             const isAiProcessing = useRef(false);
 
@@ -448,6 +482,10 @@
             const requestRef = useRef();
             const logEndRef = useRef(null);
             const savedGame = useRef(false);
+
+            useEffect(() => {
+                if (isLogOpen) logEndRef.current?.scrollIntoView({ behavior: "smooth" });
+            }, [events, isLogOpen]);
 
             useEffect(() => {
                 const save = localStorage.getItem('TribeSave');
@@ -469,7 +507,6 @@
                     setMap(generateMapData());
                     setSims(Array(12).fill(0).map((_, i) => generateSim(`start_${i}`, null, null, 1, 18)));
                     setCreatures(generateCreaturesData());
-                    // MODIFIED: Add initial event for free tech
                     addEvent('💡 族人天生掌握了 [石器打磨] 的技術。');
                 }
             }, []);
@@ -484,23 +521,36 @@
             }, [tribe, sims, buildings, map, era, day, mana]);
 
             useEffect(() => {
-                if (sims.length > 0 && sims.every(s => s.state === 'DEAD') && !isGameOver) setIsGameOver(true);
+                if (sims.length > 0 && sims.every(s => s.state === 'DEAD') && !isGameOver) {
+                    setIsGameOver(true);
+                }
             }, [sims, isGameOver]);
 
+            // NEW: Awakening Effect
             useEffect(() => {
                 if (userApiKey && userApiKey.length > 5) {
                     addEvent("🧠【神蹟】星辰賦予了族人智慧，他們覺醒了自我意識！");
                     setFlash(2.0); 
                     setSims(prev => prev.map(s => ({
-                        ...s, sanity: 100, mood: 100,
+                        ...s, 
+                        sanity: 100, 
+                        mood: 100,
                         thought: "思緒...變得清晰了...",
                         lastThoughtTime: Date.now() 
                     })));
                 }
             }, [userApiKey]);
 
-            const addEvent = (text) => setEvents(prev => [...prev, { id: Date.now() + Math.random(), text }]);
-            const startNextEra = () => { localStorage.removeItem('TribeSave'); window.location.reload(); };
+            const addEvent = (text) => {
+                setEvents(prev => [...prev, { id: Date.now() + Math.random(), text }]);
+            };
+
+            const startNextEra = () => {
+                localStorage.removeItem('TribeSave');
+                window.location.reload();
+            };
+
+            // Helper to check tech
             const hasTech = (techId) => tribe.unlockedTechs.includes(techId);
 
             const handleBuild = (type) => {
@@ -524,6 +574,7 @@
                     if (selectedDisaster.id === 'BEASTS') setCreatures(prev => [...prev, ...generateCreaturesData().slice(0,5)]);
                     return;
                 }
+                
                 if (type === 'TECH') {
                     if (tribe.tech >= TECH_TREE.length) { addEvent("文明已達巔峰"); return; }
                     if (mana < 50) { addEvent("神力不足 (需要 50)"); return; }
@@ -531,16 +582,26 @@
                     const newTech = TECH_TREE[tribe.tech];
                     setTribe(t => ({...t, tech: t.tech + 1, unlockedTechs: [...t.unlockedTechs, newTech.id]}));
                     addEvent(`💡 發明了 [${newTech.name}] - ${newTech.desc}`);
-                    setFlash(1); 
-                    setSims(prev => prev.map(s => ({ ...s, sanity: 100, mood: Math.min(100, s.mood + 30), thought: `💡 原來如此... [${newTech.name}]！`, lastThoughtTime: Date.now() })));
-                    sims.forEach(s => { if(s.state !== 'DEAD') setParticles(p => [...p, { x: s.x*TILE_SIZE, y: s.y*TILE_SIZE - 30, life: 100, color: '#ffff00', text: '💡', isThought: true }]); });
+                    setFlash(1); // Visual Flash
                     return;
                 }
+                
+                // Unit Spells (FOOD, HEAL, BUFF)
                 if (['FOOD', 'HEAL', 'BUFF'].includes(type)) {
-                    if (!selectedId || selectedId === 'BASE_CENTER') { addEvent("❌ 請先點擊選擇一個族人"); return; }
+                    if (!selectedId || selectedId === 'BASE_CENTER') {
+                        addEvent("❌ 請先點擊選擇一個族人");
+                        return;
+                    }
+                    
+                    // Check Mana Cost (30 for unit spells)
                     if (mana < 30) { addEvent("神力不足 (需要 30)"); return; }
+
                     const targetSim = sims.find(s => s.id === selectedId);
-                    if (!targetSim) { addEvent("❌ 目標無效"); return; }
+                    if (!targetSim) {
+                        addEvent("❌ 目標無效");
+                        return;
+                    }
+
                     setMana(m => m - 30);
                     setSims(prev => prev.map(s => {
                         if (s.id !== selectedId) return s;
@@ -549,32 +610,42 @@
                         if (type === 'BUFF') return { ...s, energy: 100, mood: 100, buffTimer: 500 };
                         return s;
                     }));
+
+                    // Visual Feedback
                     const emojis = { FOOD: '🍖', HEAL: '💚', BUFF: '✨' };
                     const names = { FOOD: '賜食', HEAL: '治癒', BUFF: '賜福' };
                     setParticles(p => [...p, { x: targetSim.x*TILE_SIZE, y: targetSim.y*TILE_SIZE - 20, life: 60, color: '#fff', text: emojis[type], isThought: true }]);
                     addEvent(`對 ${targetSim.sign} 施展了 ${names[type]}`);
                     return;
                 }
+
+                // Global Weather Spells
                 if (mana < 20) { addEvent("神力不足 (需要 20)"); return; }
+                
                 setMana(m => m - 20);
                 if (type === 'SUN') { setWeather(WEATHER.SUNNY); setDisaster(DISASTERS.NONE); addEvent('神蹟：祈晴'); setFlash(0.5); }
                 else if (type === 'RAIN') { setWeather(WEATHER.RAIN); setDisaster(DISASTERS.NONE); addEvent('神蹟：祈雨'); setFlash(0.5); }
             };
 
             const findNearestResource = (sim, types) => {
-                let nearest = null; let minDist = 999;
+                let nearest = null;
+                let minDist = 999;
                 for(let y=2; y<MAP_HEIGHT-2; y++) {
                     for(let x=2; x<MAP_WIDTH-2; x++) {
                         const tile = map[y][x];
                         if (types.includes(tile.decoration)) {
                             const d = Math.sqrt((x-sim.x)**2 + (y-sim.y)**2);
-                            if (d < minDist) { minDist = d; nearest = {x, y}; }
+                            if (d < minDist) {
+                                minDist = d;
+                                nearest = {x, y};
+                            }
                         }
                     }
                 }
                 return nearest;
             };
 
+            // --- AI Decision Logic ---
             const processAiQueue = async () => {
                 if (isAiProcessing.current || aiRequestQueue.current.length === 0 || !userApiKey) return;
                 isAiProcessing.current = true;
@@ -616,7 +687,7 @@
                         const act = decision.action;
                         if (act === 'SLEEP') { nextS.state = 'SLEEP'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 200; }
                         else if (act === 'EAT') { nextS.state = 'EAT'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 100; }
-                        else if (act === 'GATHER') { const target = findNearestResource(nextS, ['BERRY_BUSH']); if(target) { nextS.state = 'GATHER'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; } }
+                        else if (act === 'GATHER') { const target = findNearestResource(nextS, ['BERRY_BUSH', 'BUSH']); if(target) { nextS.state = 'GATHER'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; } }
                         else if (act === 'CHOP') { const target = findNearestResource(nextS, ['TREE_OAK', 'TREE_PINE']); if(target) { nextS.state = 'CHOP'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; } }
                         else if (act === 'MINE') { const target = findNearestResource(nextS, ['ROCK', 'GOLD_ROCK']); if(target) { nextS.state = 'MINE'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; } }
                         else if (act === 'CRAFT_AXE') { nextS.state = 'CRAFT'; nextS.craftType = 'AXE'; nextS.targetX = MAP_WIDTH/2; nextS.targetY = MAP_HEIGHT/2; nextS.stateLock = 100; }
@@ -725,6 +796,7 @@
                 
                 setSims(prev => {
                     let newBabies = [];
+                    let resourceUpdates = { wood: 0, food: 0, stone: 0 };
                     const updatedSims = prev.map(s => {
                         if (s.state === 'DEAD') return s;
                         if (s.state === 'AI_THINKING') {
@@ -793,13 +865,17 @@
                                 else if (scores.WORK > 20) {
                                     const hasAxe = nextS.tools.axe; const hasPick = nextS.tools.pick; const hasSpear = nextS.tools.spear;
                                     const canCraftTools = hasTech('STONE_TOOLS'); const canCraftSpear = hasTech('HUNTING');
-                                    if (tribe.food < 200 || (!hasAxe && tribe.wood < 20)) { const bush = findNearestResource(nextS, ['BERRY_BUSH']); if (bush) { nextS.state = 'GATHER'; nextS.targetX = bush.x; nextS.targetY = bush.y; nextS.stateLock = 150; nextS.hidden = false; } else { nextS.state = 'IDLE'; nextS.hidden = false; } }
-                                    else if (!hasAxe && tribe.wood >= TOOL_COSTS.AXE && canCraftTools) { nextS.state = 'CRAFT'; nextS.craftType = 'AXE'; nextS.targetX = MAP_WIDTH/2 + rand(-1,1); nextS.targetY = MAP_HEIGHT/2 + rand(-1,1); nextS.stateLock = 100; nextS.thought = "製作斧頭..."; nextS.hidden = false; }
+                                    if (tribe.food < 200 || (!hasAxe && tribe.wood < 10)) { 
+                                        const bush = findNearestResource(nextS, ['BERRY_BUSH', 'BUSH']); 
+                                        if (bush) { nextS.state = 'GATHER'; nextS.targetX = bush.x; nextS.targetY = bush.y; nextS.stateLock = 150; nextS.thought = "採集樹枝..."; nextS.hidden = false; } 
+                                        else { nextS.state = 'IDLE'; nextS.hidden = false; } 
+                                    }
+                                    else if (!hasAxe && tribe.wood >= 10 && canCraftTools) { nextS.state = 'CRAFT'; nextS.craftType = 'AXE'; nextS.targetX = MAP_WIDTH/2 + rand(-1,1); nextS.targetY = MAP_HEIGHT/2 + rand(-1,1); nextS.stateLock = 100; nextS.thought = "製作斧頭..."; nextS.hidden = false; }
                                     else if (!hasPick && tribe.wood >= TOOL_COSTS.PICK && canCraftTools && tribe.stone < 500) { nextS.state = 'CRAFT'; nextS.craftType = 'PICK'; nextS.targetX = MAP_WIDTH/2 + rand(-1,1); nextS.targetY = MAP_HEIGHT/2 + rand(-1,1); nextS.stateLock = 100; nextS.thought = "製作鎬子..."; nextS.hidden = false; }
                                     else if (!hasSpear && tribe.wood >= TOOL_COSTS.SPEAR && canCraftSpear && Math.random() < 0.3) { nextS.state = 'CRAFT'; nextS.craftType = 'SPEAR'; nextS.targetX = MAP_WIDTH/2 + rand(-1,1); nextS.targetY = MAP_HEIGHT/2 + rand(-1,1); nextS.stateLock = 100; nextS.thought = "製作長矛..."; nextS.hidden = false; }
                                     else if (tribe.stone < 1000 && hasPick) { let target = null; if (workingFriend && workingFriend.state === 'MINE') { const nearbyRock = findNearestResource(workingFriend, ['ROCK', 'GOLD_ROCK']); if(nearbyRock) target = nearbyRock; } if (!target) target = findNearestResource(nextS, ['ROCK', 'GOLD_ROCK']); if (target) { nextS.state = 'MINE'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; nextS.hidden = false; } else { nextS.state = 'IDLE'; } }
                                     else if (tribe.wood < 2000 && hasAxe) { let target = null; if (workingFriend && workingFriend.state === 'CHOP') { const nearbyTree = findNearestResource(workingFriend, ['TREE_OAK', 'TREE_PINE']); if(nearbyTree) target = nearbyTree; } if (!target) target = findNearestResource(nextS, ['TREE_OAK', 'TREE_PINE']); if (target) { nextS.state = 'CHOP'; nextS.targetX = target.x; nextS.targetY = target.y; nextS.stateLock = 150; nextS.hidden = false; } else { nextS.state = 'IDLE'; } }
-                                    else { const bush = findNearestResource(nextS, ['BERRY_BUSH']); if (bush && tribe.food < 1000) { nextS.state = 'GATHER'; nextS.targetX = bush.x; nextS.targetY = bush.y; nextS.stateLock = 150; nextS.hidden = false; } else { nextS.state = 'IDLE'; nextS.targetX = nextS.x + rand(-3, 3); nextS.targetY = nextS.y + rand(-3, 3); nextS.hidden = false; } }
+                                    else { const bush = findNearestResource(nextS, ['BERRY_BUSH', 'BUSH']); if (bush && tribe.food < 1000) { nextS.state = 'GATHER'; nextS.targetX = bush.x; nextS.targetY = bush.y; nextS.stateLock = 150; nextS.hidden = false; } else { nextS.state = 'IDLE'; nextS.targetX = nextS.x + rand(-3, 3); nextS.targetY = nextS.y + rand(-3, 3); nextS.hidden = false; } }
                                 }
                             }
                         }
@@ -816,7 +892,19 @@
                              if (Math.abs(dx) < 0.2 && Math.abs(dy) < 0.2) { 
                                  if(['CHOP','GATHER','MINE'].includes(nextS.state)) {
                                      const ironBonus = hasTech('IRON') ? 10 : 0; const gatherBonus = hasTech('GATHERING') ? 2 : 0; const farmBonus = hasTech('FARMING') ? 3 : 0;
-                                     setTribe(t => ({ ...t, wood: t.wood + (nextS.state==='CHOP' ? 20 + ironBonus : (nextS.state==='GATHER' ? 3 : 0)), food: t.food + (nextS.state==='GATHER' ? 8 + gatherBonus + farmBonus : 0), stone: t.stone + (nextS.state==='MINE' ? 10 + ironBonus : 0) }));
+                                     
+                                     // Use timeout to break out of reducer for state update
+                                     const woodGain = nextS.state==='CHOP' ? 20 + ironBonus : (nextS.state==='GATHER' ? 3 : 0);
+                                     const foodGain = nextS.state==='GATHER' ? 8 + gatherBonus + farmBonus : 0;
+                                     const stoneGain = nextS.state==='MINE' ? 10 + ironBonus : 0;
+                                     
+                                     resourceUpdates.wood += woodGain;
+                                     resourceUpdates.food += foodGain;
+                                     resourceUpdates.stone += stoneGain;
+                                     
+                                     // Add particle for feedback
+                                     setParticles(p => [...p, { x: nextS.x*TILE_SIZE, y: nextS.y*TILE_SIZE-10, life: 40, color: '#fff', text: `+${woodGain||foodGain||stoneGain}` }]);
+                                     
                                      nextS.energy -= 10; nextS.targetX = null; nextS.state = 'IDLE'; nextS.stateLock = 0; 
                                  } else { nextS.targetX = null; }
                              } else { const speed = (nextS.state === 'DEFEND' || nextS.state === 'SHOOT') ? 0.08 : 0.06; nextS.x += Math.sign(dx) * speed; nextS.y += Math.sign(dy) * speed; }
@@ -828,22 +916,40 @@
                         nextS.x = clamp(nextS.x, 2, MAP_WIDTH-3); nextS.y = clamp(nextS.y, 2, MAP_HEIGHT-3);
                         return nextS;
                     });
+                    
+                    // Apply collected resource updates
+                    if (resourceUpdates.wood > 0 || resourceUpdates.food > 0 || resourceUpdates.stone > 0) {
+                        setTimeout(() => {
+                            setTribe(t => ({
+                                ...t,
+                                wood: t.wood + resourceUpdates.wood,
+                                food: t.food + resourceUpdates.food,
+                                stone: t.stone + resourceUpdates.stone
+                            }));
+                        }, 0);
+                    }
+                    
                     return [...updatedSims, ...newBabies];
                 });
 
                 setCreatures(prev => prev.map(c => {
                     if (c.hp <= 0) return null;
-                    let nextC = { ...c }; const stats = CREATURE_STATS[c.type]; const target = sims.find(s => s.state !== 'DEAD' && !s.hidden && Math.sqrt((s.x-c.x)**2+(s.y-c.y)**2) < 5);
-                    if (target && stats.type === 'HOSTILE') { const dx = target.x - c.x; const dy = target.y - c.y; nextC.x += Math.sign(dx) * 0.04; nextC.y += Math.sign(dy) * 0.04; if (Math.sqrt(dx*dx+dy*dy) < 1 && tickRef.current % 20 === 0) { target.hp -= stats.dmg; target.sanity -= 5; setParticles(p => [...p, { x:target.x*TILE_SIZE, y:target.y*TILE_SIZE, life:10, color:'#f00', text:'💥'}]); } } else if (Math.random() < 0.02) { nextC.x += rand(-1,1); nextC.y += rand(-1,1); }
+                    let nextC = { ...c };
+                    const stats = CREATURE_STATS[c.type];
+                    const target = sims.find(s => s.state !== 'DEAD' && !s.hidden && Math.sqrt((s.x-c.x)**2+(s.y-c.y)**2) < 5);
+                    if (target && stats.type === 'HOSTILE') { const dx = target.x - c.x; const dy = target.y - c.y; nextC.x += Math.sign(dx) * 0.04; nextC.y += Math.sign(dy) * 0.04; if (Math.sqrt(dx*dx+dy*dy) < 1 && tickRef.current % 20 === 0) { target.hp -= stats.dmg; target.sanity -= 5; setParticles(p => [...p, { x:target.x*TILE_SIZE, y:target.y*TILE_SIZE, life:10, color:'#f00', text:'💥'}]); } } 
+                    else if (Math.random() < 0.02) { nextC.x += rand(-1,1); nextC.y += rand(-1,1); }
                     nextC.x = clamp(nextC.x, 2, MAP_WIDTH-3); nextC.y = clamp(nextC.y, 2, MAP_HEIGHT-3);
                     return nextC;
                 }).filter(Boolean));
+
                 setParticles(prev => prev.map(p => ({...p, x: p.x + (p.vx||0), y: p.y + (p.vy||0), life: p.life-1})).filter(p => p.life > 0));
             }, [isGameOver, time, disaster, buildings, projectiles, sims, creatures, tribe, map]); 
 
             const drawSim = (ctx, s) => {
                 if (s.state === 'DEAD') { const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE); ctx.drawImage(sprites.skull, px + 4, py + 10); return; }
-                const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE); const bounce = (s.state !== 'IDLE') ? Math.sin(s.animFrame) * 2 : 0;
+                const px = Math.floor(s.x * TILE_SIZE); const py = Math.floor(s.y * TILE_SIZE);
+                const bounce = (s.state !== 'IDLE') ? Math.sin(s.animFrame) * 2 : 0;
                 const matrix = s.gender === 'M' ? SPRITE_MATRICES.CHAR_M : SPRITE_MATRICES.CHAR_F;
                 ctx.save();
                 if (s.age < 16) { const scale = 0.7; ctx.translate(px + TILE_SIZE/2, py + TILE_SIZE/2); ctx.scale(scale, scale); ctx.translate(-(px + TILE_SIZE/2), -(py + TILE_SIZE/2)); }
@@ -861,9 +967,11 @@
                 let matrix = SPRITE_MATRICES[c.type] || SPRITE_MATRICES.RABBIT;
                 let colors = {'W': PALETTE.FUR_RABBIT, 'G': PALETTE.FUR_WOLF, 'B': PALETTE.FUR_BEAR, 'K': PALETTE.OUTLINE, 'Y': PALETTE.DINO_EYE, 'O': PALETTE.FUR_FOX, 'D': PALETTE.SKIN_PIG};
                 if (c.type === 'DINOSAUR') colors.G = PALETTE.DINO_GREEN; if (c.type === 'SHEEP') colors.W = PALETTE.FUR_SHEEP; if (c.type === 'COW') { colors.W = PALETTE.WHITE; colors.B = PALETTE.OUTLINE; }
-                ctx.save(); if (c.dir < 0) { const width = c.type === 'DINOSAUR' ? TILE_SIZE * 2 : TILE_SIZE; ctx.translate(px + width, 0); ctx.scale(-1, 1); ctx.translate(-px, 0); }
+                ctx.save(); 
+                if (c.dir < 0) { const width = c.type === 'DINOSAUR' ? TILE_SIZE * 2 : TILE_SIZE; ctx.translate(px + width, 0); ctx.scale(-1, 1); ctx.translate(-px, 0); }
                 renderMatrix(ctx, matrix, colors, px, py);
-                const maxHp = CREATURE_STATS[c.type].hp; if (c.hp < maxHp) { const barWidth = c.type === 'DINOSAUR' ? 64 : 32; ctx.fillStyle='red'; ctx.fillRect(px, py-4, barWidth, 3); ctx.fillStyle='#0f0'; ctx.fillRect(px, py-4, barWidth * (c.hp / maxHp), 3); }
+                const maxHp = CREATURE_STATS[c.type].hp;
+                if (c.hp < maxHp) { const barWidth = c.type === 'DINOSAUR' ? 64 : 32; ctx.fillStyle='red'; ctx.fillRect(px, py-4, barWidth, 3); ctx.fillStyle='#0f0'; ctx.fillRect(px, py-4, barWidth * (c.hp / maxHp), 3); }
                 ctx.restore();
             };
 
@@ -874,17 +982,23 @@
                 ctx.save(); ctx.scale(SCALE, SCALE);
                 if (shake > 0) ctx.translate(shake, shake);
 
-                if (map && map.length > 0) {
-                    map.forEach(row => row.forEach(tile => {
-                        const px = tile.x * TILE_SIZE; const py = tile.y * TILE_SIZE;
-                        if (tile.type === 'SAND') ctx.drawImage(sprites.sand, px, py); else if (tile.type === 'MOUNTAIN_GROUND') ctx.drawImage(sprites.mountain, px, py); else if (tile.type === 'WATER') { ctx.fillStyle = PALETTE.WATER; ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE); } else if (tile.type === 'DIRT') ctx.drawImage(sprites.dirt, px, py); else ctx.drawImage(sprites.grass, px, py);
-                    }));
-                }
+                map.forEach(row => row.forEach(tile => {
+                    const px = tile.x * TILE_SIZE; const py = tile.y * TILE_SIZE;
+                    if (tile.type === 'SAND') ctx.drawImage(sprites.sand, px, py);
+                    else if (tile.type === 'MOUNTAIN_GROUND') ctx.drawImage(sprites.mountain, px, py);
+                    else if (tile.type === 'WATER') { ctx.fillStyle = PALETTE.WATER; ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE); }
+                    else if (tile.type === 'DIRT') ctx.drawImage(sprites.dirt, px, py);
+                    else ctx.drawImage(sprites.grass, px, py);
+                }));
 
-                buildings.forEach(b => { const px = b.x * TILE_SIZE; const py = b.y * TILE_SIZE; const sprite = sprites[BUILDINGS[b.type].sprite]; if(sprite) ctx.drawImage(sprite, px, py - 8); });
+                buildings.forEach(b => {
+                    const px = b.x * TILE_SIZE; const py = b.y * TILE_SIZE;
+                    const sprite = sprites[BUILDINGS[b.type].sprite];
+                    if(sprite) ctx.drawImage(sprite, px, py - 8);
+                });
 
                 const objects = [];
-                if(map) map.forEach(row => row.forEach(tile => { if (tile.decoration) objects.push({ y: tile.y, type: 'DECO', subtype: tile.decoration, x: tile.x }); }));
+                map.forEach(row => row.forEach(tile => { if (tile.decoration) objects.push({ y: tile.y, type: 'DECO', subtype: tile.decoration, x: tile.x }); }));
                 sims.forEach(sim => { if(!sim.hidden) objects.push({ y: sim.y, type: 'SIM', data: sim }) });
                 creatures.forEach(c => objects.push({ y: c.y, type: 'CREATURE', data: c }));
                 objects.sort((a, b) => a.y - b.y);
@@ -892,69 +1006,116 @@
                 objects.forEach(obj => {
                     const px = obj.x * TILE_SIZE; const py = obj.y * TILE_SIZE;
                     if (obj.type === 'DECO') {
-                        if (obj.subtype === 'BASE') ctx.drawImage(sprites[currentStage.sprite], px - 16, py - 24); else if (obj.subtype === 'TREE_OAK') ctx.drawImage(sprites.tree_oak, px, py - TILE_SIZE); else if (obj.subtype === 'TREE_PINE') ctx.drawImage(sprites.tree_pine, px, py - TILE_SIZE); else if (obj.subtype === 'ROCK') ctx.drawImage(sprites.rock, px, py); else if (obj.subtype === 'GOLD_ROCK') ctx.drawImage(sprites.gold_rock, px, py); else if (obj.subtype === 'BUSH') ctx.drawImage(sprites.bush, px, py); else if (obj.subtype === 'BERRY_BUSH') ctx.drawImage(sprites.berry_bush, px, py); else if (obj.subtype === 'FLOWER') ctx.drawImage(sprites.flower, px, py); else if (obj.subtype === 'MUSHROOM') ctx.drawImage(sprites.mushroom, px, py);
-                    } else if (obj.type === 'SIM') drawSim(ctx, obj.data); else if (obj.type === 'CREATURE') drawCreature(ctx, obj.data);
+                        if (obj.subtype === 'BASE') ctx.drawImage(sprites[currentStage.sprite], px - 16, py - 24);
+                        else if (obj.subtype === 'TREE_OAK') ctx.drawImage(sprites.tree_oak, px, py - TILE_SIZE);
+                        else if (obj.subtype === 'TREE_PINE') ctx.drawImage(sprites.tree_pine, px, py - TILE_SIZE);
+                        else if (obj.subtype === 'ROCK') ctx.drawImage(sprites.rock, px, py);
+                        else if (obj.subtype === 'GOLD_ROCK') ctx.drawImage(sprites.gold_rock, px, py);
+                        else if (obj.subtype === 'BUSH') ctx.drawImage(sprites.bush, px, py);
+                        else if (obj.subtype === 'BERRY_BUSH') ctx.drawImage(sprites.berry_bush, px, py);
+                        else if (obj.subtype === 'FLOWER') ctx.drawImage(sprites.flower, px, py);
+                        else if (obj.subtype === 'MUSHROOM') ctx.drawImage(sprites.mushroom, px, py);
+                    } else if (obj.type === 'SIM') drawSim(ctx, obj.data);
+                    else if (obj.type === 'CREATURE') drawCreature(ctx, obj.data);
                 });
 
-                projectiles.forEach(p => { ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x * TILE_SIZE, p.y * TILE_SIZE, 3, 0, Math.PI*2); ctx.fill(); });
+                projectiles.forEach(p => {
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath(); ctx.arc(p.x * TILE_SIZE, p.y * TILE_SIZE, 3, 0, Math.PI*2); ctx.fill();
+                });
 
-                if (selectedId && selectedId !== 'BASE_CENTER') { const target = [...sims, ...creatures, ...buildings].find(i => i.id === selectedId); if (target && !target.hidden) { const px = target.x * TILE_SIZE; const py = target.y * TILE_SIZE; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 2]); ctx.strokeRect(px, py, TILE_SIZE, TILE_SIZE); ctx.setLineDash([]); } }
+                if (selectedId && selectedId !== 'BASE_CENTER') {
+                    const target = [...sims, ...creatures, ...buildings].find(i => i.id === selectedId);
+                    if (target && !target.hidden) {
+                        const px = target.x * TILE_SIZE; const py = target.y * TILE_SIZE;
+                        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 2]);
+                        ctx.strokeRect(px, py, TILE_SIZE, TILE_SIZE); 
+                        ctx.setLineDash([]);
+                    }
+                }
 
                 particles.forEach(p => {
                     if (p.isThought) {
-                         ctx.save(); ctx.font = '10px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                         const textMetrics = ctx.measureText(p.text); const w = textMetrics.width; const h = 14; const padding = 6;
-                         const bx = p.x - w/2 - padding; const by = p.y - 20; 
-                         ctx.beginPath(); if (ctx.roundRect) { ctx.roundRect(bx, by, w + padding*2, h, 4); } else { ctx.rect(bx, by, w + padding*2, h); }
-                         ctx.fillStyle = 'rgba(0,0,0,0.75)'; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1; ctx.stroke();
-                         ctx.fillStyle = 'white'; ctx.fillText(p.text, p.x, by + h/2); ctx.restore(); 
-                    } else if (p.text) { ctx.save(); ctx.font = '12px serif'; ctx.textAlign = 'center'; ctx.fillStyle = p.color; ctx.fillText(p.text, p.x, p.y); ctx.restore();
-                    } else { ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, 2, 2); }
+                         ctx.save(); 
+                         ctx.font = '10px sans-serif';
+                         ctx.textAlign = 'center';
+                         ctx.textBaseline = 'middle';
+                         const textMetrics = ctx.measureText(p.text);
+                         const w = textMetrics.width;
+                         const h = 14;
+                         const padding = 6;
+                         const bx = p.x - w/2 - padding;
+                         const by = p.y - 20; 
+                         ctx.beginPath();
+                         if (ctx.roundRect) ctx.roundRect(bx, by, w + padding*2, h, 4); else ctx.rect(bx, by, w + padding*2, h);
+                         ctx.fillStyle = 'rgba(0,0,0,0.75)';
+                         ctx.fill();
+                         ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                         ctx.lineWidth = 1;
+                         ctx.stroke();
+                         ctx.fillStyle = 'white';
+                         ctx.fillText(p.text, p.x, by + h/2);
+                         ctx.restore(); 
+                    } else if (p.text) { 
+                        ctx.save();
+                        ctx.font = '12px serif'; 
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = p.color; 
+                        ctx.fillText(p.text, p.x, p.y); 
+                        ctx.restore();
+                    } else { 
+                        ctx.fillStyle = p.color; 
+                        ctx.fillRect(p.x, p.y, 2, 2); 
+                    }
                 });
 
                 if (disaster.color) { ctx.fillStyle = disaster.color; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
                 if (weather.color) { ctx.fillStyle = weather.color; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
+
                 if (weather.id === 'RAIN' || weather.id === 'SNOW') {
-                    ctx.save(); ctx.strokeStyle = weather.id === 'RAIN' ? 'rgba(150,150,255,0.4)' : 'rgba(255,255,255,0.6)'; ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1; const timeOffset = Date.now() / 10;
-                    for(let i=0; i<100; i++) { const rx = ((i * 135724 + timeOffset * 2) % (MAP_WIDTH * TILE_SIZE)); const ry = ((i * 9283 + timeOffset * (weather.id==='RAIN'?5:2)) % (MAP_HEIGHT * TILE_SIZE)); ctx.beginPath(); if (weather.id === 'RAIN') { ctx.moveTo(rx, ry); ctx.lineTo(rx - 2, ry + 10); ctx.stroke(); } else { ctx.fillRect(rx, ry, 2, 2); } }
+                    ctx.save();
+                    ctx.strokeStyle = weather.id === 'RAIN' ? 'rgba(150,150,255,0.4)' : 'rgba(255,255,255,0.6)';
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                    ctx.lineWidth = 1;
+                    const timeOffset = Date.now() / 10;
+                    for(let i=0; i<100; i++) {
+                        const rx = ((i * 135724 + timeOffset * 2) % (MAP_WIDTH * TILE_SIZE));
+                        const ry = ((i * 9283 + timeOffset * (weather.id==='RAIN'?5:2)) % (MAP_HEIGHT * TILE_SIZE));
+                        ctx.beginPath();
+                        if (weather.id === 'RAIN') { ctx.moveTo(rx, ry); ctx.lineTo(rx - 2, ry + 10); ctx.stroke(); } 
+                        else { ctx.fillRect(rx, ry, 2, 2); }
+                    }
                     ctx.restore();
                 }
-                if (time > DAY_TICKS * 0.6 || disaster.id === 'DARKNESS') { const alpha = disaster.id === 'DARKNESS' ? 0.9 : 0.5; ctx.fillStyle = `rgba(10, 10, 30, ${alpha})`; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
-                if (flash > 0) { ctx.fillStyle = `rgba(255, 255, 200, ${flash * 0.3})`; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
 
+                if (time > DAY_TICKS * 0.6 || disaster.id === 'DARKNESS') { 
+                    const alpha = disaster.id === 'DARKNESS' ? 0.9 : 0.5;
+                    ctx.fillStyle = `rgba(10, 10, 30, ${alpha})`; 
+                    ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); 
+                }
+
+                if (flash > 0) { ctx.fillStyle = `rgba(255, 255, 200, ${flash * 0.3})`; ctx.fillRect(0, 0, MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE); }
                 ctx.restore();
             }, [map, sprites, sims, creatures, buildings, projectiles, particles, time, selectedId, tribe, disaster, shake, currentStage, buildMode, flash, weather]);
-
-            // --- Ref-based Game Loop for Stability ---
-            const drawRef = useRef(draw);
-            const updateRef = useRef(update);
-
-            useLayoutEffect(() => {
-                drawRef.current = draw;
-                updateRef.current = update;
-            });
 
             useEffect(() => {
                 const loop = () => {
                     tickRef.current++;
-                    if (tickRef.current % 5 === 0) { 
-                        setTime(t => (t + 1) % DAY_TICKS); 
-                        if (tickRef.current % (DAY_TICKS * 5) === 0) setDay(d => d+1); 
-                        updateRef.current(); 
-                    }
-                    drawRef.current(); 
-                    requestRef.current = requestAnimationFrame(loop);
+                    if (tickRef.current % 5 === 0) { setTime(t => (t + 1) % DAY_TICKS); if (time === 0) setDay(d => d+1); update(); }
+                    draw(); requestRef.current = requestAnimationFrame(loop);
                 };
                 requestRef.current = requestAnimationFrame(loop);
                 return () => cancelAnimationFrame(requestRef.current);
-            }, []);
+            }, [draw, update]);
 
             const handleSimClick = (simId) => {
                 setSelectedId(simId);
                 if (simId === 'BASE_CENTER') return;
                 const sim = sims.find(s => s.id === simId);
                 const cooldown = userApiKey ? 10000 : 1000;
-                if (sim && Date.now() - (sim.lastThoughtTime || 0) > cooldown) { triggerAiThought(sim); }
+                if (sim && Date.now() - (sim.lastThoughtTime || 0) > cooldown) {
+                    triggerAiThought(sim);
+                }
             };
 
             const handleCanvasClick = useCallback((e) => {
@@ -979,29 +1140,50 @@
                 const clickX = (e.clientX - rect.left) / SCALE / TILE_SIZE;
                 const clickY = (e.clientY - rect.top) / SCALE / TILE_SIZE;
                 let closest = null; let minDist = 2.5;
-                const targets = [...sims.filter(s => !s.hidden).map(s => ({...s, type: 'SIM'})), ...creatures.map(c => ({...c, type: 'CREATURE'})), ...buildings.map(b => ({...b, type: 'BUILDING'}))];
-                targets.forEach(obj => { const d = Math.sqrt((obj.x+0.5-clickX)**2 + (obj.y+0.5-clickY)**2); if(d<minDist){ closest=obj; minDist=d; } });
+                
+                const targets = [
+                    ...sims.filter(s => !s.hidden).map(s => ({...s, type: 'SIM'})), 
+                    ...creatures.map(c => ({...c, type: 'CREATURE'})),
+                    ...buildings.map(b => ({...b, type: 'BUILDING'}))
+                ];
+
+                targets.forEach(obj => { 
+                    const d = Math.sqrt((obj.x+0.5-clickX)**2 + (obj.y+0.5-clickY)**2); 
+                    if(d<minDist){ closest=obj; minDist=d; } 
+                });
                 
                 if (closest) {
-                    if (closest.type === 'BUILDING') { setSelectedId(closest.id); } 
-                    else { handleSimClick(closest.id); }
-                } else if (Math.sqrt((clickX-MAP_WIDTH/2)**2+(clickY-MAP_HEIGHT/2)**2) < 2.5) { setSelectedId('BASE_CENTER'); } 
-                else { setSelectedId(null); }
+                    if (closest.type === 'BUILDING') {
+                         setSelectedId(closest.id);
+                    } else {
+                         handleSimClick(closest.id);
+                    }
+                } else if (Math.sqrt((clickX-MAP_WIDTH/2)**2+(clickY-MAP_HEIGHT/2)**2) < 2.5) {
+                    setSelectedId('BASE_CENTER');
+                } else {
+                    setSelectedId(null);
+                }
             }, [sims, creatures, buildMode, tribe, userApiKey, buildings]);
 
             const selectedObj = [...sims, ...creatures, ...buildings].find(s => s.id === selectedId);
+            const isBuilding = selectedObj && selectedObj.type && BUILDINGS[selectedObj.type];
+            const isCreature = selectedObj && selectedObj.type && CREATURE_STATS[selectedObj.type];
+            const isSim = selectedObj && selectedObj.sign;
 
             return (
-                <div className={`flex flex-col h-[100dvh] bg-[#1a1c2c] text-[#c2c3c7] ${buildMode ? 'build-cursor' : ''}`} style={{ fontFamily: PIXEL_FONT }}>
+                <div className={`flex flex-col h-[100dvh] bg-[#1a1c2c] text-[#c2c3c7] relative ${buildMode ? 'build-cursor' : ''}`} style={{ fontFamily: PIXEL_FONT }}>
                     {/* Top Bar */}
                     <div className="bg-[#292b3c] p-2 border-b-4 border-[#121215] flex justify-between items-center shadow-lg shrink-0 z-20">
                         <div className="flex gap-4 items-center">
                             <div className="text-[#ffcd75] font-bold flex items-center gap-2" title="神力 (Mana)"><Icons.Sparkles size={16}/> {Math.floor(mana)}</div>
+                            
+                            {/* Resources Panel (New) */}
                             <div className="flex gap-3 text-xs font-mono bg-black/30 px-3 py-1 rounded border border-gray-700">
                                 <div className="text-[#8d6e63] flex items-center gap-1" title="木材">🪵 {Math.floor(tribe.wood)}</div>
                                 <div className="text-gray-400 flex items-center gap-1" title="石材">🪨 {Math.floor(tribe.stone)}</div>
                                 <div className="text-orange-400 flex items-center gap-1" title="食物">🍖 {Math.floor(tribe.food)}</div>
                             </div>
+
                             <div className="bg-black/40 px-3 py-1 rounded text-sm flex items-center gap-2 hidden md:flex">
                                 <span className="text-2xl">{currentStage.icon}</span>
                                 <div><div className="text-[10px] text-gray-400">Day {day}</div><div className="text-white font-bold">{currentStage.name}</div></div>
@@ -1015,11 +1197,12 @@
                         </div>
                     </div>
                     
-                    {/* Save Effect */}
+                    {/* NEW: Save Effect Overlay */}
                     {isSaving && (
                         <div className="absolute top-14 right-4 z-40 pointer-events-none flex items-center justify-end animate-bounce transition-opacity duration-500">
                             <div className="bg-green-900/90 text-green-100 border border-green-500 px-3 py-1 rounded-full text-xs flex items-center gap-2 shadow-lg backdrop-blur-sm">
-                                <Icons.Save size={14} className="animate-pulse"/> <span>系統存檔中...</span>
+                                <Icons.Save size={14} className="animate-pulse"/> 
+                                <span>系統存檔中...</span>
                             </div>
                         </div>
                     )}
@@ -1029,7 +1212,13 @@
                         <div className="absolute top-14 right-4 z-50 bg-[#292b3c] p-4 rounded shadow-xl border border-gray-600 w-64">
                             <h3 className="text-white text-sm mb-2 font-bold">連結 Google Gemini AI</h3>
                             <p className="text-[10px] text-gray-400 mb-2">輸入 API Key 以啟用族人獨立思想與 AI 行為決策。</p>
-                            <input type="password" value={userApiKey} onChange={(e) => setUserApiKey(e.target.value)} placeholder="Paste API Key here..." className="w-full bg-black text-white text-xs p-2 rounded border border-gray-700 mb-2" />
+                            <input 
+                                type="password" 
+                                value={userApiKey} 
+                                onChange={(e) => setUserApiKey(e.target.value)} 
+                                placeholder="Paste API Key here..."
+                                className="w-full bg-black text-white text-xs p-2 rounded border border-gray-700 mb-2"
+                            />
                             <button onClick={() => setShowApiKeyInput(false)} className="w-full bg-green-700 text-white text-xs py-1 rounded">確認</button>
                         </div>
                     )}
@@ -1044,9 +1233,13 @@
                         )}
                         
                         <div className="relative flex-1 bg-black overflow-hidden flex">
-                            {buildMode && <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-900/80 text-yellow-200 px-4 py-2 rounded z-50 border border-yellow-500 animate-pulse pointer-events-none">建造模式：請點擊地圖空地</div>}
-                            {isSaving && <div className="absolute top-4 right-4 z-40 pointer-events-none flex items-center justify-end animate-bounce transition-opacity duration-500"><div className="bg-green-900/90 text-green-100 border border-green-500 px-3 py-1 rounded-full text-xs flex items-center gap-2 shadow-lg backdrop-blur-sm"><Icons.Save size={14} className="animate-pulse"/> <span>系統存檔中...</span></div></div>}
-                            
+                            {/* MOVED: Overlays are now inside the canvas area to prevent blocking sidebar */}
+                            {buildMode && (
+                                <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-yellow-900/80 text-yellow-200 px-4 py-2 rounded z-50 border border-yellow-500 animate-pulse pointer-events-none">
+                                    建造模式：請點擊地圖空地
+                                </div>
+                            )}
+
                             <div className="w-full h-full overflow-auto flex items-center justify-center p-4 bg-[#0d0d10]">
                                 <canvas ref={canvasRef} width={MAP_WIDTH * TILE_SIZE * SCALE} height={MAP_HEIGHT * TILE_SIZE * SCALE} onClick={handleCanvasClick} className="border-4 border-[#3e2723] shadow-2xl cursor-crosshair" style={{ imageRendering: 'pixelated' }} />
                             </div>
@@ -1055,7 +1248,9 @@
                             <div className={`absolute bottom-4 left-4 w-72 flex flex-col gap-1 z-30 transition-all duration-300 ${isLogOpen ? 'max-h-64' : 'max-h-10'}`}>
                                 <div className="flex justify-between items-center bg-[#292b3c] p-1 rounded-t border-t border-l border-r border-[#5d4037] cursor-pointer shadow-lg" onClick={() => setIsLogOpen(!isLogOpen)}>
                                     <span className="text-xs text-[#ffcd75] font-bold px-2">📜 歷史紀錄</span>
-                                    <button className="text-gray-400 hover:text-white px-2">{isLogOpen ? <Icons.ChevronDown size={14}/> : <Icons.ChevronUp size={14}/>}</button>
+                                    <button className="text-gray-400 hover:text-white px-2">
+                                        {isLogOpen ? <Icons.ChevronDown size={14}/> : <Icons.ChevronUp size={14}/>}
+                                    </button>
                                 </div>
                                 {isLogOpen && <div className="bg-black/80 p-2 overflow-y-auto h-48 rounded-b border-b border-l border-r border-[#5d4037] scrollbar-thin pointer-events-auto touch-pan-y shadow-xl">
                                      {events.map((ev) => <div key={ev.id} className="log-item text-white px-2 py-1 text-xs border-b border-gray-800 last:border-0">{ev.text}</div>)}
@@ -1064,38 +1259,82 @@
                             </div>
                         </div>
 
-                        {/* Sidebar */}
+                        {/* Sidebar - Added overflow-y-auto to fix blocked content */}
                         <div className="w-full h-[45vh] md:w-72 md:h-full bg-[#292b3c] border-t-4 md:border-t-0 md:border-l-4 border-[#121215] p-2 md:p-3 flex flex-col gap-2 md:gap-3 shadow-2xl z-20 shrink-0 overflow-y-auto">
                             {(!selectedId || selectedId === 'BASE_CENTER') ? (
                                 <>
+                                    {/* NEW: Base Status Panel - Enhanced */}
                                     <div className="bg-[#1a1c2c] p-3 rounded border border-[#3e2723] shadow-md shrink-0">
                                         <div className="flex items-center gap-3 mb-3 border-b border-[#3e2723] pb-2">
                                             <div className="text-3xl bg-black/40 p-2 rounded border border-gray-700">{currentStage.icon}</div>
-                                            <div className="flex-1"><h3 className="text-[#ffcd75] text-base font-bold leading-tight">部落大本營</h3><div className="text-xs text-gray-400">{currentStage.name}</div></div>
+                                            <div className="flex-1">
+                                                <h3 className="text-[#ffcd75] text-base font-bold leading-tight">部落大本營</h3>
+                                                <div className="text-xs text-gray-400">{currentStage.name}</div>
+                                            </div>
                                         </div>
+                                        
                                         <div className="space-y-3 text-xs">
+                                            {/* Population Bar */}
                                             <div>
-                                                <div className="flex justify-between mb-1 text-gray-300"><span>👥 人口容量</span><span>{sims.filter(s=>s.state!=='DEAD').length} / {currentStage.stats.cap}</span></div>
-                                                <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-500" style={{width: `${Math.min(100, (sims.filter(s=>s.state!=='DEAD').length / currentStage.stats.cap) * 100)}%`}}></div></div>
+                                                <div className="flex justify-between mb-1 text-gray-300">
+                                                    <span>👥 人口容量</span>
+                                                    <span>{sims.filter(s=>s.state!=='DEAD').length} / {currentStage.stats.cap}</span>
+                                                </div>
+                                                <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                                                    <div 
+                                                        className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-500" 
+                                                        style={{width: `${Math.min(100, (sims.filter(s=>s.state!=='DEAD').length / currentStage.stats.cap) * 100)}%`}}
+                                                    ></div>
+                                                </div>
                                             </div>
+
+                                            {/* Stats Grid */}
                                             <div className="grid grid-cols-3 gap-2">
-                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800"><div className="text-[10px] text-gray-500 mb-0.5">防禦</div><div className="text-white font-mono text-sm">🛡️{currentStage.stats.def}</div></div>
-                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800"><div className="text-[10px] text-gray-500 mb-0.5">恢復</div><div className="text-white font-mono text-sm">💚+{currentStage.stats.heal}</div></div>
-                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800"><div className="text-[10px] text-gray-500 mb-0.5">建築</div><div className="text-white font-mono text-sm">🏠{buildings.length}</div></div>
+                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800">
+                                                    <div className="text-[10px] text-gray-500 mb-0.5">防禦</div>
+                                                    <div className="text-white font-mono text-sm">🛡️{currentStage.stats.def}</div>
+                                                </div>
+                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800">
+                                                    <div className="text-[10px] text-gray-500 mb-0.5">恢復</div>
+                                                    <div className="text-white font-mono text-sm">💚+{currentStage.stats.heal}</div>
+                                                </div>
+                                                <div className="bg-[#121215] p-1.5 rounded text-center border border-gray-800">
+                                                    <div className="text-[10px] text-gray-500 mb-0.5">建築</div>
+                                                    <div className="text-white font-mono text-sm">🏠{buildings.length}</div>
+                                                </div>
                                             </div>
-                                            <div className="text-[10px] text-gray-500 italic bg-black/20 p-2 rounded border border-gray-800/50">"{currentStage.desc}"</div>
+                                            
+                                            <div className="text-[10px] text-gray-500 italic bg-black/20 p-2 rounded border border-gray-800/50">
+                                                "{currentStage.desc}"
+                                            </div>
                                         </div>
                                     </div>
 
+                                    {/* Build Menu */}
                                     <div className="bg-[#1a1c2c] p-2 rounded border border-[#3e2723] shrink-0">
-                                        <h3 className="text-[#ffcd75] text-sm mb-2 font-bold border-b border-[#3e2723] pb-1 flex justify-between items-center"><span>🔨 基地建設</span><span className="text-[10px] text-gray-500">點擊建造</span></h3>
+                                        <h3 className="text-[#ffcd75] text-sm mb-2 font-bold border-b border-[#3e2723] pb-1 flex justify-between items-center">
+                                            <span>🔨 基地建設</span>
+                                            <span className="text-[10px] text-gray-500">點擊建造</span>
+                                        </h3>
                                         <div className="space-y-2 max-h-32 overflow-y-auto pr-1 scrollbar-thin">
                                             {Object.keys(BUILDINGS).map(key => {
-                                                const b = BUILDINGS[key]; const hasReq = !b.reqTech || hasTech(b.reqTech); const canBuild = hasReq && tribe.wood >= b.cost.wood && tribe.stone >= b.cost.stone;
+                                                const b = BUILDINGS[key];
+                                                const hasReq = !b.reqTech || hasTech(b.reqTech);
+                                                const canBuild = hasReq && tribe.wood >= b.cost.wood && tribe.stone >= b.cost.stone;
                                                 return (
                                                     <button key={key} onClick={() => handleBuild(key)} disabled={!canBuild && hasReq} className={`w-full text-left p-2 rounded border text-xs flex justify-between items-center group transition-all ${canBuild ? 'bg-[#2d2a26] border-[#5d4037] hover:bg-[#3e2723] hover:border-yellow-600' : 'bg-gray-900 border-gray-800 opacity-50 cursor-not-allowed'}`}>
-                                                        <div><div className={`font-bold ${canBuild ? 'text-gray-200 group-hover:text-yellow-200' : 'text-gray-600'}`}>{b.name}</div><div className="text-[10px] text-gray-500">{!hasReq ? `🔒 需要 [${TECH_TREE.find(t=>t.id===b.reqTech).name}]` : b.desc}</div></div>
-                                                        <div className="text-right text-[10px]"><div className={tribe.wood >= b.cost.wood ? "text-[#8d6e63]" : "text-red-500"}>🪵 {b.cost.wood}</div><div className={tribe.stone >= b.cost.stone ? "text-gray-400" : "text-red-500"}>🪨 {b.cost.stone}</div></div>
+                                                        <div>
+                                                            <div className={`font-bold ${canBuild ? 'text-gray-200 group-hover:text-yellow-200' : 'text-gray-600'}`}>
+                                                                {b.name}
+                                                            </div>
+                                                            <div className="text-[10px] text-gray-500">
+                                                                {!hasReq ? `🔒 需要 [${TECH_TREE.find(t=>t.id===b.reqTech).name}]` : b.desc}
+                                                            </div>
+                                                        </div>
+                                                        <div className="text-right text-[10px]">
+                                                            <div className={tribe.wood >= b.cost.wood ? "text-[#8d6e63]" : "text-red-500"}>🪵 {b.cost.wood}</div>
+                                                            <div className={tribe.stone >= b.cost.stone ? "text-gray-400" : "text-red-500"}>🪨 {b.cost.stone}</div>
+                                                        </div>
                                                     </button>
                                                 )
                                             })}
@@ -1105,30 +1344,65 @@
                                     <div className="bg-[#1a1c2c] p-2 rounded border border-[#3e2723] flex-1 flex flex-col min-h-[120px] shrink-0">
                                         <h3 className="text-[#8b9bb4] text-sm mb-2 font-bold border-b border-[#3e2723] pb-1">⚡ 神諭</h3>
                                         <div className="grid grid-cols-4 gap-2 mt-auto">
-                                            <button onClick={() => castSpell('SUN')} className="btn bg-[#2d2a26] hover:bg-[#3e2723] border border-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors" title="祈禱晴天 (消耗 20)"><Icons.Sun className="text-yellow-400" size={18}/><span className="text-[9px] text-gray-400">祈晴</span></button>
-                                            <button onClick={() => castSpell('RAIN')} className="btn bg-[#2d2a26] hover:bg-[#3e2723] border border-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors" title="祈禱雨天 (消耗 20)"><Icons.CloudRain className="text-blue-400" size={18}/><span className="text-[9px] text-gray-400">祈雨</span></button>
+                                            <button onClick={() => castSpell('SUN')} className="btn bg-[#2d2a26] hover:bg-[#3e2723] border border-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors" title="祈禱晴天 (消耗 20)">
+                                                <Icons.Sun className="text-yellow-400" size={18}/>
+                                                <span className="text-[9px] text-gray-400">祈晴</span>
+                                            </button>
+                                            <button onClick={() => castSpell('RAIN')} className="btn bg-[#2d2a26] hover:bg-[#3e2723] border border-[#5d4037] p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors" title="祈禱雨天 (消耗 20)">
+                                                <Icons.CloudRain className="text-blue-400" size={18}/>
+                                                <span className="text-[9px] text-gray-400">祈雨</span>
+                                            </button>
+                                            
+                                            {/* Tech Button with Next Tech Preview */}
                                             <button onClick={() => castSpell('TECH')} disabled={tribe.tech>=TECH_TREE.length} className="btn bg-[#2d2a26] hover:bg-[#3e2723] border border-[#5d4037] p-2 rounded relative group flex flex-col items-center justify-center gap-1 transition-colors disabled:opacity-50">
-                                                <Icons.Brain className="text-purple-400" size={18}/><span className="text-[9px] text-gray-400">啟發</span>
+                                                <Icons.Brain className="text-purple-400" size={18}/>
+                                                <span className="text-[9px] text-gray-400">啟發</span>
                                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 bg-black/90 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap border border-gray-700 z-50 pointer-events-none mb-1">
-                                                    {tribe.tech < TECH_TREE.length ? (<><div className="font-bold text-yellow-300 mb-0.5">研發: {TECH_TREE[tribe.tech].icon} {TECH_TREE[tribe.tech].name}</div><div className="text-gray-300">{TECH_TREE[tribe.tech].desc}</div><div className="text-purple-300 mt-0.5">消耗: 50 MP</div></>) : "科技已達巔峰"}
+                                                    {tribe.tech < TECH_TREE.length ? (
+                                                        <>
+                                                            <div className="font-bold text-yellow-300 mb-0.5">研發: {TECH_TREE[tribe.tech].icon} {TECH_TREE[tribe.tech].name}</div>
+                                                            <div className="text-gray-300">{TECH_TREE[tribe.tech].desc}</div>
+                                                            <div className="text-purple-300 mt-0.5">消耗: 50 MP</div>
+                                                        </>
+                                                    ) : "科技已達巔峰"}
                                                 </div>
                                             </button>
-                                            <button onClick={() => castSpell('DISASTER')} disabled={mana < 100} className="bg-[#2d1a1a] hover:bg-[#3e1a1a] border border-red-900/50 p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors disabled:opacity-30" title="降下災難 (消耗 100)"><Icons.Biohazard className="text-red-500" size={18}/><span className="text-[9px] text-red-400">天罰</span></button>
+
+                                            <button onClick={() => castSpell('DISASTER')} disabled={mana < 100} className="bg-[#2d1a1a] hover:bg-[#3e1a1a] border border-red-900/50 p-2 rounded flex flex-col items-center justify-center gap-1 transition-colors disabled:opacity-30" title="降下災難 (消耗 100)">
+                                                <Icons.Biohazard className="text-red-500" size={18}/>
+                                                <span className="text-[9px] text-red-400">天罰</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </>
                             ) : selectedObj ? (
                                 <div className="bg-[#1a1c2c] p-3 rounded border border-[#3e2723] flex-1 shrink-0">
-                                    <div className="flex justify-between items-start mb-2"><h3 className="text-[#ffcd75] text-lg font-bold">{selectedObj.type === 'BUILDING' ? BUILDINGS[selectedObj.type].name : (selectedObj.sign || selectedObj.name || selectedObj.type)}</h3><button onClick={() => setSelectedId(null)}><Icons.X size={14}/></button></div>
-                                    {selectedObj.type === 'BUILDING' ? (
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h3 className="text-[#ffcd75] text-lg font-bold">
+                                            {isBuilding ? BUILDINGS[selectedObj.type].name : 
+                                             isCreature ? CREATURE_STATS[selectedObj.type].name :
+                                             (selectedObj.sign || selectedObj.name || "未知目標")}
+                                        </h3>
+                                        <button onClick={() => setSelectedId(null)}><Icons.X size={14}/></button>
+                                    </div>
+                                    {isBuilding ? (
                                         <div className="space-y-2 text-xs text-gray-300">
                                             <div><span className="text-gray-500">類型：</span> {BUILDINGS[selectedObj.type].desc}</div>
                                             <div><div className="flex justify-between text-[10px]"><span>HP</span><span>{Math.floor(selectedObj.hp)}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-green-500" style={{width:`${(selectedObj.hp / BUILDINGS[selectedObj.type].hp) * 100}%`}}></div></div></div>
                                         </div>
-                                    ) : selectedObj.sign ? (
+                                    ) : isSim ? (
                                         <>
-                                        <div className="text-xs text-gray-400 mb-2 flex items-center justify-between"><span className="flex items-center gap-1">{selectedObj.state} | {selectedObj.gender === 'M' ? <span className="text-blue-400 font-bold text-sm" title="男性">♂</span> : <span className="text-pink-400 font-bold text-sm" title="女性">♀</span>} {selectedObj.age}歲 | Gen{selectedObj.generation}</span>{userApiKey && <span className="text-[10px] text-green-400 border border-green-600 px-1 rounded">AI 連結中</span>}</div>
-                                        <div className="text-xs text-yellow-200 italic mb-4 p-2 bg-black/40 rounded border border-gray-700">"{selectedObj.thought}"</div>
+                                        <div className="text-xs text-gray-400 mb-2 flex items-center justify-between">
+                                            <span className="flex items-center gap-1">
+                                                {selectedObj.state} | 
+                                                {selectedObj.gender === 'M' ? <span className="text-blue-400 font-bold text-sm" title="男性">♂</span> : <span className="text-pink-400 font-bold text-sm" title="女性">♀</span>} 
+                                                {selectedObj.age}歲 | Gen{selectedObj.generation}
+                                            </span>
+                                            {userApiKey && <span className="text-[10px] text-green-400 border border-green-600 px-1 rounded">AI 連結中</span>}
+                                        </div>
+                                        <div className="text-xs text-yellow-200 italic mb-4 p-2 bg-black/40 rounded border border-gray-700">
+                                            "{selectedObj.thought}"
+                                        </div>
                                         <div className="space-y-2">
                                             <div><div className="flex justify-between text-[10px]"><span>HP</span><span>{Math.floor(selectedObj.hp)}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-red-500" style={{width:`${selectedObj.hp}%`}}></div></div></div>
                                             <div><div className="flex justify-between text-[10px]"><span>Hunger</span><span>{Math.floor(selectedObj.hunger)}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-orange-500" style={{width:`${selectedObj.hunger}%`}}></div></div></div>
@@ -1141,15 +1415,18 @@
                                             <button onClick={() => castSpell('BUFF')} className="bg-[#3e2723] p-2 rounded text-[10px] text-center"><Icons.Shield className="block mx-auto mb-1"/>賜福</button>
                                         </div>
                                         </>
-                                    ) : (
+                                    ) : isCreature ? (
+                                        // CREATURE STATS DISPLAY
                                         <div className="space-y-2 text-xs text-gray-300">
                                             <div><span className="text-gray-500">類型：</span> {CREATURE_STATS[selectedObj.type].type === 'HOSTILE' ? '敵對生物' : '中立/被動生物'}</div>
                                             <div><div className="flex justify-between text-[10px]"><span>HP</span><span>{Math.floor(selectedObj.hp)} / {CREATURE_STATS[selectedObj.type].hp}</span></div><div className="h-1 bg-gray-700"><div className="h-full bg-red-500" style={{width:`${Math.min(100, (selectedObj.hp / CREATURE_STATS[selectedObj.type].hp) * 100)}%`}}></div></div></div>
                                         </div>
-                                    )}
+                                    ) : null}
                                 </div>
                             ) : (
-                                <div className="flex-1 flex items-center justify-center text-gray-500 text-xs">點擊基地或單位查看詳情</div>
+                                <div className="flex-1 flex items-center justify-center text-gray-500 text-xs">
+                                    點擊基地或單位查看詳情
+                                </div>
                             )}
                         </div>
                     </div>
