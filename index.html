@@ -672,6 +672,11 @@
                     `;
 
                     const resultText = await callGemini(prompt, userApiKey);
+                    
+                    if (!resultText) {
+                         throw new Error("AI response was empty or failed.");
+                    }
+
                     let decision = { action: 'IDLE', thought: '...' };
                     
                     try {
@@ -679,6 +684,8 @@
                         const jsonMatch = resultText.match(/\{[\s\S]*\}/);
                         if (jsonMatch) {
                             decision = JSON.parse(jsonMatch[0]);
+                        } else {
+                             console.warn("No JSON found in AI response");
                         }
                     } catch (e) {
                         console.error("AI JSON Parse Error", e);
